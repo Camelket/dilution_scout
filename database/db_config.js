@@ -1,9 +1,10 @@
 const config = {
+	connectionString: "postgres://postgres:admin@localhost/express_test_db",
 	host: "localhost",
 	user: "postgres",
-	paassword: "postgres",
-	port: "5432",
+	password: 'admin',
+	port: 5432,
 	database: "express_test_db"
-	}
+	};
 
-module.export = config
+module.export = config;

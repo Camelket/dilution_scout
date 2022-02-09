@@ -1,38 +1,20 @@
-counter = function(){
-	let count = 0;
-	return {
-		increment: () => count = count+1,
-		decrement: () => count = count-1,
-		value: () => count
-	}
-}
+const pgp = require("pg-promise");
+const db = require("../database/database_connection");
+const dbUtil = require("../database/databaseUtil");
+const sqlFile = require("../database/sql/queryFileHelper.js");
 
-c = counter()
 
-let incrementButton = document.querySelector("#b1");
-let decrementButton = document.querySelector("#b2");
 
-function replaceCounterValue() {
-	let counterValue = c.value()
-	let s = `Current Value of Counter: ${counterValue}`
-	let oldVal = document.querySelector("#counter")
-	let newVal = document.createElement("p")
-	newVal.id = "counter"
-	newVal.append(document.createTextNode(s))
-	if (oldVal) {
-		oldVal.replaceWith(newVal)
-	} else {
-		let main = document.querySelector("main")
-		main.append(newVal)
-	}
-}
+const testDatabase = function() {
+	console.log("NOT IMPLEMENTED: loginController.testDatabase()");
+};
 
-incrementButton.addEventListener('click', function() {
-	c.increment();
-	replaceCounterValue();	
-	});
+module.exports = testDatabase;
 
-decrementButton.addEventListener('click', function() {
-	c.decrement();
-	replaceCounterValue();
-	});
+
+
+
+
+
+
+

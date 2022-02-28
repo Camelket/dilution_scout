@@ -1,7 +1,26 @@
+- var authenticated = false
+- var user = {}
+- var navbarItemsNotAuthenticated = [{id: "loginPageButton", href: "/login", text: "Login"}, {id: "registerPageButton", href: "/register", text: "register"}]
+- var navbarItemsAuthenticated = [{id: "userPageButton", href: "/user", text: "user"}, {id: "logoutPageButton", href: "/logout", text: "logout"}]
+
+mixin navbarItem(id, href, text)
+  a(class="navbarButton" id=id href=href) #{text}
+
 doctype html
 html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    block navbar
+      ul(class="mainNavBar")
+        case authenticated
+          when false
+            each val in navbarItemsNotAuthenticated ? navbarItemsNotAuthenticated : []
+              li: +navbarItem(val.id, val.href, val.text)
+          when true
+            each val in navbarItemsAuthenticated ? navbarItemsAuthenticated : []
+              li: +navbarItem(val.id, val.href, val.text)
+
     block content
+

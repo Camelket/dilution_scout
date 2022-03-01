@@ -1,10 +1,9 @@
-- var authenticated = false
-- var user = {}
-- var navbarItemsNotAuthenticated = [{id: "loginPageButton", href: "/login", text: "Login"}, {id: "registerPageButton", href: "/register", text: "register"}]
-- var navbarItemsAuthenticated = [{id: "userPageButton", href: "/user", text: "user"}, {id: "logoutPageButton", href: "/logout", text: "logout"}]
+- var navbarItemsFix = [{id: "homePageButton", href: "/", text: "Home"}]
+- var navbarItemsNotAuthenticated = [{id: "loginPageButton", href: "/login", text: "Login"}, {id: "registerPageButton", href: "/register", text: "Register new User"}]
+- var navbarItemsAuthenticated = [{id: "userPageButton", href: "/user", text: "user"}, {id: "logoutPageButton", href: "/logout", text: "logout"}, {id: "settingsButton", href: "/userSettings", text: "User Settings"}]
 
 mixin navbarItem(id, href, text)
-  a(class="navbarButton" id=id href=href) #{text}
+  a(class="navbarItem" id=id href=href) #{text}
 
 doctype html
 html
@@ -14,13 +13,18 @@ html
   body
     block navbar
       ul(class="mainNavBar")
-        case authenticated
-          when false
-            each val in navbarItemsNotAuthenticated ? navbarItemsNotAuthenticated : []
-              li: +navbarItem(val.id, val.href, val.text)
-          when true
-            each val in navbarItemsAuthenticated ? navbarItemsAuthenticated : []
-              li: +navbarItem(val.id, val.href, val.text)
+        each val in navbarItemsFix ? navbarItemsFix : []
+          li: +navbarItem(val.id, val.href, val.text)
+
+        if (!isAuthenticated)
+          each val in navbarItemsNotAuthenticated ? navbarItemsNotAuthenticated : []
+            li: +navbarItem(val.id, val.href, val.text)
+
+        else if (isAuthenticated)
+          each val in navbarItemsAuthenticated ? navbarItemsAuthenticated : []
+            li: +navbarItem(val.id, val.href, val.text)
+
+
 
     block content
 

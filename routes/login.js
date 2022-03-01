@@ -1,3 +1,6 @@
+// to implement: tie existing user account to google account if trying to login?
+//
+
 require("dotenv").config()
 const bcrypt = require("bcrypt")
 const { evaluateLoginAttemptPassword } = require("../controllers/memcachedUtil.js") 
@@ -5,49 +8,59 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/userController");
 const db = require("../database/database_connection.js");
-const {getUserInfo, findOrCreateGoogleUser, authenticatePasswordUser} = require("../database/databaseUtil.js");
+const {getUserInfo, findOrCreateGoogleUser, authenticatePasswordUser, createPasswordUser} = require("../database/databaseUtil.js");
 
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20");
 const LocalStrategy = require("passport-local")
 
-passport.use(new LocalStrategy(
-	async function (userEmail, userPassword, cb) {
-		console.log(`running authentication with local strategy; args: ${userEmail}, ${userPassword}, ${cb}`)
+const googleAuthentication = new GoogleStrategy({
+	clientID: process.env["GOOGLE_CLIENT_ID"],
+	clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
+	callbackURL: '/oauth2/redirect/google',
+	scope: ["email", "profile"]},
+	function(accessToken, refreshToken, profile, cb) {
+		return cb(null, profile)
+	}
+	)
+
+const localAuthentication = new LocalStrategy({usernameField: "userEmail", passwordField: "userPassword"},
+	async function (username, password, cb) {
+		console.log(`running authentication with local strategy; args: ${username}, ${password}, ${cb}`);
 		let user;
 		try {
-			user = await authenticatePasswordUser(db, userEmail, userPassword)
+			user = await authenticatePasswordUser(db, username, password)
 			if (!user) {
 				return cb(null, false, {message: "no user found with specified email"});
 			}
 			if (user) {
 				return cb(null, user)
-			}} catch(e) {
-				console.log(`strategy encountered error while authenticating ${userEmail}. error: ${e}`)
-				return cb(null, false, {message: "no user found or error encountered with specified email"});
-	}}))
+			}
+		} catch(e) {
+			console.log(`strategy encountered error while authenticating ${username}. error: ${e}`)
+			return cb(null, false, {message: "no user found or error encountered with specified email"});
+			}
+	})
 
-passport.use(new GoogleStrategy({
-	clientID: process.env["GOOGLE_CLIENT_ID"],
-	clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
-	callbackURL: '/oauth2/redirect/google',
-	scope: ["profile"]},
-	function(accessToken, refreshToken, profile, cb) {
-		return cb(null, profile)
-	}
-	))
+passport.use(localAuthentication)
 
-passport.serializeUser(function(user_id, cb) {
-	process.nextTick(function() {
-		cb(null, user_id)
-	});
+passport.use(googleAuthentication)
+
+passport.serializeUser(function(user, done) {
+	console.log(`user.id in serializeUser: ${user.id}`);
+	done(null, user.id.toString())
 });
 
-passport.deserializeUser(function(user_id, cb) {
-	process.nextTick(function() {
-		return cb(null, user_id)
-	})
-})
+passport.deserializeUser(async function(userId, done) {
+	console.log(`userId in deserializeUser: ${userId}`);
+	let user;
+	try {
+		user = await getUserInfo(db, userId);
+	}catch(e){console.log(e);
+			  done(e, user)}
+	console.log(`user in deserializeUser: ${user}`)
+	done(null, user)
+	});
 
 router.get("/login", function(req, res, next){
 	res.render("login", {title: "Login"});
@@ -63,7 +76,8 @@ router.get("/oauth2/redirect/google", passport.authenticate("google", {
 	failureRedirect: "/login"
 	}),
 	async (req, res, next) => {
-		const user = await findOrCreateGoogleUser(db, req, res, next)}
+		const user = await findOrCreateGoogleUser(db, req, res, next);
+	}
 );
 
 router.get("/logout", function(req, res, next) {
@@ -71,7 +85,7 @@ router.get("/logout", function(req, res, next) {
 	res.redirect("/")
 })
 
-router.post("/login/authenticatePasswordUser", async function(req, res) {
+router.post("/login/authenticatePasswordUser", async function(req, res, next) {
 	console.log(req.body)
 	let reqIP = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress 
 	let loginAttempt, allowed, timeframe, tries;
@@ -83,13 +97,11 @@ router.post("/login/authenticatePasswordUser", async function(req, res) {
 		
 
 	} catch(err) {
-		console.log("error encountered in first try/catch block")
 		console.log(err)}
-	console.log(allowed, timeframe, tries)
-	if (allowed == true) {
-		console.log("running local strategy next")
+/*	console.log(allowed, timeframe, tries)
+*/	if (allowed == true) {
 		// ????? why is the strategy not running at all ?????
-		passport.authenticate("local", {failureRedirect: "/login", failureMessage: true})
+		passport.authenticate("local", {failureRedirect: "/login", failureMessage: true})(req, res, next)
 		}
 	if (allowed == false) {
 		// for  case of hourly and case of recent exceeding max
@@ -97,14 +109,33 @@ router.post("/login/authenticatePasswordUser", async function(req, res) {
 		}
 	/*  1) checks IP in blocked list and checks IP for tries left
 		1.2) send failure if not allowed else continue [x]
-		2.0) encrypt password []
-		2.05) write local strategy for passport, check passport doc for example
-		2.10) tries to login via passport-local strategy []
+		2.0) encrypt password [x]
+		2.05) write local strategy for passport, check passport doc for example [x]
+		2.10) tries to login via passport-local strategy [x]
 	*/
-	console.log("emulating post request: NOT IMPLEMENTED")
 	},
 	function(req, res, next) {
-		res.send("successfull login")
+		res.redirect("/")
 	})
+
+router.get("/register", function(req, res, next) {
+	res.render("registration", {})
+})
+
+router.post("/register", async function(req, res, next) {
+	// req.body  --> db function to create user
+	// set user in session object and redirect home or userSettings page
+	// invoke function to send email for verification
+	let {userEmail, userPassword, ...rest} = req.body
+	console.log(`/register route; userEmail: ${userEmail}, userPassword: ${userPassword}, rest: ${rest}`)
+	let userId
+	try {
+		userId = await createPasswordUser(db, userEmail, userPassword)
+	} catch(e) {
+		console.log(`failed to createPasswordUser in /register post route, e: ${e}`)
+		next(e)
+	}
+	res.redirect("/login")
+})
 
 module.exports = router;

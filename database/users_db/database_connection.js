@@ -2,17 +2,10 @@ const dbConfig = require("./db_config.js");
 const pgp = require("pg-promise")({});
 const bcrypt = require("bcrypt")
 
-const sqlFile = require("./sql/queryFileHelper.js");
+const sqlFile = require("./queryFileHelper.js");
 const {checkUserExists} = require("./databaseUtil.js")
-const config = {
-	connectionString: "postgres://postgres:admin@localhost/express_test_db",
-	host: "localhost",
-	user: "postgres",
-	password: 'admin',
-	port: 5432,
-	database: "express_test_db"
-	};
-const db = pgp(config)
+
+const db = pgp(dbConfig)
 
 const initTablesFile = sqlFile("./init_tables.sql")
 const populateFile = sqlFile("./populateTables.sql")

@@ -6,9 +6,8 @@ const bcrypt = require("bcrypt")
 const { evaluateLoginAttemptPassword } = require("../controllers/memcachedUtil.js") 
 const express = require("express");
 const router = express.Router();
-const controller = require("../controllers/userController");
-const db = require("../database/database_connection.js");
-const {getUserInfo, findOrCreateGoogleUser, authenticatePasswordUser, createPasswordUser} = require("../database/databaseUtil.js");
+const user_db = require("../database/users_db/database_connection.js");
+const {getUserInfo, findOrCreateGoogleUser, authenticatePasswordUser, createPasswordUser} = require("../database/users_db/databaseUtil.js");
 
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20");
@@ -29,7 +28,7 @@ const localAuthentication = new LocalStrategy({usernameField: "userEmail", passw
 		console.log(`running authentication with local strategy; args: ${username}, ${password}, ${cb}`);
 		let user;
 		try {
-			user = await authenticatePasswordUser(db, username, password)
+			user = await authenticatePasswordUser(user_db, username, password)
 			if (!user) {
 				return cb(null, false, {message: "no user found with specified email"});
 			}
@@ -55,7 +54,7 @@ passport.deserializeUser(async function(userId, done) {
 	console.log(`userId in deserializeUser: ${userId}`);
 	let user;
 	try {
-		user = await getUserInfo(db, userId);
+		user = await getUserInfo(user_db, userId);
 	}catch(e){console.log(e);
 			  done(e, user)}
 	console.log(`user in deserializeUser: ${user}`)
@@ -76,7 +75,7 @@ router.get("/oauth2/redirect/google", passport.authenticate("google", {
 	failureRedirect: "/login"
 	}),
 	async (req, res, next) => {
-		const user = await findOrCreateGoogleUser(db, req, res, next);
+		const user = await findOrCreateGoogleUser(user_db, req, res, next);
 	}
 );
 
@@ -130,7 +129,7 @@ router.post("/register", async function(req, res, next) {
 	console.log(`/register route; userEmail: ${userEmail}, userPassword: ${userPassword}, rest: ${rest}`)
 	let userId
 	try {
-		userId = await createPasswordUser(db, userEmail, userPassword)
+		userId = await createPasswordUser(user_db, userEmail, userPassword)
 	} catch(e) {
 		console.log(`failed to createPasswordUser in /register post route, e: ${e}`)
 		next(e)

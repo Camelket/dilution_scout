@@ -219,3 +219,5 @@ CREATE TABLE IF NOT EXISTS atm(
 -- then SELECT * JOIN on each securities table with shelf/offerings id
 -- convertible_notes, atm
 
+-- maybe I should add company_id top securities just to make queries less complex
+

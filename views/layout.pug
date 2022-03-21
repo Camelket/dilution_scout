@@ -1,4 +1,4 @@
-- var navbarItemsFix = [{id: "homePageButton", href: "/", text: "Home"}]
+- var navbarItemsFix = [{id: "homePageButton", href: "/landing", text: "Home"}]
 - var navbarItemsNotAuthenticated = [{id: "loginPageButton", href: "/login", text: "Login"}, {id: "registerPageButton", href: "/register", text: "Register new User"}]
 - var navbarItemsAuthenticated = [{id: "userPageButton", href: "/user", text: "user"}, {id: "logoutPageButton", href: "/logout", text: "logout"}, {id: "settingsButton", href: "/userSettings", text: "User Settings"}]
 
@@ -9,7 +9,7 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/public/stylesheets/styles.css')
   body
     block navbar
       ul(class="mainNavBar")

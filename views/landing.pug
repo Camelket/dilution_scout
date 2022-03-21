@@ -1,6 +1,24 @@
 extends layout 
 
-block landing 
-div(id="landing_header", class="title") Welcome to DilutionScout
-div(id="landing_description", class=["text_content", "body1"])
-    p(id="landing_text", class="text_content")
+var cp = ${content_panels}
+var lp = ${landing_panel}
+
+mixin content_panel(id_text, title, text, id_image, image_src)
+    div(id=id_text, class=["text_content_panel", "panel"])
+        h2(class=["title_content_panel", "title"]) title
+        p(class=["text_content_panel", "text_content"])
+    if (id_image and image_src)
+        div(id=id_image, class=["image_content_panel", "panel"])
+            image(id=id_image, src=image_src)
+    else 
+        div(class=["empty_content_panel", "panel"])
+    
+
+block landing
+div(id="root_div", class=["root_div", "root"])
+    div(id="background_landing_1", style="background_image: url("lp.src")", class=["background_landing", "background_image"])
+        h1(id="landing_title1", class=["h1", "main_title"]) lp.title_text
+        p(id="landing_title_description", class=["landing_description","title_description"]) lp.description
+    div(id="root_panels_div", class=["landing_content_box", "flex_2_col"])
+        for i in cp
+            content_panel(i.id_text, i.title, i.text, i.id_image, i.image_src)

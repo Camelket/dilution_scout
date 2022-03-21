@@ -7,6 +7,7 @@ const passport = require("passport");
 
 const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
+const landingRouter = require("./routes/landing")
 
 const app = express();
 
@@ -48,8 +49,14 @@ app.use((req, res, next) => {
 	next()}); //  rest for pug global variables
 app.use("/", indexRouter);
 app.use("/", loginRouter);
+app.use("/", landingRouter)
 
 //debug
 app.use("/", require("./routes/sessionInfo"))
+
+process.on('uncaughtException', function (err) {
+    console.error(err.stack);
+    console.log("Node NOT Exiting...");
+});
 
 module.exports = app;

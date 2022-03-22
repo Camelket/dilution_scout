@@ -1,21 +1,65 @@
-.background_landing {
-  /* background: url("/public/backgrounds/cardboard-tetris.jpg") left bottom; */
-  background: navy;
-  background-size: cover;
-  color: white;
+#root {
   display: flex;
   flex-direction: column;
+}
+
+.d-flex-c {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.d-flex-r {
+  display: flex;
+  flex-direction: row;
+
+}
+
+
+.navBarWrapper {
+  z-index: 10!important;
+}
+
+.navbar_color {
+  background: navy;
+  color:rgb(255, 255, 255);
+}
+
+
+#navbarWrapper {
+  align-items: center;
+  justify-items: stretch;
+}
+
+#navbarSearchForm {
+  flex-grow: 1;
+}
+
+/* .navbarSection {
+  flex-grow: 1;
+} */
+
+.mainNavbar {
+  flex-wrap: nowrap;
+  margin-inline-start: 30%;
+  list-style-type: none;
+  justify-content: space-evenly;
+  text-align: right;
+  /* margin-block-end: 0.5rem; */
+}
+
+.navbarItem {
+  text-decoration: none;
+}
+
+.background_landing {
+  /* background: url("/public/backgrounds/cardboard-tetris.jpg") left bottom; */
+  background-size: cover;
+  display: flex;
+  /* flex-direction: column; */
   align-items: center;
 }
 
-.mainNavBar {
-  display: flex;
-  flex-flow: row nowrap;
-  /* align-items: stretch; */
-  justify-content:space-evenly;
-  margin-inline-start: 50%;
-  /* margin-block-end: 0.5rem; */
-}
 
 
 body {

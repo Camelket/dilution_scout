@@ -13,11 +13,11 @@ block content
     -let cp = content_panels
     -let lp = landing_panel
     if (lp && cp)
-        div(id="root_div", class=["root_div", "root"])
-            div#background_landing_1.background_landing.background_image
-                h2(id="landing_title1", class=["h1", "main_title"]) #{lp.title_text}
-                p(id="landing_title_description", class=["landing_description","title_description"]) #{lp.description}
-            div(id="root_panels_div", class=["landing_content_box", "flex_2_col"])
+        div#content_wrapper.d-flex-c.navbar_color
+            div#background_landing_1.background_landing.background_image.d-flex-c
+                h2#landing_title1.main_title #{lp.title_text}
+                p#landing_title_description.landing_description.title_description #{lp.description}
+            div#root_panels_div.landing_content_box.d-flex-c
                 each i in cp
                     content_panel(i.id_text, i.title, i.text, i.id_image, i.image_src)
     

@@ -3,7 +3,7 @@
 - var navbarItemsAuthenticated = [{id: "userPageButton", href: "/user", text: "user"}, {id: "logoutPageButton", href: "/logout", text: "logout"}, {id: "settingsButton", href: "/userSettings", text: "User Settings"}]
 
 mixin navbarItem(id, href, text)
-  a(class="navbarItem" id=id href=href) #{text}
+  a(class=["navbarItem", "navbar_color"] id=id href=href) #{text}
 
 doctype html
 html
@@ -11,20 +11,35 @@ html
     title= title
     link(rel='stylesheet', href='/public/stylesheets/styles.css')
   body
-    block navbar
-      ul(class="mainNavBar")
-        each val in navbarItemsFix ? navbarItemsFix : []
-          li: +navbarItem(val.id, val.href, val.text)
+    div#root
+      block navbar
+        div#navbarWrapper.navbar_color.d-flex-r
+          div.navbarSection
+              //- add action ect
+              form.navbarSearchForm
+                div.inputGroup.d-flex-r
+                  input#tickerSearchInput.formControl(type="search", placeholder="search ticker")
+                  div.inputGroupAppend
+                    button#searchButton Go
 
-        if (!isAuthenticated)
-          each val in navbarItemsNotAuthenticated ? navbarItemsNotAuthenticated : []
-            li: +navbarItem(val.id, val.href, val.text)
+          ul.mainNavbar.navbarSection.d-flex-r
+            each val in navbarItemsFix ? navbarItemsFix : []
+              li.navBarli: +navbarItem(val.id, val.href, val.text)
 
-        else if (isAuthenticated)
-          each val in navbarItemsAuthenticated ? navbarItemsAuthenticated : []
-            li: +navbarItem(val.id, val.href, val.text)
+            if (!isAuthenticated)
+              each val in navbarItemsNotAuthenticated ? navbarItemsNotAuthenticated : []
+                li.navBarli: +navbarItem(val.id, val.href, val.text)
+
+            else if (isAuthenticated)
+              each val in navbarItemsAuthenticated ? navbarItemsAuthenticated : []
+                li.navBarli: +navbarItem(val.id, val.href, val.text)
+          
 
 
 
-    block content
+
+
+      block content
+
+      block footer
 

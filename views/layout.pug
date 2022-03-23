@@ -13,31 +13,11 @@ html
   head
     title= title
     link(rel='stylesheet', href='/public/stylesheets/styles.css')
-    script.
-      let menu;
-      function toggleMenu() { 
-        //- https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_js_dropdown
-        menu = document.getElementById("dropdownMedium").classList
-        menu.toggle("hidden")
-        menu.toggle("show")
-        }
-      
-      window.onclick = function(event) {
-        if (!event.target.matches('.dropdownNavToggle')) {
-          let items = document.getElementsByClassName("dropdownItems");
-          for (let i = 0; i < items.length; i++) {
-            let openDropdown = items[i];
-              if (openDropdown.classList.contains("hidden")) {
-                openDropdown.classList.toggle("hidden")
-                openDropdown.classList.toggle("show")
-              }
-            }
-          }
-        }
+    script(src="/public/dropdownMenuToggle.js")
       
   body
-     
     div#root
+
       block navbar
         div#navbarWrapper.navbar_color.d-flex-r
           div#tickerSearchBar.navbarSection
@@ -62,7 +42,7 @@ html
           
           div#dropdownNav.navbarSection
             div.dropdownNavToggle(onclick="toggleMenu()") Menu
-              ul#dropdownMedium.dropdownItems.d-flex-c.s-between.navbar_color
+              ul#dropdownMedium.dropdownItems.d-flex-c.navbar_color
                 each val in navbarItemsFix ? navbarItemsFix : []
                   +navbarItem(val.id, val.href, val.text)
                 if (!isAuthenticated)

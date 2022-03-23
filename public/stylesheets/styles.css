@@ -17,10 +17,6 @@ body {
   
 }
 
-#root {
-  display: flex;
-  flex-direction: column;
-}
 
 .d-flex-c {
   display: flex;
@@ -85,21 +81,24 @@ body {
   background-color: var(--navbar-emphasize-color, red);
 }
 
-.background_landing {
+.backgroundLanding {
   /* background: url("/public/backgrounds/cardboard-tetris.jpg") left bottom; */
   background-size: cover;
   display: flex;
   align-items: center;
 }
 
-.landingPanel {
-  display: flex;
-  flex-direction: row;
-  /* grid-template-columns: 1fr 1fr; */
+.landingTitle, .landingText {
+  text-align: center;
 }
 
-.landingPanelText, .landingPanelImage {
+.landingPanel, .landingPanelText, .landingPanelImage {
   flex-basis: 50%;
+}
+
+.landingPanelText{
+  align-items: right;
+  text-align: center;
 }
 
 

@@ -3,7 +3,7 @@ extends layout
 
 
 mixin content_panel(id_text, title, text, id_image, image_src)
-    div.landingPanel
+    div.landingPanel.d-flex-r
         div(id=id_text, class="landingPanelText")
             h2(class="title") #{title}
             p(class="text") #{text}
@@ -15,10 +15,10 @@ block content
     -let lp = landing_panel
     if (lp && cp)
         div#content_wrapper.d-flex-c.navbar_color
-            div#background_landing_1.background_landing.background_image.d-flex-c
-                h2#landing_title1.main_title #{lp.title_text}
-                p#landing_title_description.landing_description.title_description #{lp.description}
-            div#root_panels_div.landing_content_box.d-flex-c
+            div.backgroundLanding.d-flex-c
+                h2#landingTitle #{lp.title_text}
+                p#landingText.description #{lp.description}
+            div#rootPanelContent.d-flex-c
                 each i in cp
                     +content_panel(i.id_text, i.title, i.text, i.id_image, i.image_src)
     

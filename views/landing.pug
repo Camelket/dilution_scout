@@ -3,11 +3,12 @@ extends layout
 
 
 mixin content_panel(id_text, title, text, id_image, image_src)
-    div(id=id_text, class=["text_content_panel", "panel"])
-        h2(class=["title_content_panel", "title"]) #{title}
-        p(class=["text_content_panel", "text_content"]) #{text}
-    div(id=id_image, class=["image_content_panel", "panel"])
-        image(id=id_image, src=image_src)
+    div.landingPanel
+        div(id=id_text, class="landingPanelText")
+            h2(class="title") #{title}
+            p(class="text") #{text}
+        div(class="landingPanelImage")
+            image(id=id_image, src=image_src)
     
 block content
     -let cp = content_panels
@@ -19,5 +20,5 @@ block content
                 p#landing_title_description.landing_description.title_description #{lp.description}
             div#root_panels_div.landing_content_box.d-flex-c
                 each i in cp
-                    content_panel(i.id_text, i.title, i.text, i.id_image, i.image_src)
+                    +content_panel(i.id_text, i.title, i.text, i.id_image, i.image_src)
     

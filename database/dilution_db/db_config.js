@@ -1,10 +1,20 @@
 const config = {
-	connectionString: "postgres://postgres:postgres@localhost/dilution_db",
+	// connectionString: "postgres://postgres:postgres@localhost/dilution_db",
+	// host: "localhost",
+	// user: "postgres",
+	// password: 'postgres',
+	// port: 5432,
+	// database: "dilution_db"
+
+	connectionString: "postgres://postgres:admin@localhost/users_db",
 	host: "localhost",
 	user: "postgres",
-	password: 'postgres',
+	password: 'admin',
 	port: 5432,
-	database: "dilution_db"
+	database: "users_db"
 	};
+	
+
+
 
 module.exports = config;

@@ -5,6 +5,7 @@ block content
     //- must inlcude: ticker, company_name, sector, industry, mktcap, float
     //- could include: company_description
     -let company = company_info //thead = "ticker header" object
+    script(src="/public/scripts/switchTabs.js")
     div#headerContainer.ml-1.mr-1.w-100
         .d-flex-r  
             h5#tickerHeader.ticker.mt-2.mb-1  #{company.ticker}
@@ -28,6 +29,22 @@ block content
                         span #{company.float}
                 #companyDescription.mt-1.mr-2
                     div.opacity-8.ch80 #{company.description}
+        .tabContainer.d-flex-r.mt-3.max-w-95vw.hide-scrollbar
+            .selectionTab.cur-p.activeSelectionTab(onClick="openTab(event, 'dilution')") Dilution
+            .selectionTab.cur-p(onClick="openTab(event, 'filings')") Filings 
+        
+        //- maybe include the tabs as separat pug files
+        //- on certain conditions so i can first load a dummy site
+        //- until all the data is ready, if this gives improved
+        //- user experience
+
+        //- script document.getElementById("").click();
+
+        #dilution.tabContent.activeTab
+            p DILUTION HERE
+        #filings.tabContent.inactiveTab
+            p FILINGS HERE
+            
                 
 
 

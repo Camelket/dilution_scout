@@ -4,6 +4,7 @@
   --navbar-emphasize-color: rgb(76, 99, 212);
   --navbar-text-color: white;
   --navbar-accent-color: rgb(76, 99, 212);
+  --tab-accent-color: rgb(162, 171, 212);
 }
 
 
@@ -64,9 +65,17 @@ body {
   margin-bottom: 1rem!important;
 }
 
+.mt-3 {
+  margin-top: 2rem;
+}
+
 
 .w-100 {
   width: 100%!important;
+}
+
+.max-w-95vw {
+  max-width: 95vw;
 }
 
 .cur-d{
@@ -83,6 +92,11 @@ body {
 
 .ch80 {
   max-width: 80ch;
+}
+
+
+.hide-scrollbar::-webkit-scrollbar{
+  display: none;
 }
 
 .navBarWrapper {
@@ -135,36 +149,6 @@ body {
   background-color: var(--navbar-emphasize-color, red);
 }
 
-.backgroundLanding {
-  /* background: url("/public/backgrounds/cardboard-tetris.jpg") left bottom; */
-  background-size: cover;
-  display: flex;
-  align-items: center;
-}
-
-.landingTitle, .landingText {
-  text-align: center;
-}
-/* .landingPanel {
-  width: 100%;
-  height: minmax(0, 3rem);
-} */
-.landingPanel, .landingPanelText, .landingPanelImageContainer {
-  flex-basis: 50%;
-}
-
-.landingPanelImage {
-  max-width: 90%;
-  max-height: 90%;
-}
-
-
-.landingPanelText{
-  align-items: right;
-  text-align: center;
-}
-
-
 @media (min-width:601px){
   #mainNavbar{
     display:flex;
@@ -205,5 +189,67 @@ body {
   
 }
 
-.hidden{display: none}
-.show{display: inline-block}
+.backgroundLanding {
+  /* background: url("/public/backgrounds/cardboard-tetris.jpg") left bottom; */
+  background-size: cover;
+  display: flex;
+  align-items: center;
+}
+
+.landingTitle, .landingText {
+  text-align: center;
+}
+/* .landingPanel {
+  width: 100%;
+  height: minmax(0, 3rem);
+} */
+.landingPanel, .landingPanelText, .landingPanelImageContainer {
+  flex-basis: 50%;
+}
+
+.landingPanelImage {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+
+.landingPanelText{
+  align-items: right;
+  text-align: center;
+}
+
+.tabContainer {
+  overflow-x: scroll;
+  border-bottom: 1px solid var(--tab-accent-color, grey);
+  padding-bottom: 0.5rem;
+
+
+}
+.selectionTab{
+  flex: 0 0 10vw;
+  justify-content: center;
+  text-align: center;
+  transition: background-color 0.3s;
+  width: 100%;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  padding-top: 0.25rem;
+}
+
+.selectionTab:hover{
+  background-color: var(--tab-accent-color, grey);
+}
+
+.activeSelectionTab {
+  border-bottom: 3px solid var(--navbar-accent-color, blue);
+  font-weight: 600;
+}
+.activeTab {
+  display: block;
+}
+
+.hidden, .inactiveTab{
+  display: none}
+
+.show {
+  display: inline-block}

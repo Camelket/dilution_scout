@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS warrants(
 );
 
 
-CREATE TABLE IF NOT EXISTS convertible__note_warrants(
+CREATE TABLE IF NOT EXISTS convertible_note_warrants(
     id SERIAL PRIMARY KEY,
     note_warrant_name VARCHAR(255),
     offering_id VARCHAR(255),

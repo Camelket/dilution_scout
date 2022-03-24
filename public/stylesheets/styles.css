@@ -258,4 +258,5 @@ body {
 #outstandingSharesChart {
   max-width: 30rem;
   max-height: 20rem;
+  display: block;
 }

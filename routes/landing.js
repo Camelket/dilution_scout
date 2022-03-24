@@ -7,11 +7,12 @@ const landingPanel = {"src": "/backgrounds/cardboard-tetris.jpg",
 const contentPanel = [{"id_text": "cp1",
                         "title": "TITLE",
                         "text": "TEXT",
-                        "id_image": "cp1img",
+                        // "id_image": "cp1img",
                         "image_src": "/public/backgrounds/abstract-light-circle.jpg"}]
 
 router.get("/landing", function(req, res, next) {
     res.render("landing", {"content_panels": contentPanel, "landing_panel": landingPanel})
 })
+
 
 module.exports = router

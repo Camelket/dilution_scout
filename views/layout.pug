@@ -13,7 +13,7 @@ html
   head
     title= title
     link(rel='stylesheet', href='/public/stylesheets/styles.css')
-    script(src="/public/dropdownMenuToggle.js")
+    script(src="/public/scripts/dropdownMenuToggle.js")
       
   body
     div#root.d-flex-c
@@ -22,9 +22,9 @@ html
         div#navbarWrapper.navbar_color.d-flex-r
           div#tickerSearchBar.navbarSection
               //- add action ect
-              form#navbarSearchForm
+              form#navbarSearchForm(action="/search/ticker", method="GET")
                 div.inputGroup.d-flex-r
-                  input#tickerSearchInput.formControl(type="search", placeholder="search ticker")
+                  input#tickerSearchInput.formControl(type="search", placeholder="search ticker", name="tickerSearchInput")
                   div.inputGroupAppend
                     button#searchButton Go
 
@@ -55,6 +55,8 @@ html
       block content
 
       block footer
+
+    script(src="/public/scripts/searchBarFunctionality.js")
 
 
   

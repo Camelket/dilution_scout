@@ -7,8 +7,8 @@ mixin content_panel(id_text, title, text, id_image, image_src)
         div(id=id_text, class="landingPanelText")
             h2(class="title") #{title}
             p(class="text") #{text}
-        div(class="landingPanelImage")
-            image(id=id_image, src=image_src)
+        div(class="landingPanelImageContainer")
+            image(id=id_image, src=image_src, class="landingPanelImage")
     
 block content
     -let cp = content_panels

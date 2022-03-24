@@ -91,10 +91,19 @@ body {
 .landingTitle, .landingText {
   text-align: center;
 }
-
-.landingPanel, .landingPanelText, .landingPanelImage {
+/* .landingPanel {
+  width: 100%;
+  height: minmax(0, 3rem);
+} */
+.landingPanel, .landingPanelText, .landingPanelImageContainer {
   flex-basis: 50%;
 }
+
+.landingPanelImage {
+  max-width: 90%;
+  max-height: 90%;
+}
+
 
 .landingPanelText{
   align-items: right;

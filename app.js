@@ -7,7 +7,9 @@ const passport = require("passport");
 
 const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
-const landingRouter = require("./routes/landing")
+const registrationRouter = require("./routes/register");
+const landingRouter = require("./routes/landing");
+const tickerRouter = require("./routes/ticker");
 
 const app = express();
 
@@ -46,9 +48,12 @@ app.use((req, res, next) => {
 
 	console.log(req.session) //debug only
 	next()}); //  rest for pug global variables
+	
 app.use("/", indexRouter);
 app.use("/", loginRouter);
-app.use("/", landingRouter)
+app.use("/", registrationRouter);
+app.use("/", landingRouter);
+app.use("/", tickerRouter);
 
 //debug
 app.use("/", require("./routes/sessionInfo"))

@@ -253,3 +253,9 @@ body {
 
 .show {
   display: inline-block}
+
+/* testing */
+#outstandingSharesChart {
+  max-width: 30rem;
+  max-height: 20rem;
+}

@@ -41,6 +41,10 @@ block content
         //- script document.getElementById("").click();
 
         #dilution.tabContent.activeTab
+            script(src="https://cdn.jsdelivr.net/npm/chart.js")
+            canvas#outstandingSharesChart
+            script(src="/public/scripts/exampleChart.js")
+            
             p DILUTION HERE
         #filings.tabContent.inactiveTab
             p FILINGS HERE

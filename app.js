@@ -11,6 +11,10 @@ const registrationRouter = require("./routes/register");
 const landingRouter = require("./routes/landing");
 const tickerRouter = require("./routes/ticker");
 
+// test db
+const usersDb = require("./database/users_db/database_connection")
+const dilutionDb = require("./database/dilution_db/populate_dilution_db")
+
 const app = express();
 
 app.use("/public", express.static(path.join(__dirname, 'public')));

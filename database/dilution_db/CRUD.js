@@ -3,7 +3,7 @@ const db = require("./dilution_db_connection")
 // what should i return on success: id or true if no id
 const createSIC = async function(db, sic, sector, industry) {
     try {
-        let id = await db.one("INSERT INTO sics(sic, sector, industry) VALUES($1, $2, $3)", [sic, sector, industry])
+        await db.none("INSERT INTO sics(sic, sector, industry) VALUES($1, $2, $3)", [sic, sector, industry])
     } catch(e) {console.log(e); return null}
     return true
     } 
@@ -26,7 +26,7 @@ const createCompany = async function(db, cik, sic, symbol, name, description) {
 const createOutstandingShares = async function(db, id, instant, amount) {
     try{
         // parse str into date ?
-        await db.one("INSERT INTO outstanding_shares(id, instant, amount) VALUES($1, $2, $3)",
+        await db.none("INSERT INTO outstanding_shares(company_id, instant, amount) VALUES($1, $2, $3)",
         [id, instant, amount])
     } catch (e) {console.log(e); return null}
     return true;
@@ -35,7 +35,7 @@ const createOutstandingShares = async function(db, id, instant, amount) {
 const readOutstandingShares = async function(db, id) {
     let values;
     try {
-       values = await db.any("SELECT (instant, amount) FROM outstanding_shares(instant, amount) WHERE company_id = $1", [id]) 
+       values = await db.any("SELECT (instant, amount) FROM outstanding_shares WHERE company_id = $1", [id]) 
     } catch (e) {console.log(e); return null}
     // transform values to conform to list of object if necessary
     return values
@@ -53,7 +53,7 @@ const updateOutstandingShares = async function(db, id, instant, new_amount) {
 const createNetCashAndEquivalents = async function(db, id, instant, amount) {
     try{
         // parse str into date ?
-        await db.one("INSERT INTO net_cash_and_equivalents(id, instant, amount) VALUES($1, $2, $3)",
+        await db.one("INSERT INTO net_cash_and_equivalents(company_id, instant, amount) VALUES($1, $2, $3)",
         [id, instant, amount])
     } catch (e) {console.log(e); return null}
     return true;
@@ -62,7 +62,7 @@ const createNetCashAndEquivalents = async function(db, id, instant, amount) {
 const readNetCashAndEquivalents = async function(db, id) {
     let values;
     try {
-       values = await db.any("SELECT (instant, amount) FROM net_cash_and_equivalents(instant, amount) WHERE company_id = $1", [id]) 
+       values = await db.any("SELECT (instant, amount) FROM net_cash_and_equivalents WHERE company_id = $1", [id]) 
     } catch (e) {console.log(e); return null}
     // transform values to conform to list of object if necessary
     return values
@@ -71,7 +71,7 @@ const readNetCashAndEquivalents = async function(db, id) {
 const createNetCashAndEquivalentsNoFinancing = async function(db, id, instant, amount) {
     try{
         // parse str into date ?
-        await db.one("INSERT INTO net_cash_and_equivalents_excluding_financing(id, instant, amount) VALUES($1, $2, $3)",
+        await db.one("INSERT INTO net_cash_and_equivalents_excluding_financing(company_id, instant, amount) VALUES($1, $2, $3)",
         [id, instant, amount])
     } catch (e) {console.log(e); return null}
     return true;
@@ -84,6 +84,6 @@ module.exports = {
     createNetCashAndEquivalentsNoFinancing,
     createOutstandingShares,
     readOutstandingShares,
-    readOutstandingShares,
+    readNetCashAndEquivalents,
     updateOutstandingShares
 }

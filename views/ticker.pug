@@ -45,11 +45,16 @@ block content
             script(src="/public/js_for_offline/chart.js")
             //- script(src="https://cdn.jsdelivr.net/npm/chart.js")
             canvas#outstandingSharesChart.ml-2
-            script(src="/public/scripts/exampleChart.js")
+            - let cfg = OSChartConfig
+            script.
+                let ctx = document.getElementById('outstandingSharesChart')
+                let chart = new Chart(ctx, !{JSON.stringify(cfg)})
+            //- script(src="/public/scripts/exampleChart.js")
             
             p DILUTION HERE
         #filings.tabContent.inactiveTab
             p FILINGS HERE
+        
             
                 
 

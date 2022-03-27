@@ -33,8 +33,12 @@ const data = {
         
     ],
     "net_cash_and_equivalents": [
-        {"instant": "2020-07-01", "amount":"80000009"},
-        {"instant": "2020-11-01", "amount":"990000088"}  
+        {"instant": "2020-01-01", "amount":"80000009"},
+        {"instant": "2020-04-01", "amount":"90000000"},  
+        {"instant": "2020-07-01", "amount":"100000000"},  
+        {"instant": "2020-11-01", "amount":"110000000"},  
+        {"instant": "2021-01-01", "amount":"120000000"},  
+        {"instant": "2021-04-01", "amount":"130000000"}  
     ],
     "net_cash_and_equivalents_excluding_financing": [
         {"instant": "2020-07-01", "amount":"80000009"},
@@ -63,7 +67,7 @@ const populate = async function() {
         try{
             let p = data["net_cash_and_equivalents"][i]
             await createNetCashAndEquivalents(db, id["id"], p["instant"], p["amount"])}
-        catch(e) {console.log(`${e} Couldnt create outstanding shares`)}
+        catch(e) {console.log(`${e} Couldnt insert cash pos________________________________-`)}
 }}
 
 const testContent = async function() {
@@ -84,11 +88,9 @@ const testContent = async function() {
 //     setTimeout(() => console.log(tables), 2000)
 // }, 2000)
 
-const clearTables = async function() {
-    await db.any("DO $$ DECLARE r RECORD; BEGIN FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema()) LOOP EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE'; END LOOP; END $$;")
-}
-setTimeout(() => {populate();}, 250)
-// setTimeout(() => {testContent()}, 3000)
+setTimeout(() => {populate()}, 500)
+
+setTimeout(() => {testContent()}, 3000)
 
 module.exports = db;
 // setTimeout(() => {clearTables()}, 5000)

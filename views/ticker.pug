@@ -8,7 +8,7 @@ block content
     script(src="/public/scripts/switchTabs.js")
     div#headerContainer.ml-1.mr-1.w-100
         .d-flex-r  
-            h5#tickerHeader.ticker.mt-2.mb-1  #{company.ticker}
+            h5#tickerHeader.ticker.mt-2.mb-1  #{company.symbol}
         .d-flex-r 
             h2#companyNameHeader.companyName.mt-1.mb-1 #{company.name}
         .f-flex-r
@@ -20,13 +20,13 @@ block content
                     div.d-inline-block
                         span.mr-1.opacity-8 Industry:
                         span #{company.industry}
-                #sharesInfo.mt-2.mr-2
-                    div.d-inline-block.mr-2
-                        span.mr-1.opacity-8 Mkt Cap: 
-                        span #{company.mktcap}
-                    div.d-inline-block.mr-2
-                        span.mr-1.opacity-8 Float:
-                        span #{company.float}
+                //- #sharesInfo.mt-2.mr-2
+                //-     div.d-inline-block.mr-2
+                //-         span.mr-1.opacity-8 Mkt Cap: 
+                //-         span #{company.mktcap}
+                //-     div.d-inline-block.mr-2
+                //-         span.mr-1.opacity-8 Float:
+                //-         span #{company.float}
                 #companyDescription.mt-1.mr-2
                     div.opacity-8.ch80 #{company.description}
         .tabContainer.d-flex-r.mt-3.max-w-95vw.hide-scrollbar
@@ -44,16 +44,30 @@ block content
             //- file locally for offline use
             script(src="/public/js_for_offline/chart.js")
             //- script(src="https://cdn.jsdelivr.net/npm/chart.js")
-            canvas#outstandingSharesChart.ml-2
-            - let cfg = OSChartConfig
+            .d-flex-c.mt-2.ml-2
+                span.chartTitle.mr-2.cur-d Description of chart ---- add: potential dilution
+                canvas#outstandingSharesChart.ml-2.mt-1.mb-3
+            .d-flex-c.mt-1.ml-2
+                span.chartTitle.mr-2.cur-d Description of chart ---- add: months till 0 cash, cashburn
+                canvas#cashPositionChart.ml-2.mt-2.mt-1.mb-3
+            - let cfgOS = OSChartConfig
+            - let cfgCP = CashPosConfig
             script.
-                let ctx = document.getElementById('outstandingSharesChart')
-                let chart = new Chart(ctx, !{JSON.stringify(cfg)})
+                let ctxOS = document.getElementById('outstandingSharesChart')
+                let chartOS = new Chart(ctxOS, !{JSON.stringify(cfgOS)})
+
+                let ctxCP = document.getElementById("cashPositionChart")
+                let chartCP = new Chart(ctxCP, !{JSON.stringify(CashPosConfig)})
+
+            .d-flex-c
+
+
             //- script(src="/public/scripts/exampleChart.js")
             
-            p DILUTION HERE
         #filings.tabContent.inactiveTab
             p FILINGS HERE
+            //- create dict with {category: [{individual_filing},...]}
+            //- mixin panel with max items
         
             
                 

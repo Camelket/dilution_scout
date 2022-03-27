@@ -1,15 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const utils = require("../public/scripts/utils.js");
-const dilution_db = require("../database/dilution_db/dilution_db_connection")
-const {createSIC,
-    createCompany,
-    createNetCashAndEquivalents,
-    createNetCashAndEquivalentsNoFinancing,
-    createOutstandingShares,
-    readOutstandingShares,
-    readNetCashAndEquivalents,
-    updateOutstandingShares} = require("../database/dilution_db/CRUD.js")
+const dilution_db = require("../database/dilution_db/dilution_db_connection");
+const {
+  readCompany,
+  readOutstandingShares,
+  readNetCashAndEquivalents,
+  getCompanyIdBySymbol,
+} = require("../database/dilution_db/CRUD.js");
+const {createOSChartconfig, createCPChartconfig} = require("../public/scripts/exampleChart.js");
 // make calls to db to get the info
 // and feed info into render call
 // OR
@@ -44,6 +43,17 @@ router.get("/search/ticker", async function (req, res, next) {
   }
 });
 router.get("/ticker/:id", async function (req, res, next) {
+  let id;
+  let company;
+  try {
+    id = req.params.id;
+    // console.log(id); 
+    company = await readCompany(dilution_db, id)
+    console.log(company)
+  } catch (e) {
+    console.log("fucked up with getting id from req.params");
+    console.log(e);
+  }
   // fetch basic company data for "theader" here
   //
   // --
@@ -51,16 +61,31 @@ router.get("/ticker/:id", async function (req, res, next) {
   // format basic company data to be ready for display
 
   // package basic company data into an object
-  const createOutstandingSharesChartconfig = require("../public/scripts/exampleChart.js")
-  let outstanding;
+  let outstanding, cash;
   try {
-    outstanding = await readOutstandingShares(dilution_db, 1)} catch(e) {console.log("fucked up while getting OShares:"); console.log(e)}
-  console.log(outstanding)
-    let OSChartConfig = createOutstandingSharesChartconfig(outstanding)
-  doc = res.render("ticker", { company_info: fakeCompany, OSChartConfig: OSChartConfig  });
-//   let p = document.createElement("p")
-//   p.append("THIS IS ADDED TO THE DOC")
-//   document.getElementById("dilution").append(p)
+    cash = await readNetCashAndEquivalents(dilution_db, id);
+  } catch (e) {
+    console.log("fucked up getting the cash position from db");
+    console.log(e);
+  }
+  try {
+    outstanding = await readOutstandingShares(dilution_db, id);
+  } catch (e) {
+    console.log("fucked up getting OShares:");
+    console.log(e);
+  }
+  let OSChartConfig, CashPosConfig
+  OSChartConfig = createOSChartconfig(outstanding);
+  CashPosConfig = createCPChartconfig(cash)
+
+  doc = res.render("ticker", {
+    company_info: company,
+    OSChartConfig: OSChartConfig,
+    CashPosConfig: CashPosConfig
+  });
+  //   let p = document.createElement("p")
+  //   p.append("THIS IS ADDED TO THE DOC")
+  //   document.getElementById("dilution").append(p)
 });
 
 module.exports = router;

@@ -1,14 +1,38 @@
-DO $$ DECLARE
-    r RECORD;
-BEGIN
-    FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema()) LOOP
-        EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
-    END LOOP;
-END $$;
+-- DO $$ DECLARE
+--     r RECORD;
+-- BEGIN
+--     FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema()) LOOP
+--         EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
+--     END LOOP;
+-- END $$;
 -- 
 -- ----Add WHERE databasename == currentdatabase
 
 --  TODO: add primary keys to most tables
+
+CREATE TABLE IF NOT EXISTS filing_links(
+    company_id SERIAL,
+    filing_html VARCHAR(500),
+    form_type SERIAL,
+    filing_date DATE,
+    description_ VARCHAR(2000),
+
+    CONSTRAINT fk_company_id
+        FOREIGN KEY (company_id)
+            REFERENCES companies(id),
+    
+    CONSTRAINT fk_form_type
+        FOREIGN KEY (form_type)
+            REFERENCES form_types(form_type)
+)
+
+CREATE TABLE IF NOT EXISTS form_types(
+    form_type SERIAL,
+    form_name VARCHAR(200),
+    --  how to declare enum in sql?
+    category VARCHAR(200)
+)
+
 CREATE TABLE IF NOT EXISTS sics (
     sic INT PRIMARY KEY,
     sector VARCHAR(255) NOT NULL,
@@ -29,6 +53,17 @@ CREATE TABLE IF NOT EXISTS companies (
         FOREIGN KEY (sic)
             REFERENCES sics(sic)
 );
+
+-- CREATE TABLE IF NOT EXISTS outstanding_float(
+--     company_id SERIAL,
+--     instant DATE,
+--     amount BIGINT,
+
+--     CONSTRAINT fk_company_id
+--         FOREIGN KEY (company_id)
+--             REFERENCES companies(id),
+--     UNIQUE(company_id, instant)
+-- )
 
 
 

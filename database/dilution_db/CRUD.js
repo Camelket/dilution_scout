@@ -22,7 +22,33 @@ const createCompany = async function(db, cik, sic, symbol, name, description) {
 
 // const updateCompany
 // const deleteCompany
-// const getCompanyIdBySymbol
+const getCompanyIdBySymbol = async function(db, symbol) {
+    let id;
+    try {
+        id = await db.one("SELECT id as id from companies WHERE symbol = $1", [symbol])
+    } catch(e) {console.log(`func: getCompanyIdBySymbol with e: ${e}`)}
+    if (id) {
+        id = id["id"]
+        return id
+    }
+    return null
+}
+
+const getallCompaniesIdSymbol = async function (db) {
+    let result;
+    try {
+       result = await db.many("SELECT id, symbol FROM companies") 
+    } catch(e) {console.log(`func: getAllCompaniesIdSymbol with e: ${e}`)}
+    return result
+}
+
+const readCompany = async function (db, id) {
+    let result;
+    try{
+        result = await db.one("SELECT c.id, c.cik, c.sic, c.symbol, c.name_ as name, c.description_ as description, s.sector, s.industry FROM companies as c  JOIN sics as s ON c.sic = s.sic WHERE id = $1", [id])
+    } catch(e) {console.log(`func: getAllCompaniesIdSymbol with e: ${e}`)}
+    return result
+}
 
 const createOutstandingShares = async function(db, id, instant, amount) {
     try{
@@ -55,12 +81,12 @@ const updateOutstandingShares = async function(db, id, instant, new_amount) {
 const createNetCashAndEquivalents = async function(db, id, instant, amount) {
     try{
         // parse str into date ?
-        await db.one("INSERT INTO net_cash_and_equivalents(company_id, instant, amount) VALUES($1, $2, $3)",
+        await db.none("INSERT INTO net_cash_and_equivalents(company_id, instant, amount) VALUES($1, $2, $3)",
         [id, instant, amount])
     } catch (e) {console.log(e); return null}
     return true;
 }
-
+ 
 const readNetCashAndEquivalents = async function(db, id) {
     let values;
     try {
@@ -73,13 +99,14 @@ const readNetCashAndEquivalents = async function(db, id) {
 const createNetCashAndEquivalentsNoFinancing = async function(db, id, instant, amount) {
     try{
         // parse str into date ?
-        await db.one("INSERT INTO net_cash_and_equivalents_excluding_financing(company_id, instant, amount) VALUES($1, $2, $3)",
+        await db.none("INSERT INTO net_cash_and_equivalents_excluding_financing(company_id, instant, amount) VALUES($1, $2, $3)",
         [id, instant, amount])
     } catch (e) {console.log(e); return null}
     return true;
 }
 
 module.exports = {
+    readCompany,
     createSIC,
     createCompany,
     createNetCashAndEquivalents,
@@ -87,5 +114,7 @@ module.exports = {
     createOutstandingShares,
     readOutstandingShares,
     readNetCashAndEquivalents,
-    updateOutstandingShares
+    updateOutstandingShares,
+    getCompanyIdBySymbol,
+    getallCompaniesIdSymbol
 }

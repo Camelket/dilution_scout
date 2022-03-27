@@ -14,5 +14,4 @@ async function testDb() {
 }
 
 testDb()
-
 module.exports = db;

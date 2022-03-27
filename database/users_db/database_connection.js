@@ -11,17 +11,7 @@ const initTablesFile = sqlFile("./init_tables.sql")
 const populateFile = sqlFile("./populateTables.sql")
 const allContentFile = sqlFile("./returnAllTablesContent.sql")
 
-async function testSimpleQuery() { const rv = await db.any("SELECT * FROM users WHERE id = $1", [1]);
-								   console.log(rv)};
 
-
-const logObject = function(obj) {
-	console.log(obj)
-	let k = 0;
-	let v = 0;
-	for ([k, v] in obj) {console.log(`${k}: ${v}`)}
-	console.log("logObject done")
-}
 
 
 
@@ -33,13 +23,10 @@ async function testDb() {
 
 async function testUserExists(db) {
 	let objUsers = await checkUserExists(db, "jack@test.com");
-	console.log(`logObject: ${objUsers}`);
 }
 
 
 
-testDb()
-let rv = testUserExists(db)
 
 
 module.exports = db;

@@ -74,6 +74,8 @@ router.get("/ticker/:id", async function (req, res, next) {
     console.log("fucked up getting OShares:");
     console.log(e);
   }
+  // console.log(outstanding) 
+  // outstanding.append({"instant": "2022-01-01", "amount": 5000000})
   let OSChartConfig, CashPosConfig
   OSChartConfig = createOSChartconfig(outstanding);
   CashPosConfig = createCPChartconfig(cash)

@@ -10,28 +10,9 @@
 
 --  TODO: add primary keys to most tables
 
-CREATE TABLE IF NOT EXISTS filing_links(
-    company_id SERIAL,
-    filing_html VARCHAR(500),
-    form_type SERIAL,
-    filing_date DATE,
-    description_ VARCHAR(2000),
 
-    CONSTRAINT fk_company_id
-        FOREIGN KEY (company_id)
-            REFERENCES companies(id),
-    
-    CONSTRAINT fk_form_type
-        FOREIGN KEY (form_type)
-            REFERENCES form_types(form_type)
-)
 
-CREATE TABLE IF NOT EXISTS form_types(
-    form_type SERIAL,
-    form_name VARCHAR(200),
-    --  how to declare enum in sql?
-    category VARCHAR(200)
-)
+
 
 CREATE TABLE IF NOT EXISTS sics (
     sic INT PRIMARY KEY,
@@ -65,7 +46,28 @@ CREATE TABLE IF NOT EXISTS companies (
 --     UNIQUE(company_id, instant)
 -- )
 
+CREATE TABLE IF NOT EXISTS form_types(
+    form_type SERIAL PRIMARY KEY,
+    form_name VARCHAR(200),
+    --  how to declare enum in sql?
+    category VARCHAR(200)
+);
 
+CREATE TABLE IF NOT EXISTS filing_links(
+    company_id SERIAL,
+    filing_html VARCHAR(500),
+    form_type SERIAL,
+    filing_date DATE,
+    description_ VARCHAR(2000),
+
+    CONSTRAINT fk_company_id
+        FOREIGN KEY (company_id)
+            REFERENCES companies(id),
+    
+    CONSTRAINT fk_form_type
+        FOREIGN KEY (form_type)
+            REFERENCES form_types(form_type)
+);
 
 
 CREATE TABLE IF NOT EXISTS outstanding_shares(
@@ -100,6 +102,16 @@ CREATE TABLE IF NOT EXISTS net_cash_and_equivalents_excluding_financing(
             REFERENCES companies(id),
     UNIQUE(company_id, instant)
 );
+
+CREATE TABLE IF NOT EXISTS cash_burn_rate(
+    company_id SERIAL,
+    burn_rate FLOAT,
+    burn_rate_trailing12 FLOAT,
+    -- best fit curve of past and extrapolate from
+    burn_rate_forward12 FLOAT,
+    last_update DATE
+
+)
 
 CREATE TABLE IF NOT EXISTS capital_raise(
     company_id SERIAL,

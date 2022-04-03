@@ -34,11 +34,12 @@ const getCompanyIdBySymbol = async function(db, symbol) {
     return null
 }
 
-const getallCompaniesIdSymbol = async function (db) {
+const getAllCompaniesIdSymbol = async function (db) {
     let result;
     try {
        result = await db.many("SELECT id, symbol FROM companies") 
     } catch(e) {console.log(`func: getAllCompaniesIdSymbol with e: ${e}`)}
+    console.log(`getAllCompaniesIdSymbol result: ${result}`)
     return result
 }
 
@@ -46,7 +47,7 @@ const readCompany = async function (db, id) {
     let result;
     try{
         result = await db.one("SELECT c.id, c.cik, c.sic, c.symbol, c.name_ as name, c.description_ as description, s.sector, s.industry FROM companies as c  JOIN sics as s ON c.sic = s.sic WHERE id = $1", [id])
-    } catch(e) {console.log(`func: getAllCompaniesIdSymbol with e: ${e}`)}
+    } catch(e) {console.log(`func: readCompany with e: ${e}`)}
     return result
 }
 
@@ -96,10 +97,10 @@ const readNetCashAndEquivalents = async function(db, id) {
     return values
 }
 
-const createNetCashAndEquivalentsNoFinancing = async function(db, id, instant, amount) {
+const createNetCashAndEquivalentsExcludingRestricedNoncurrent = async function(db, id, instant, amount) {
     try{
         // parse str into date ?
-        await db.none("INSERT INTO net_cash_and_equivalents_excluding_financing(company_id, instant, amount) VALUES($1, $2, $3)",
+        await db.none("INSERT INTO net_cash_and_equivalents_excluding_restricted_noncurrent(company_id, instant, amount) VALUES($1, $2, $3)",
         [id, instant, amount])
     } catch (e) {console.log(e); return null}
     return true;
@@ -110,11 +111,11 @@ module.exports = {
     createSIC,
     createCompany,
     createNetCashAndEquivalents,
-    createNetCashAndEquivalentsNoFinancing,
+    createNetCashAndEquivalentsExcludingRestricedNoncurrent,
     createOutstandingShares,
     readOutstandingShares,
     readNetCashAndEquivalents,
     updateOutstandingShares,
     getCompanyIdBySymbol,
-    getallCompaniesIdSymbol
+    getAllCompaniesIdSymbol
 }

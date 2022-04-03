@@ -7,6 +7,7 @@ const {
   readOutstandingShares,
   readNetCashAndEquivalents,
   getCompanyIdBySymbol,
+  getAllCompaniesIdSymbol
 } = require("../database/dilution_db/CRUD.js");
 const {createOSChartconfig, createCPChartconfig} = require("../public/scripts/exampleChart.js");
 // make calls to db to get the info
@@ -16,7 +17,8 @@ const {createOSChartconfig, createCPChartconfig} = require("../public/scripts/ex
 // in the template fetch data which takes to long to fetch
 // OR
 // a combination of the above
-const fakecache = { HYMC: 1, MSFT: 2 };
+const fakecache = getAllCompaniesIdSymbol(dilution_db);
+console.log(`fakecache: ${fakecache}`)
 
 const fakeCompany = {
   ticker: "HYMC",

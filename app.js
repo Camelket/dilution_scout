@@ -13,7 +13,7 @@ const tickerRouter = require("./routes/ticker");
 
 // test db's; replace with database_connections and create/populate databases beforehand through a separat script
 const usersDb = require("./database/users_db/database_connection")
-const dilutionDb = require("./database/dilution_db/populate_dilution_db")
+const dilutionDb = require("./database/dilution_db/dilution_db_connection")
 
 const app = express();
 

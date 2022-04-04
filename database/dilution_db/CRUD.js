@@ -1,32 +1,15 @@
 //  define all the CRUD function to get the dilution info needed for the ticker.js route
 const db = require("./dilution_db_connection")
 // what should i return on success: id or true if no id
-const createSIC = async function(db, sic, sector, industry) {
-    try {
-        await db.none("INSERT INTO sics(sic, sector, industry) VALUES($1, $2, $3)", [sic, sector, industry])
-    } catch(e) {console.log(e); return null}
-    return true
-    } 
 
-
-const createCompany = async function(db, cik, sic, symbol, name, description) {
-    let id;
-    try{
-    id = await db.one("INSERT INTO companies(cik, sic, symbol, name_, description_) VALUES ($1, $2, $3, $4, $5) RETURNING id",
-    [cik, sic, symbol, name, description]);
-    } catch(e) {
-        // handle sic doesnt exist 
-        console.log(e); return null}
-    return id
-}
 
 // const updateCompany
 // const deleteCompany
-const getCompanyIdBySymbol = async function(db, symbol) {
+const readCompanyIdBySymbol = async function(db, symbol) {
     let id;
     try {
         id = await db.one("SELECT id as id from companies WHERE symbol = $1", [symbol])
-    } catch(e) {console.log(`func: getCompanyIdBySymbol with e: ${e}`)}
+    } catch(e) {console.log(`func: readCompanyIdBySymbol with e: ${e}`)}
     if (id) {
         id = id["id"]
         return id
@@ -34,7 +17,7 @@ const getCompanyIdBySymbol = async function(db, symbol) {
     return null
 }
 
-const getAllCompaniesIdSymbol = async function (db) {
+const readAllCompaniesIdSymbol = async function (db) {
     let result;
     try {
        result = await db.any("SELECT id, symbol FROM companies")
@@ -58,14 +41,7 @@ const readCompany = async function (db, id) {
     return result
 }
 
-const createOutstandingShares = async function(db, id, instant, amount) {
-    try{
-        // parse str into date ?
-        await db.none("INSERT INTO outstanding_shares(company_id, instant, amount) VALUES($1, $2, $3)",
-        [id, instant, amount])
-    } catch (e) {console.log(e); return null}
-    return true;
-}
+
 
 const readOutstandingShares = async function(db, id) {
     let values;
@@ -77,12 +53,75 @@ const readOutstandingShares = async function(db, id) {
     return values
 }
 
-const updateOutstandingShares = async function(db, id, instant, new_amount) {
+const readNetCashAndEquivalents = async function(db, id) {
+    let values;
     try {
-        //  not sure about syntax here
-        await db.none("UPDATE outstanding_shares SET amount = $1 WHERE id = $2 AND instant = $3",
-        [id, new_amount, instant])
+       values = await db.any("SELECT instant, amount FROM net_cash_and_equivalents WHERE company_id = $1", [id]) 
+    } catch (e) {console.log(e); return null}
+    console.log(`netCashAndEquivalents in readNetCashAndEquivalents call: ${values}`)
+    // transform values to conform to list of object if necessary
+    return values
+}
+
+const readNetCashAndEquivalentsExcludingRestrictedNoncurrent = async function(db, id) {
+    let values;
+    try {
+       values = await db.any("SELECT instant, amount FROM net_cash_and_equivalents_excluding_restriced_noncurrent WHERE company_id = $1", [id]) 
+    } catch (e) {console.log(e); return null}
+    console.log(`netCashAndEquivalentsExcludingRestrictedNoncurrent in readNetCashAndEquivalentsExcludingRestrictedNoncurrent call: ${values}`)
+    // transform values to conform to list of object if necessary
+    return values
+}
+
+const readFilingLinks = async function(db, id){
+    let values;
+    let obj = {}
+    try{
+        values = await db.any("SELECT fl.company_id as id, fl.filing_html as filing_link, fl.form_type, fl.filing_date, fl.description_ as description, fl.file_number, ft.category FROM filing_links as fl JOIN form_types as ft ON fl.form_type = ft.form_type WHERE company_id = $1",
+        [id])
     } catch(e) {console.log(e); return null}
+    for (let idx in values){
+        let entry = values[idx]
+        category = entry["category"]
+        if (!obj[category]){
+            obj[category] = [];
+        }
+        obj[category].push([
+            entry["form_type"],
+            entry["filing_link"],
+            entry["description"],
+            entry["filing_date"]
+        ])}
+    // console.log(obj)
+
+    return obj
+}
+
+const createSIC = async function(db, sic, sector, industry) {
+    try {
+        await db.none("INSERT INTO sics(sic, sector, industry) VALUES($1, $2, $3)", [sic, sector, industry])
+    } catch(e) {console.log(e); return null}
+    return true
+    } 
+
+
+const createCompany = async function(db, cik, sic, symbol, name, description) {
+    let id;
+    try{
+    id = await db.one("INSERT INTO companies(cik, sic, symbol, name_, description_) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+    [cik, sic, symbol, name, description]);
+    } catch(e) {
+        // handle sic doesnt exist 
+        console.log(e); return null}
+    return id
+}
+
+const createOutstandingShares = async function(db, id, instant, amount) {
+    try{
+        // parse str into date ?
+        await db.none("INSERT INTO outstanding_shares(company_id, instant, amount) VALUES($1, $2, $3)",
+        [id, instant, amount])
+    } catch (e) {console.log(e); return null}
     return true;
 }
 
@@ -94,16 +133,6 @@ const createNetCashAndEquivalents = async function(db, id, instant, amount) {
     } catch (e) {console.log(e); return null}
     return true;
 }
- 
-const readNetCashAndEquivalents = async function(db, id) {
-    let values;
-    try {
-       values = await db.any("SELECT instant, amount FROM net_cash_and_equivalents WHERE company_id = $1", [id]) 
-    } catch (e) {console.log(e); return null}
-    console.log(`netCashAndEquivalents in readNetCashAndEquivalents call: ${values}`)
-    // transform values to conform to list of object if necessary
-    return values
-}
 
 const createNetCashAndEquivalentsExcludingRestricedNoncurrent = async function(db, id, instant, amount) {
     try{
@@ -113,9 +142,18 @@ const createNetCashAndEquivalentsExcludingRestricedNoncurrent = async function(d
     } catch (e) {console.log(e); return null}
     return true;
 }
+ 
+const updateOutstandingShares = async function(db, id, instant, new_amount) {
+    try {
+        //  not sure about syntax here
+        await db.none("UPDATE outstanding_shares SET amount = $1 WHERE id = $2 AND instant = $3",
+        [id, new_amount, instant])
+    } catch(e) {console.log(e); return null}
+    return true;
+}
+
 
 module.exports = {
-    readCompany,
     createSIC,
     createCompany,
     createNetCashAndEquivalents,
@@ -123,7 +161,10 @@ module.exports = {
     createOutstandingShares,
     readOutstandingShares,
     readNetCashAndEquivalents,
-    updateOutstandingShares,
-    getCompanyIdBySymbol,
-    getAllCompaniesIdSymbol
+    readNetCashAndEquivalentsExcludingRestrictedNoncurrent,
+    readFilingLinks,
+    readCompany,
+    readCompanyIdBySymbol,
+    readAllCompaniesIdSymbol,
+    updateOutstandingShares
 }

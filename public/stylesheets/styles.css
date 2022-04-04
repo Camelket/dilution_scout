@@ -270,3 +270,9 @@ body {
   opacity: 0.9;
   color: -var(--tab-accent-color, black)
 }
+
+
+.filingTableItem{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}

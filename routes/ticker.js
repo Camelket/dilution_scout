@@ -41,6 +41,7 @@ router.get("/search/ticker", async function (req, res, next) {
     url = "/ticker/" + fakecache[tickerSearchInput.toUpperCase()];
     res.redirect(url);
   } else {
+    // add ticker not found styling and text box to bar or redirect to not tracked page
     return;
   }
 });

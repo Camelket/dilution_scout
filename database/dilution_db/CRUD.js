@@ -40,6 +40,7 @@ const getAllCompaniesIdSymbol = async function (db) {
        result = await db.many("SELECT id, symbol FROM companies") 
     } catch(e) {console.log(`func: getAllCompaniesIdSymbol with e: ${e}`)}
     console.log(`getAllCompaniesIdSymbol result: ${result}`)
+    
     return result
 }
 

@@ -1,10 +1,17 @@
 //- design the page to feed CRUD ticker data into and generate charts, cards ect.
 extends layout 
 
+mixin filingTableRow(form, link, desc, filedOn)
+    div.d-flex-r.filingTableRow(href=link)
+        div.filingFormType form
+        div.filingDescription desc
+        div.filingFiledOn filedOn
+
 block content 
     //- must inlcude: ticker, company_name, sector, industry, mktcap, float
     //- could include: company_description
     -let company = company_info //thead = "ticker header" object
+    -let filingsArray = filings // array of {category: "category", filings: [filings]} for secFilingTables
     script(src="/public/scripts/switchTabs.js")
     div#headerContainer.ml-1.mr-1.w-100
         .d-flex-r  
@@ -65,7 +72,15 @@ block content
             //- script(src="/public/scripts/exampleChart.js")
             
         #filings.tabContent.inactiveTab
-            p FILINGS HERE
+            #filingTablesWrapper
+                each obj in filingsArray
+                    div.filingTableWrapper
+                        div.filingTableTitle obj.category
+                        each filing in obj.filings
+                            +filingTableRow(filing[0], filing[1], filing[2], filing[3])
+                            
+
+                p FILINGS HERE
             //- create dict with {category: [{individual_filing},...]}
             //- mixin panel with max items
         

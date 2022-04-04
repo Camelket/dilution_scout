@@ -81,6 +81,11 @@ router.get("/ticker/:id", async function (req, res, next) {
     console.log("fucked up getting OShares:");
     console.log(e);
   }
+  try{
+    filinglinks = await readFilingLinks(dilution_db, id)
+  } catch(e) {
+    // --------------continue here
+  }
   // console.log(outstanding) 
   // outstanding.append({"instant": "2022-01-01", "amount": 5000000})
   let OSChartConfig, CashPosConfig

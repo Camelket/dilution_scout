@@ -6,8 +6,9 @@ const {
   readCompany,
   readOutstandingShares,
   readNetCashAndEquivalents,
-  getCompanyIdBySymbol,
-  getAllCompaniesIdSymbol
+  readFilingLinks,
+  readCompanyIdBySymbol,
+  readAllCompaniesIdSymbol
 } = require("../database/dilution_db/CRUD.js");
 const {createOSChartconfig, createCPChartconfig} = require("../public/scripts/exampleChart.js");
 // make calls to db to get the info
@@ -32,7 +33,7 @@ const fakeCompany = {
 
 router.get("/search/ticker", async function (req, res, next) {
   if (fakecache == null){
-    fakecache = await getAllCompaniesIdSymbol(dilution_db)
+    fakecache = await readAllCompaniesIdSymbol(dilution_db)
   }
   const { tickerSearchInput } = req.query;
   console.log(`fakecache: ${fakecache}`)
@@ -68,7 +69,7 @@ router.get("/ticker/:id", async function (req, res, next) {
   // format basic company data to be ready for display
 
   // package basic company data into an object
-  let outstanding, cash;
+  let outstanding, cash, filingLinks;
   try {
     cash = await readNetCashAndEquivalents(dilution_db, id);
   } catch (e) {
@@ -82,11 +83,12 @@ router.get("/ticker/:id", async function (req, res, next) {
     console.log(e);
   }
   try{
-    filinglinks = await readFilingLinks(dilution_db, id)
+    filingLinks = await readFilingLinks(dilution_db, id)
   } catch(e) {
-    // --------------continue here
+    console.log("fucked up getting filingLinks:")
+    console.log(e)
   }
-  // console.log(outstanding) 
+  console.log(filingLinks) 
   // outstanding.append({"instant": "2022-01-01", "amount": 5000000})
   let OSChartConfig, CashPosConfig
   OSChartConfig = createOSChartconfig(outstanding);
@@ -95,7 +97,8 @@ router.get("/ticker/:id", async function (req, res, next) {
   doc = res.render("ticker", {
     company_info: company,
     OSChartConfig: OSChartConfig,
-    CashPosConfig: CashPosConfig
+    CashPosConfig: CashPosConfig,
+    filings: filingLinks
   });
   //   let p = document.createElement("p")
   //   p.append("THIS IS ADDED TO THE DOC")

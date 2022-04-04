@@ -3,15 +3,15 @@ extends layout
 
 mixin filingTableRow(form, link, desc, filedOn)
     div.d-flex-r.filingTableRow(href=link)
-        div.filingFormType form
-        div.filingDescription desc
-        div.filingFiledOn filedOn
+        div.filingTableItem.filingFormType #{form}
+        div.filingTableItem.filingDescription #{desc}
+        div.filingTableItem.filingFiledOn #{filedOn}
 
 block content 
     //- must inlcude: ticker, company_name, sector, industry, mktcap, float
     //- could include: company_description
     -let company = company_info //thead = "ticker header" object
-    -let filingsArray = filings // array of {category: "category", filings: [filings]} for secFilingTables
+    -let filingsObject = filings // obj of {category: [filings]} for secFilingTables
     script(src="/public/scripts/switchTabs.js")
     div#headerContainer.ml-1.mr-1.w-100
         .d-flex-r  
@@ -73,10 +73,10 @@ block content
             
         #filings.tabContent.inactiveTab
             #filingTablesWrapper
-                each obj in filingsArray
-                    div.filingTableWrapper
-                        div.filingTableTitle obj.category
-                        each filing in obj.filings
+                each key in Object.keys(filingsObject)
+                    div.filingTableWrapper.d-flex-c
+                        div.filingTableTitle #{key}
+                        each filing in filingsObject[key]
                             +filingTableRow(filing[0], filing[1], filing[2], filing[3])
                             
 

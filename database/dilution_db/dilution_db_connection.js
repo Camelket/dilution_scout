@@ -6,6 +6,11 @@ const sqlFile = require("./queryFileHelper.js");
 const db = pgp(dbConfig)
 const initTablesFile = sqlFile("./init_tables.sql")
 
+
+
+
+// START Testing code
+
 const clearTables = async function() {
     await db.any("DO $$ DECLARE r RECORD; BEGIN FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema()) LOOP EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE'; END LOOP; END $$;")
 }
@@ -21,5 +26,7 @@ async function testDb() {
     console.log("init tables done : dilution_db")
 }
 
-testDb()
+// testDb()
+
+// END Testing code
 module.exports = db;

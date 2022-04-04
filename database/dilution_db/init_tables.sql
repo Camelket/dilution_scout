@@ -49,7 +49,29 @@ CREATE TABLE IF NOT EXISTS outstanding_shares(
         FOREIGN KEY (company_id)
             REFERENCES companies(id),
     UNIQUE(company_id, instant)
-); 
+);
+
+CREATE TABLE IF NOT EXISTS market_cap(
+    company_id SERIAL,
+    instant DATE,
+    amount BIGINT,
+
+    CONSTRAINT fk_company_id
+        FOREIGN KEY (company_id)
+            REFERENCES companies(id),
+    UNIQUE(company_id, instant)
+);
+
+-- CREATE TABLE IF NOT EXISTS free_float(
+--     company_id SERIAL,
+--     instant DATE,
+--     amount BIGINT,
+
+--     CONSTRAINT fk_company_id
+--         FOREIGN KEY (company_id)
+--             REFERENCES companies(id),
+--     UNIQUE(company_id, instant)
+-- )
 
 CREATE TABLE IF NOT EXISTS net_cash_and_equivalents(
     company_id SERIAL,
@@ -82,7 +104,7 @@ CREATE TABLE IF NOT EXISTS cash_burn_rate(
 );
 
 CREATE TABLE IF NOT EXISTS form_types(
-    form_name VARCHAR(200) PRIMARY KEY,
+    form_type VARCHAR(200) PRIMARY KEY,
     category VARCHAR(200)
 );
 
@@ -100,7 +122,7 @@ CREATE TABLE IF NOT EXISTS filing_links(
             REFERENCES companies(id),
     CONSTRAINT fk_form_type
         FOREIGN KEY (form_type)
-            REFERENCES form_types(form_name)
+            REFERENCES form_types(form_type)
 );
 
 
@@ -119,7 +141,7 @@ CREATE TABLE IF NOT EXISTS capital_raise(
             REFERENCES companies(id),
     CONSTRAINT fk_form_type
         FOREIGN KEY (form_type)
-            REFERENCES form_types(form_name)
+            REFERENCES form_types(form_type)
 );
 
 CREATE TABLE IF NOT EXISTS underwriters(
@@ -149,7 +171,7 @@ CREATE TABLE IF NOT EXISTS shelfs(
             REFERENCES underwriters(underwriter_id),
     CONSTRAINT fk_form_type
         FOREIGN KEY (form_type)
-            REFERENCES form_types(form_name)
+            REFERENCES form_types(form_type)
 );
 
 
@@ -181,7 +203,7 @@ CREATE TABLE IF NOT EXISTS offerings(
             REFERENCES filing_status(id),
     CONSTRAINT fk_form_type
         FOREIGN KEY (inital_form_type)
-            REFERENCES form_types(form_name)
+            REFERENCES form_types(form_type)
 );
 
 

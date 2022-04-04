@@ -17,8 +17,7 @@ const {createOSChartconfig, createCPChartconfig} = require("../public/scripts/ex
 // in the template fetch data which takes to long to fetch
 // OR
 // a combination of the above
-const fakecache = getAllCompaniesIdSymbol(dilution_db);
-console.log(`fakecache: ${fakecache}`)
+let fakecache = null
 
 const fakeCompany = {
   ticker: "HYMC",
@@ -32,7 +31,12 @@ const fakeCompany = {
 };
 
 router.get("/search/ticker", async function (req, res, next) {
+  if (fakecache == null){
+    fakecache = await getAllCompaniesIdSymbol(dilution_db)
+  }
   const { tickerSearchInput } = req.query;
+  console.log(`fakecache: ${fakecache}`)
+
   if (tickerSearchInput == "") {
     // add redirect to previous page
     res.redirect("/");

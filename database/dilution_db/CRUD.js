@@ -37,11 +37,17 @@ const getCompanyIdBySymbol = async function(db, symbol) {
 const getAllCompaniesIdSymbol = async function (db) {
     let result;
     try {
-       result = await db.many("SELECT id, symbol FROM companies") 
+       result = await db.any("SELECT id, symbol FROM companies")
     } catch(e) {console.log(`func: getAllCompaniesIdSymbol with e: ${e}`)}
-    console.log(`getAllCompaniesIdSymbol result: ${result}`)
     
-    return result
+    finally{
+        console.log(`getAllCompaniesIdSymbol result: ${result}`)
+        let obj = {}
+        console.log(typeof(array))
+        for (let company in result){
+            obj[result[company]["symbol"]] = result[company]["id"]
+        }
+        return obj}
 }
 
 const readCompany = async function (db, id) {
@@ -66,7 +72,7 @@ const readOutstandingShares = async function(db, id) {
     try {   
        values = await db.any("SELECT instant, amount FROM outstanding_shares WHERE company_id = $1", [id]) 
     } catch (e) {console.log(e); return null}
-    console.log(values)
+    console.log(`OutstandingShares in readOutstandingShares call: ${values}`)
     // transform values to conform to list of object if necessary
     return values
 }
@@ -94,6 +100,7 @@ const readNetCashAndEquivalents = async function(db, id) {
     try {
        values = await db.any("SELECT instant, amount FROM net_cash_and_equivalents WHERE company_id = $1", [id]) 
     } catch (e) {console.log(e); return null}
+    console.log(`netCashAndEquivalents in readNetCashAndEquivalents call: ${values}`)
     // transform values to conform to list of object if necessary
     return values
 }

@@ -333,5 +333,20 @@ body {
     word-break: break-all;
 
   }
+
+
+  
+  .filingFormType{
+    border-left: solid 1px black;
+  }
+
+  .filingDescription{
+    border-left: solid 1px black;
+    border-right: solid 1px black;
+  }
+  .filingFiledOn{
+    border-right: solid 1px black;
+  }
+
 }
 

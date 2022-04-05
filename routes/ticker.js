@@ -36,7 +36,7 @@ router.get("/search/ticker", async function (req, res, next) {
     fakecache = await readAllCompaniesIdSymbol(dilution_db)
   }
   const { tickerSearchInput } = req.query;
-  console.log(`fakecache: ${fakecache}`)
+  // console.log(`fakecache: ${fakecache}`)
 
   if (tickerSearchInput == "") {
     // add redirect to previous page
@@ -55,9 +55,9 @@ router.get("/ticker/:id", async function (req, res, next) {
   let company;
   try {
     id = req.params.id;
-    console.log(id, fakecache); 
+    // console.log(id, fakecache); 
     company = await readCompany(dilution_db, id)
-    console.log(company)
+    // console.log(company)
   } catch (e) {
     console.log("fucked up with getting id from req.params");
     console.log(e);
@@ -72,24 +72,37 @@ router.get("/ticker/:id", async function (req, res, next) {
   let outstanding, cash, filingLinks;
   try {
     cash = await readNetCashAndEquivalents(dilution_db, id);
+    // format the date to a more human readable form
+    for (let idx in cash){
+      cash[idx]["instant"] = utils.formatStringToOnlyDate(cash[idx]["instant"])
+    }
   } catch (e) {
     console.log("fucked up getting the cash position from db");
     console.log(e);
   }
   try {
     outstanding = await readOutstandingShares(dilution_db, id);
+    // format the date to a more human readable form
+    for (let idx in outstanding){
+      outstanding[idx]["instant"] = utils.formatStringToOnlyDate(outstanding[idx]["instant"])
+    }
   } catch (e) {
     console.log("fucked up getting OShares:");
     console.log(e);
   }
   try{
     filingLinks = await readFilingLinks(dilution_db, id)
+    // format the date to a more human readable form
+    for (let key in filingLinks){
+      for (let entry in filingLinks[key]){
+        formattedDate = utils.formatStringToOnlyDate(filingLinks[key][entry][3])
+        filingLinks[key][entry][3] = formattedDate
+      }}
+    
   } catch(e) {
     console.log("fucked up getting filingLinks:")
     console.log(e)
   }
-  console.log(filingLinks) 
-  // outstanding.append({"instant": "2022-01-01", "amount": 5000000})
   let OSChartConfig, CashPosConfig
   OSChartConfig = createOSChartconfig(outstanding);
   CashPosConfig = createCPChartconfig(cash)

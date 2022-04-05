@@ -10,5 +10,10 @@ function formatNumber(num) {
     
     }
 
+function formatStringToOnlyDate(strDate){
+    d = new Date(strDate)
+    return d.getFullYear() +"-"+ ("0" + d.getMonth()).slice(-2) +"-"+ ("0" + d.getDate()).slice(-2)
+}
 
-module.exports =  {formatNumber}
+
+module.exports =  {formatNumber, formatStringToOnlyDate}

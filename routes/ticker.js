@@ -55,7 +55,7 @@ router.get("/ticker/:id", async function (req, res, next) {
   let company;
   try {
     id = req.params.id;
-    // console.log(id); 
+    console.log(id, fakecache); 
     company = await readCompany(dilution_db, id)
     console.log(company)
   } catch (e) {

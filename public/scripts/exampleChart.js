@@ -10,8 +10,8 @@ const createOSChartconfig = function(data1) {
       type: "bar",
       data: {
           datasets: [{
-          backgroundColor: "red",
-          hoverBackgroundColor: "grey",
+          backgroundColor: "grey",
+          hoverBackgroundColor: "red",
           label: "Outstanding Shares",
           data: data1,
           fill: false
@@ -51,8 +51,8 @@ const createCPChartconfig = function(data1) {
       type: "bar",
       data: {
           datasets: [{
-          backgroundColor: "blue",
-          hoverBackgroundColor: "grey",
+          backgroundColor: "grey",
+          hoverBackgroundColor: "blue",
           label: "Cash and Equivalents",
           data: data1,
           fill: false

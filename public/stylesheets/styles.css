@@ -298,7 +298,7 @@ body {
     margin-top: 1rem;
 
   }
-  .filingTabelWrapper{
+  .filingTableWrapper{
     max-width: 50%;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);

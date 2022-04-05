@@ -5,7 +5,7 @@
   // then return the dict with ready to use data for chart
 // }
 const createOSChartconfig = function(data1) {
-  console.log(`data1: ${data1}`)
+  // console.log(`data1: ${data1}`)
   const config = {
       type: "bar",
       data: {
@@ -46,7 +46,7 @@ const createOSChartconfig = function(data1) {
 
 
 const createCPChartconfig = function(data1) {
-  console.log(`data1: ${data1}`)
+  // console.log(`data1: ${data1}`)
   const config = {
       type: "bar",
       data: {

@@ -1,10 +1,12 @@
 
 :root {
-  --navbar-main-color: navy;
-  --navbar-emphasize-color: rgb(76, 99, 212);
+  --navbar-main-color: rgb(2, 2, 107);
+  --navbar-emphasize-color: rgb(61, 80, 175);
   --navbar-text-color: white;
-  --navbar-accent-color: rgb(76, 99, 212);
-  --tab-accent-color: rgb(162, 171, 212);
+  --navbar-accent-dark-color: rgb(2, 7, 58);
+  --navbar-accent-light-color: rgb(218, 222, 255);
+  --navbar-accent-light-background-color: rgb(238, 246, 253); 
+  --tab-accent-color: rgb(189, 192, 236);
 }
 
 
@@ -138,9 +140,6 @@ body {
   /* margin-block-end: 0.5rem; */
 }
 
-
-
-
 .navbarItem {
   text-decoration: none;
   padding-left: 0.5rem;
@@ -151,46 +150,6 @@ body {
 
 .navbarItem:hover {
   background-color: var(--navbar-emphasize-color, red);
-}
-
-@media (min-width:601px){
-  #mainNavbar{
-    display:flex;
-  }
-  #dropdownNav{
-    display:none;
-  }}
-
-
-@media (max-width:600px) {
-  #mainNavbar {
-    display: none;
-  }
-  
-  .dropdownNavToggle{
-    position: relative;
-    display: inline-block;
-    text-align: right;
-  }
-
-  .dropdownNavToggle:hover{
-    cursor:pointer;
-  }
-
-  .dropdownItems{
-    text-align: right;
-    align-items: center;
-    width: max-content;
-    padding: 0;
-    margin: 0;
-    display: none;
-    position: absolute;
-    right: -0.5rem;
-    top: 2rem;
-    z-index: 1;
-  }
-
-  
 }
 
 .backgroundLanding {
@@ -222,13 +181,18 @@ body {
   text-align: center;
 }
 
+.tabContent{
+  background-color: var(--navbar-accent-light-background-color, grey)
+}
+
 .tabContainer {
   overflow-x: scroll;
   border-bottom: 1px solid var(--tab-accent-color, grey);
   padding-bottom: 0.5rem;
 
-
 }
+
+
 .selectionTab{
   flex: 0 0 10vw;
   justify-content: center;
@@ -245,7 +209,7 @@ body {
 }
 
 .activeSelectionTab {
-  border-bottom: 3px solid var(--navbar-accent-color, blue);
+  border-bottom: 3px solid var(--navbar-accent-dark-color, blue);
   font-weight: 600;
 }
 .activeTab {
@@ -264,89 +228,143 @@ body {
   max-height: 20rem;
 }
 
-.chartTitle {
-  font-size: 0.95rem;
+.chartTitle, .chartDescription{
   font-weight: 400;
   opacity: 0.9;
-  color: -var(--tab-accent-color, black)
+  color: var(--navbar-accent-dark-color, black)
+}
+
+.chartTitle {
+  font-size: 1rem; 
+}
+
+.chartDescription{
+  font-size: 0.95rem;
 }
 
 
-.filingTableItem{
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+.filingTableItem, .filingHeaderItem{
+  padding: 0.5rem 0.5rem;
+  font-size: 0.9rem;
+  border: 0.5px solid black;
+  text-decoration: none;
+}
+
+
+.filingTableBodyWrapper{
+  border: 0.5px solid black;
 }
 
 .filingHeaderItem{
   justify-content: center;
   align-items: center;
   text-align: center;
+  font-size: 1.05rem;
+}
+
+
+
+.filingTableRow{
+  text-decoration: none;
+  color: black;
+  transition: background-color 0.1s;
+}
+
+.filingTableRow:hover{
+  background-color: var(--navbar-accent-light-color, grey);
+}
+
+.filingFiledOn{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+
+}
+
+.filingDescription{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filingTableTitle{
   font-weight: 600;
-  font-size: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  padding-bottom: 0.5rem;
+  /* flex: 0 0 49%; */
 }
 
-.filingHeaderContainer{
-  margin: .25rem 0.25rem;
+.filingTableRow, .filingTableHeaderRow{
+  min-width: 0; 
+  display: grid;
 }
 
+#filingTablesWrapper{
+  display: grid;
+  grid-gap: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.filingFiledOn{
+  text-align: center;
+}
 @media (min-width:601px){
-  #filingTablesWrapper{
-    display: grid;
-    grid-gap: 2rem;
-    grid-template-columns: 1fr 1fr;
-    /* flex-wrap: nowrap; */
-    margin-top: 1rem;
 
+  #mainNavbar{
+    display:flex;
   }
-  .filingTableWrapper{
-    max-width: 50%;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  #dropdownNav{
+    display:none;
   }
-  .filingTableTitle{
-    font-weight: 600;
-    text-transform: uppercase;
-    text-align: center;
-    /* flex: 0 0 49%; */
+
+
+  #filingTablesWrapper{
+    grid-template-columns: 1fr 1fr;
   }
 
   .filingTableRow, .filingTableHeaderRow{
-    min-width: 0; 
-    display: grid;
     grid-template-columns: minmax(0, 0.5fr) minmax(0, 1fr) minmax(0, 0.5fr);
   }
+}
 
-  .filingTableRow{
-    text-decoration: none;
-    color: black;
-    border: solid 1px;
+
+@media (max-width:600px) {
+  #mainNavbar {
+    display: none;
   }
-  .filingTableItem{
-    font-size: 0.9rem;
-    /* flex-basis: 33%; */
-    /* word-wrap: break-word; */
-  }
-  .filingFiledOn{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-all;
-
-  }
-
-
   
-  .filingFormType{
-    border-left: solid 1px black;
+  .dropdownNavToggle{
+    position: relative;
+    display: inline-block;
+    text-align: right;
   }
 
-  .filingDescription{
-    border-left: solid 1px black;
-    border-right: solid 1px black;
-  }
-  .filingFiledOn{
-    border-right: solid 1px black;
+  .dropdownNavToggle:hover{
+    cursor:pointer;
   }
 
+  .dropdownItems{
+    text-align: right;
+    align-items: center;
+    width: max-content;
+    padding: 0;
+    margin: 0;
+    display: none;
+    position: absolute;
+    right: -0.5rem;
+    top: 2rem;
+    z-index: 1;
+  }
+
+  #filingTablesWrapper{
+    grid-template-columns: 1fr;
+  }
+
+  .filingTableRow, .filingTableHeaderRow{
+    grid-template-columns: minmax(0, 0.5fr) minmax(0, 1fr) minmax(0, 0.5fr);
+  }
 }
 

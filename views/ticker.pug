@@ -2,7 +2,7 @@
 extends layout 
 
 mixin filingTableRow(form, link, desc, filedOn)
-    a.filingTableRow(href=link).cur-p.mt-1.mb-1
+    a.filingTableRow(href=link).cur-p
         div.filingTableItem.filingFormType #{form}
         div.filingTableItem.filingDescription #{desc}
         div.filingTableItem.filingFiledOn #{filedOn}
@@ -13,7 +13,10 @@ block content
     -let company = company_info //thead = "ticker header" object
     -let filingsObject = filings // obj of {category: [filings]} for secFilingTables
     -let cashInfo = cash_info
+
     script(src="/public/scripts/switchTabs.js")
+    
+    
     div#headerContainer.ml-1.mr-1.w-100
         .d-flex-r  
             h5#tickerHeader.ticker.mt-2.mb-1  #{company.symbol}
@@ -52,15 +55,17 @@ block content
             //- file locally for offline use
             script(src="/public/js_for_offline/chart.js")
             //- script(src="https://cdn.jsdelivr.net/npm/chart.js")
-            .d-flex-c.mt-2.ml-2
-                span.chartTitle.mr-2.cur-d Description of chart ---- add: potential dilution
-                canvas#outstandingSharesChart.ml-2.mt-1.mb-3
-            .d-flex-c.mt-1.ml-2
+            .d-flex-c.ml-1.mr-1
+                span.chartTitle.mr-2.ml-1.mt-2.cur-d Outstanding Common Shares (+ add potential dilution)
+                canvas#outstandingSharesChart.canvasChart.ml-1.mr-2.mt-1.mb-3
+            .d-flex-c.mt-1.ml-1.mr-1
                 if (cashInfo)
-                    span.chartTitle.mr-2.cur-d Company has #{cashInfo["brokeIn"]} Months of cash left. Estimated cash left: #{cashInfo["cashEstimate"]} 
+                    span.chartTitle.mr-2.ml-1.cur-d Net cash and equivalents (current)
+                    span.chartDescription.mr-2.ml-1.mt-1.mb-1.cur-d Company has #{cashInfo["brokeIn"]} Months of cash left. Estimated cash left: #{cashInfo["cashEstimate"]} 
                 else
-                    span.chartTitle.mr-2.cur-d CashBurn and Estimated Cash left is missing for this company
-                canvas#cashPositionChart.ml-2.mt-2.mt-1.mb-3
+                    span.chartTitle.mr-2.ml-1.cur-d Net cash and equivalents (current)
+                    span.chartDescription.mr-2.ml-1.mt-1.mb-1.cur-d information on how many months of cash left is missing for this company
+                canvas#cashPositionChart.canvasChart.ml-1.mr-2.mt-1.mb-3
             - let cfgOS = OSChartConfig
             - let cfgCP = CashPosConfig
             script.
@@ -79,21 +84,24 @@ block content
             #filingTablesWrapper.max-w-95vw
                 each key in Object.keys(filingsObject)
                     - let numRows = 0
-                    div.filingTableWrapper
-                        
-                        div.filingTableTitle #{key}
-                        .filingTableHeaderRow
-                            .filingHeaderItem Form 
-                            .filingHeaderItem Description
-                            .filingHeaderItem Filing Date
-                        each filing in filingsObject[key]
-                                if numRows > 10
-                                    - break
-                                else
-                                    +filingTableRow(filing[0], filing[1], filing[2], filing[3])
-                                    - numRows = numRows + 1
+
+                        div.filingTableWrapper
+                            div.filingTableTitle #{key}
+                            div.filingTableBodyWrapper
+                            
+                                .filingTableHeaderRow
+                                    .filingHeaderItem Form 
+                                    .filingHeaderItem Description
+                                    .filingHeaderItem Filing Date
+                                each filing in filingsObject[key]
+                                        if numRows > 10
+                                            - break
+                                        else
+                                            +filingTableRow(filing[0], filing[1], filing[2], filing[3])
+                                            - numRows = numRows + 1
             //- create dict with {category: [{individual_filing},...]}
             //- mixin panel with max items
+    
         
             
                 

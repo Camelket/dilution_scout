@@ -12,6 +12,7 @@ block content
     //- could include: company_description
     -let company = company_info //thead = "ticker header" object
     -let filingsObject = filings // obj of {category: [filings]} for secFilingTables
+    -let cashInfo = cash_info
     script(src="/public/scripts/switchTabs.js")
     div#headerContainer.ml-1.mr-1.w-100
         .d-flex-r  
@@ -55,7 +56,10 @@ block content
                 span.chartTitle.mr-2.cur-d Description of chart ---- add: potential dilution
                 canvas#outstandingSharesChart.ml-2.mt-1.mb-3
             .d-flex-c.mt-1.ml-2
-                span.chartTitle.mr-2.cur-d Description of chart ---- add: months till 0 cash, cashburn
+                if (cashInfo)
+                    span.chartTitle.mr-2.cur-d Company has #{cashInfo["brokeIn"]} Months of cash left. Estimated cash left: #{cashInfo["cashEstimate"]} 
+                else
+                    span.chartTitle.mr-2.cur-d CashBurn and Estimated Cash left is missing for this company
                 canvas#cashPositionChart.ml-2.mt-2.mt-1.mb-3
             - let cfgOS = OSChartConfig
             - let cfgCP = CashPosConfig

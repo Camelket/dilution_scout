@@ -2,7 +2,7 @@
 extends layout 
 
 mixin filingTableRow(form, link, desc, filedOn)
-    div.d-flex-r.filingTableRow(href=link)
+    a.filingTableRow(href=link).cur-p.mt-1.mb-1
         div.filingTableItem.filingFormType #{form}
         div.filingTableItem.filingDescription #{desc}
         div.filingTableItem.filingFiledOn #{filedOn}
@@ -72,15 +72,22 @@ block content
             //- script(src="/public/scripts/exampleChart.js")
             
         #filings.tabContent.inactiveTab
-            #filingTablesWrapper
+            #filingTablesWrapper.max-w-95vw
                 each key in Object.keys(filingsObject)
-                    div.filingTableWrapper.d-flex-c
+                    - let numRows = 0
+                    div.filingTableWrapper
+                        
                         div.filingTableTitle #{key}
+                        .filingTableHeaderRow
+                            .filingHeaderItem Form 
+                            .filingHeaderItem Description
+                            .filingHeaderItem Filing Date
                         each filing in filingsObject[key]
-                            +filingTableRow(filing[0], filing[1], filing[2], filing[3])
-                            
-
-                p FILINGS HERE
+                                if numRows > 10
+                                    - break
+                                else
+                                    +filingTableRow(filing[0], filing[1], filing[2], filing[3])
+                                    - numRows = numRows + 1
             //- create dict with {category: [{individual_filing},...]}
             //- mixin panel with max items
         

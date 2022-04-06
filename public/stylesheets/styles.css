@@ -1,5 +1,6 @@
 
 :root {
+  --main-background-color: white;
   --navbar-main-color: rgb(2, 2, 107);
   --navbar-emphasize-color: rgb(61, 80, 175);
   --navbar-text-color: white;
@@ -250,9 +251,20 @@ body {
   text-decoration: none;
 }
 
+.filingTooltipShown{
+  position: absolute;
+  background-color: var(--navbar-accent-light-background-color, grey);
+  color:var(--navbar-accent-dark-color, black);
+  border: dashed 1px var(--tab-accent-color, black);
+  border-radius: 3px;
+  max-width: 60ch;
+  padding: 0.5rem 0.5rem;
+}
+
 
 .filingTableBodyWrapper{
   border: 0.5px solid black;
+  background-color: var(--main-background-color, white);
 }
 
 .filingHeaderItem{

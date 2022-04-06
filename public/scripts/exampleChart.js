@@ -68,11 +68,11 @@ const createCPChartconfig = function(data1) {
         intersect: true
         },
       scales: {
-        xAxis: [{
+        x: [{
           display: true,
           type: "time"
         }],
-        yAxis: [{
+        y: [{
           display: true
         }]
       },

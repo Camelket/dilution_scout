@@ -10,6 +10,8 @@ const createOSChartconfig = function(data1) {
       type: "bar",
       data: {
           datasets: [{
+          xAxisID: "x",
+          yAxisID: "y",
           backgroundColor: "grey",
           hoverBackgroundColor: "red",
           label: "Outstanding Shares",
@@ -27,13 +29,12 @@ const createOSChartconfig = function(data1) {
         intersect: true
         },
       scales: {
-        xAxis: [{
-          display: true,
-          type: "time"
-        }],
-        yAxis: [{
+        x: {
           display: true
-        }]
+        },
+        y:{
+          display: true
+        }
       },
       parsing: {
         xAxisKey: 'instant',
@@ -51,6 +52,8 @@ const createCPChartconfig = function(data1) {
       type: "bar",
       data: {
           datasets: [{
+          xAxisID: "x",
+          yAxisID: "y",
           backgroundColor: "grey",
           hoverBackgroundColor: "blue",
           label: "Cash and Equivalents",
@@ -68,14 +71,16 @@ const createCPChartconfig = function(data1) {
         intersect: true
         },
       scales: {
-        xAxis: [{
-          display: true,
-          type: "time"
-        }],
-        yAxis: [{
+        x: {
           display: true
-        }]
-      },
+          // type: "time"
+        },
+        y: {
+          display: true
+          // type: "logarithmic"
+        }
+      }
+      ,
       parsing: {
         xAxisKey: 'instant',
         yAxisKey: 'amount'

@@ -13,24 +13,25 @@ block content
     -let company = company_info //thead = "ticker header" object
     -let filingsObject = filings // obj of {category: [filings]} for secFilingTables
     -let cashInfo = cash_info
+    -let burnInfo = cashBurnInfo
 
     script(src="/public/scripts/switchTabs.js")
     
     
     div#headerContainer.ml-1.mr-1.w-100
         .d-flex-r  
-            h5#tickerHeader.ticker.mt-2.mb-1  #{company.symbol}
+            h4#tickerHeader.ticker.mt-2.mb-1.opacity-8  #{company.symbol}
         .d-flex-r 
             h2#companyNameHeader.companyName.mt-1.mb-1 #{company.name}
-        .f-flex-r
+        .d-flex-r
             .d-flex-c
-                #sicInfo.mr-2
+                #sicInfo.mr-2.d-flex-r
                     div.d-inline-block.mr-2
-                        span.mr-1.opacity-8 Sector:
-                        span #{company.sector}
+                        span.headerInfo.mr-1.opacity-8 Sector:
+                        span.headerInfo #{company.sector}
                     div.d-inline-block
-                        span.mr-1.opacity-8 Industry:
-                        span #{company.industry}
+                        span.headerInfo.mr-1.opacity-8 Industry:
+                        span.headerInfo #{company.industry}
                 //- #sharesInfo.mt-2.mr-2
                 //-     div.d-inline-block.mr-2
                 //-         span.mr-1.opacity-8 Mkt Cap: 
@@ -51,55 +52,62 @@ block content
 
         //- script document.getElementById("").click();
 
-        #dilution.tabContent.activeTab
-            //- file locally for offline use
-            script(src="/public/js_for_offline/chart.js")
-            //- script(src="https://cdn.jsdelivr.net/npm/chart.js")
-            .d-flex-c.ml-1.mr-1
-                span.chartTitle.mr-2.ml-1.mt-2.cur-d Outstanding Common Shares (+ add potential dilution)
-                canvas#outstandingSharesChart.canvasChart.ml-1.mr-2.mt-1.mb-3
-            .d-flex-c.mt-1.ml-1.mr-1
-                if (cashInfo)
-                    span.chartTitle.mr-2.ml-1.cur-d Net cash and equivalents (current)
-                    span.chartDescription.mr-2.ml-1.mt-1.mb-1.cur-d Company has #{cashInfo["brokeIn"]} Months of cash left. Estimated cash left: #{cashInfo["cashEstimate"]} 
+    #dilution.tabContent.activeTab
+        script(src="https://cdn.jsdelivr.net/npm/chart.js")
+        .d-flex-c.ml-1.mr-1
+            span.chartTitle.mr-2.ml-1.mt-2.cur-d Outstanding Common Shares (+ add potential dilution)
+            div.chartContainer.mb-1.ml-1.mr-1.mt-1
+                canvas#outstandingSharesChart.canvasChart
+        .d-flex-c.mt-1.ml-1.mr-1
+            if (cashInfo)
+                span.chartTitle.mr-2.ml-1.mt-1.cur-d Net cash and equivalents
+                span.chartDescription.mr-2.ml-1.mt-1.mb-1.cur-d Company has #{cashInfo["brokeIn"]} Months of cash left. Estimated cash left: #{cashInfo["cashEstimate"]} 
+            else
+                span.chartTitle.mr-2.ml-1.mt-1.cur-d Net cash and equivalents
+                if (burnInfo)
+                    if (burnInfo["days_of_cash"] < 0)
+                        span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should have run out of cash <strong>#{burnInfo["days_of_cash"]}</strong> Days ago. Based on a cash burn of: <strong>#{burnInfo["burn_rate"]}$</strong> and last recorded net cash of: <strong>#{burnInfo["net_cash"]}$</strong> based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly. Estimated Tracking error in net cash of at least: #{burnInfo["cash_missing"]}
+                    else 
+                        span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should run out of cash in #{burnInfo["days_of_cash"]} Days. Based on a cash burn of: #{burnInfo["burn_rate"]}$ and last recorded net cash of: #{burnInfo["net_cash"]}$ based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly
                 else
-                    span.chartTitle.mr-2.ml-1.cur-d Net cash and equivalents (current)
                     span.chartDescription.mr-2.ml-1.mt-1.mb-1.cur-d information on how many months of cash left is missing for this company
-                canvas#cashPositionChart.canvasChart.ml-1.mr-2.mt-1.mb-3
-            - let cfgOS = OSChartConfig
-            - let cfgCP = CashPosConfig
-            script.
-                let ctxOS = document.getElementById('outstandingSharesChart')
-                let chartOS = new Chart(ctxOS, !{JSON.stringify(cfgOS)})
+            div.chartContainer.mb-1.ml-1.mr-1.mt-1.mb-1
+                canvas#cashPositionChart.canvasChart
 
-                let ctxCP = document.getElementById("cashPositionChart")
-                let chartCP = new Chart(ctxCP, !{JSON.stringify(CashPosConfig)})
+        script(src="/public/scripts/chartUtil.js")
+        - let outstanding_shares_data = outstandingShares
+        - let cash_position_data = cashPosition
+        script.
+            let ctxOS = document.getElementById('outstandingSharesChart')
+            let chartOS = new Chart(ctxOS, createOSChartconfig(!{JSON.stringify(outstanding_shares_data)}))
+            let ctxCP = document.getElementById("cashPositionChart")
+            let chartCP = new Chart(ctxCP, createCPChartconfig(!{JSON.stringify(cash_position_data)}))
 
-            .d-flex-c
+        .d-flex-c
 
 
-            //- script(src="/public/scripts/exampleChart.js")
-            
-        #filings.tabContent.inactiveTab
-            #filingTablesWrapper.max-w-95vw
-                each key in Object.keys(filingsObject)
-                    - let numRows = 0
+        
+        
+    #filings.tabContent.inactiveTab
+        #filingTablesWrapper
+            each key in Object.keys(filingsObject)
+                - let numRows = 0
 
-                        div.filingTableWrapper
-                            div.filingTableTitle #{key}
-                            div.filingTableBodyWrapper
-                            
-                                .filingTableHeaderRow
-                                    .filingHeaderItem Form 
-                                    .filingHeaderItem Description
-                                    .filingHeaderItem Filing Date
-                                each filing in filingsObject[key]
-                                        if numRows > 10
-                                            - break
-                                        else
-                                            +filingTableRow(filing[0], filing[1], filing[2], filing[3])
-                                            - numRows = numRows + 1
-    
+                    div.filingTableWrapper
+                        div.filingTableTitle #{key}
+                        div.filingTableBodyWrapper
+                        
+                            .filingTableHeaderRow
+                                .filingHeaderItem Form 
+                                .filingHeaderItem Description
+                                .filingHeaderItem Filing Date
+                            each filing in filingsObject[key]
+                                    if numRows > 10
+                                        - break
+                                    else
+                                        +filingTableRow(filing[0], filing[1], filing[2], filing[3])
+                                        - numRows = numRows + 1
+
     script(src="/public/scripts/filingDescriptionTooltip.js")
             //- create dict with {category: [{individual_filing},...]}
             //- mixin panel with max items

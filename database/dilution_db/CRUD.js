@@ -77,7 +77,7 @@ const readFilingLinks = async function(db, id){
     let values;
     let obj = {}
     try{
-        values = await db.any("SELECT fl.company_id as id, fl.filing_html as filing_link, fl.form_type, fl.filing_date, fl.description_ as description, fl.file_number, ft.category FROM filing_links as fl JOIN form_types as ft ON fl.form_type = ft.form_type WHERE company_id = $1",
+        values = await db.any("SELECT fl.company_id as id, fl.filing_html as filing_link, fl.form_type, fl.filing_date, fl.description_ as description, fl.file_number, ft.category FROM filing_links as fl JOIN form_types as ft ON fl.form_type = ft.form_type WHERE company_id = $1 ORDER BY fl.filing_date DESC",
         [id])
     } catch(e) {console.log(e); return null}
     for (let idx in values){
@@ -97,68 +97,20 @@ const readFilingLinks = async function(db, id){
     return obj
 }
 
-const createSIC = async function(db, sic, sector, industry) {
-    try {
-        await db.none("INSERT INTO sics(sic, sector, industry) VALUES($1, $2, $3)", [sic, sector, industry])
+const readBurnRateSummary = async function(db, id){
+    let values;
+    let obj;
+    try{
+        values = await db.any("SELECT burn_rate, burn_rate_date, net_cash, net_cash_date, days_of_cash, days_of_cash_date FROM cash_burn_summary WHERE company_id = $1",
+        [id])
     } catch(e) {console.log(e); return null}
-    return true
-    } 
+    obj = values[0]
+    return obj
+    }
 
 
-const createCompany = async function(db, cik, sic, symbol, name, description) {
-    let id;
-    try{
-    id = await db.one("INSERT INTO companies(cik, sic, symbol, name_, description_) VALUES ($1, $2, $3, $4, $5) RETURNING id",
-    [cik, sic, symbol, name, description]);
-    } catch(e) {
-        // handle sic doesnt exist 
-        console.log(e); return null}
-    return id
-}
 
-const createOutstandingShares = async function(db, id, instant, amount) {
-    try{
-        // parse str into date ?
-        await db.none("INSERT INTO outstanding_shares(company_id, instant, amount) VALUES($1, $2, $3)",
-        [id, instant, amount])
-    } catch (e) {console.log(e); return null}
-    return true;
-}
-
-const createNetCashAndEquivalents = async function(db, id, instant, amount) {
-    try{
-        // parse str into date ?
-        await db.none("INSERT INTO net_cash_and_equivalents(company_id, instant, amount) VALUES($1, $2, $3)",
-        [id, instant, amount])
-    } catch (e) {console.log(e); return null}
-    return true;
-}
-
-const createNetCashAndEquivalentsExcludingRestricedNoncurrent = async function(db, id, instant, amount) {
-    try{
-        // parse str into date ?
-        await db.none("INSERT INTO net_cash_and_equivalents_excluding_restricted_noncurrent(company_id, instant, amount) VALUES($1, $2, $3)",
-        [id, instant, amount])
-    } catch (e) {console.log(e); return null}
-    return true;
-}
- 
-const updateOutstandingShares = async function(db, id, instant, new_amount) {
-    try {
-        //  not sure about syntax here
-        await db.none("UPDATE outstanding_shares SET amount = $1 WHERE id = $2 AND instant = $3",
-        [id, new_amount, instant])
-    } catch(e) {console.log(e); return null}
-    return true;
-}
-
-
-module.exports = {
-    createSIC,
-    createCompany,
-    createNetCashAndEquivalents,
-    createNetCashAndEquivalentsExcludingRestricedNoncurrent,
-    createOutstandingShares,
+module.exports = { 
     readOutstandingShares,
     readNetCashAndEquivalents,
     readNetCashAndEquivalentsExcludingRestrictedNoncurrent,
@@ -166,5 +118,5 @@ module.exports = {
     readCompany,
     readCompanyIdBySymbol,
     readAllCompaniesIdSymbol,
-    updateOutstandingShares
+    readBurnRateSummary
 }

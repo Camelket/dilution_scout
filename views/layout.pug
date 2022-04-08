@@ -12,6 +12,7 @@ doctype html
 html
   head
     title= title
+    meta(name="viewport" content="width=device-width", initial-scale="1")
     link(rel='stylesheet', href='/public/stylesheets/styles.css')
     script(src="/public/scripts/dropdownMenuToggle.js")
       
@@ -25,7 +26,7 @@ html
               form#navbarSearchForm(action="/search/ticker", method="GET")
                 div.inputGroup.d-flex-r
                   input#tickerSearchInput.formControl(type="search", placeholder="search ticker", name="tickerSearchInput")
-                  div.inputGroupAppend
+                  div.inputGroupAppend.d-flex-r
                     button#searchButton Go
 
           ul#mainNavbar.navbarSection.d-flex-r
@@ -42,7 +43,7 @@ html
           
           div#dropdownNav.navbarSection
             div.dropdownNavToggle(onclick="toggleMenu()") Menu
-              ul#dropdownMedium.dropdownItems.d-flex-c.navbar_color
+              ul#dropdownMedium.dropdownItems.d-flex-c.navbar_color.hidden
                 each val in navbarItemsFix ? navbarItemsFix : []
                   +navbarItem(val.id, val.href, val.text)
                 if (!isAuthenticated)
@@ -52,11 +53,11 @@ html
                   each val in navbarItemsAuthenticated ? navbarItemsAuthenticated : []
                     +navbarItem(val.id, val.href, val.text)
 
-      block content
+    block content
 
-      block footer
+    block footer
 
-    script(src="/public/scripts/searchBarFunctionality.js")
+    script(src="/public/scripts/styleSearchBar.js")
 
 
   

@@ -11,7 +11,7 @@ if (!event.target.matches('.dropdownNavToggle')) {
     let items = document.getElementsByClassName("dropdownItems");
     for (let i = 0; i < items.length; i++) {
     let openDropdown = items[i];
-        if (openDropdown.classList.contains("hidden")) {
+        if (openDropdown.classList.contains("show")) {
         openDropdown.classList.toggle("hidden")
         openDropdown.classList.toggle("show")
         }

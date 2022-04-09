@@ -2,23 +2,45 @@ extends layout
 
 
 
-mixin content_panel(id_text, title, text, id_image, image_src)
+mixin content_panel_text_image(id_text, title, text, id_image, image_src)
     div.landingPanel.d-flex-r
         div(id=id_text, class="landingPanelText")
             h2(class="title") #{title}
             p(class="text") #{text}
         div(class="landingPanelImageContainer")
             image(id=id_image, src=image_src, class="landingPanelImage")
+
     
 block content
-    -let cp = content_panels
     -let lp = landing_panel
-    if (lp && cp)
+    div.belowNavbarWrapper
         div#content_wrapper.d-flex-c.navbar_color
             div.backgroundLanding.d-flex-c
                 h2#landingTitle #{lp.title_text}
                 p#landingText.description #{lp.description}
-            div#rootPanelContent.d-flex-c
-                each i in cp
-                    +content_panel(i.id_text, i.title, i.text, i.id_image, i.image_src)
-    
+            div#rootPanelContent.d-flex-c.mt-1
+                div(id=id_text, class="landingPanelText")
+                    .contentContainerLanding 
+                        .d-flex-c
+                            div.titlePanel.ml-1
+                                h5.panelTitle.mt-1.mb-1 Features so far:
+                            div#featuresText.mr-1
+                                span describing pysec downloader in a medium long text here or maybe it is longer than this
+                    h4.title Projects contained in this site:
+                    .contentContainerLanding.mb-3
+                        .gridContainerLanding.ml-1.mr-1.mt-1
+                            div.titlePanel.ml-1
+                                h5.panelTitle.mt-1.mb-1 pysec-downloader
+                            div.descriptionPanel.mr-1
+                                span.descriptionPanel describing pysec downloader in a medium long text here or maybe it is longer than this
+                        .gridContainerLanding.ml-1.mr-1.mt-1
+                            iv.titlePanel.ml-1
+                                h5.panelTitle.mt-1.mb-1 pysec-downloader
+                            div.descriptionPanel.mr-1
+                                span.descriptionPanel describing pysec downloader in a medium long text here or maybe it is longer than this 
+                        .gridContainerLanding.ml-1.mr-1.mt-1
+                            iv.titlePanel.ml-1
+                                h5.panelTitle.mt-1.mb-1 pysec-downloader
+                            div.descriptionPanel.mr-1
+                                span.descriptionPanel describing pysec downloader in a medium long text here or maybe it is longer than this 
+                        

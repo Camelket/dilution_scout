@@ -17,40 +17,40 @@ block content
 
     script(src="/public/scripts/switchTabs.js")
     
-    
-    div#headerContainer.ml-1.mr-1.w-100
-        .d-flex-r  
-            h4#tickerHeader.ticker.mt-2.mb-1.opacity-8  #{company.symbol}
-        .d-flex-r 
-            h2#companyNameHeader.companyName.mt-1.mb-1 #{company.name}
-        .d-flex-r
-            .d-flex-c
-                #sicInfo.mr-2.d-flex-r
-                    div.d-inline-block.mr-2
-                        span.headerInfo.mr-1.opacity-8 Sector:
-                        span.headerInfo #{company.sector}
-                    div.d-inline-block
-                        span.headerInfo.mr-1.opacity-8 Industry:
-                        span.headerInfo #{company.industry}
-                //- #sharesInfo.mt-2.mr-2
-                //-     div.d-inline-block.mr-2
-                //-         span.mr-1.opacity-8 Mkt Cap: 
-                //-         span #{company.mktcap}
-                //-     div.d-inline-block.mr-2
-                //-         span.mr-1.opacity-8 Float:
-                //-         span #{company.float}
-                #companyDescription.mt-1.mr-2
-                    div.opacity-8.ch80 #{company.description}
-        .tabContainer.d-flex-r.mt-3.max-w-95vw.hide-scrollbar
-            .selectionTab.cur-p.activeSelectionTab(onClick="openTab(event, 'dilution')") Dilution
-            .selectionTab.cur-p(onClick="openTab(event, 'filings')") Filings 
-        
-        //- maybe include the tabs as separat pug files
-        //- on certain conditions so i can first load a dummy site
-        //- until all the data is ready, if this gives improved
-        //- user experience
+    div.belowNavbarWrapper
+        div#headerContainer.ml-1.mr-1.w-100
+            .d-flex-r  
+                h4#tickerHeader.ticker.mt-2.mb-1.opacity-8  #{company.symbol}
+            .d-flex-r 
+                h2#companyNameHeader.companyName.mt-1.mb-1 #{company.name}
+            .d-flex-r
+                .d-flex-c
+                    #sicInfo.mr-2.d-flex-r
+                        div.d-inline-block.mr-2
+                            span.headerInfo.mr-1.opacity-8 Sector:
+                            span.headerInfo #{company.sector}
+                        div.d-inline-block
+                            span.headerInfo.mr-1.opacity-8 Industry:
+                            span.headerInfo #{company.industry}
+                    //- #sharesInfo.mt-2.mr-2
+                    //-     div.d-inline-block.mr-2
+                    //-         span.mr-1.opacity-8 Mkt Cap: 
+                    //-         span #{company.mktcap}
+                    //-     div.d-inline-block.mr-2
+                    //-         span.mr-1.opacity-8 Float:
+                    //-         span #{company.float}
+                    #companyDescription.mt-1.mr-2
+                        div.opacity-8.ch80 #{company.description}
+            .tabContainer.d-flex-r.mt-3.max-w-95vw.hide-scrollbar
+                .selectionTab.cur-p.activeSelectionTab(onClick="openTab(event, 'dilution')") Dilution
+                .selectionTab.cur-p(onClick="openTab(event, 'filings')") Filings 
+            
+            //- maybe include the tabs as separat pug files
+            //- on certain conditions so i can first load a dummy site
+            //- until all the data is ready, if this gives improved
+            //- user experience
 
-        //- script document.getElementById("").click();
+            //- script document.getElementById("").click();
 
     #dilution.tabContent.activeTab
         script(src="https://cdn.jsdelivr.net/npm/chart.js")

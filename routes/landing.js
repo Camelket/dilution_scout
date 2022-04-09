@@ -4,7 +4,7 @@ const router = express.Router();
 const landingPanel = {
   src: "/backgrounds/cardboard-tetris.jpg",
   title_text: "Welcome to DilutionScout!",
-  description: "Free and transparant dilution tracking.",
+  description: "(WIP) Attempting Free and transparant dilution tracking.",
 };
 const contentPanel = [
   {
@@ -22,5 +22,6 @@ router.get("/landing", function (req, res, next) {
     landing_panel: landingPanel,
   });
 });
+
 
 module.exports = router;

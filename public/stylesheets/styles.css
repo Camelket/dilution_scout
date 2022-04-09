@@ -1,17 +1,87 @@
 html { 
   font: calc(1em + 1vw) "Lucida Grande", Helvetica, Arial, sans-serif;
-  line-height: 1.25;
+  line-height: 1.15;
 }
 :root {
   --main-background-color: white;
-  --navbar-main-color: rgb(2, 2, 107);
+  --navbar-main-color: rgb(3, 3, 65);
   --navbar-emphasize-color: rgb(61, 80, 175);
   --navbar-text-color: white;
-  --navbar-accent-dark-color: rgb(2, 7, 58);
+  --navbar-accent-dark-color: rgb(3, 6, 37);
   --navbar-accent-light-color: rgb(218, 222, 255);
   --navbar-accent-light-background-color: rgb(238, 246, 253); 
   --tab-accent-color: rgb(189, 192, 236);
 }
+
+.belowNavbarWrapper{
+  padding-top: 2rem!important;
+}
+/* start landing */
+
+.gridContainerLanding {
+  display: grid;
+  grid-template-columns: 0.5fr 1.5fr;
+  grid-template-rows: auto;
+  align-items: center;
+  border: solid 1px var(--navbar-accent-dark-color);
+  border-radius: 4px;
+  color: var(--navbar-accent-dark-color);
+  background-color: var(--tab-accent-color);
+
+}
+
+
+.backgroundLanding {
+  /* background: url("/public/backgrounds/cardboard-tetris.jpg") left bottom; */
+  background-size: cover;
+  display: flex;
+  align-items: center;
+}
+
+#landingTitle, .landingText {
+  text-align: center;
+}
+
+#landingText{
+  margin: 0.5rem 0.5rem;
+  font-size: medium;
+  text-align: center;
+}
+
+#landingTitle{
+  margin-bottom: 0.5rem;
+}
+
+.contentContainerLanding{
+  margin-left: calc(0.2rem + 5vw);
+  margin-right: calc(0.2rem + 5vw);
+}
+
+#featuresText{
+  text-align:left;
+
+}
+
+.descriptionPanel, #featuresText{
+  font-size: small;
+}
+
+.landingPanel, .landingPanelImageContainer {
+  flex-basis: 50%;
+}
+
+.landingPanelImage {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.landingPanelText{
+  align-items: right;
+  text-align: center;
+}
+
+
+/* end landing */
 
 
 
@@ -168,38 +238,11 @@ h2{
 
 
 
-.backgroundLanding {
-  /* background: url("/public/backgrounds/cardboard-tetris.jpg") left bottom; */
-  background-size: cover;
-  display: flex;
-  align-items: center;
-}
-
-.landingTitle, .landingText {
-  text-align: center;
-}
-/* .landingPanel {
-  width: 100%;
-  height: minmax(0, 3rem);
-} */
-.landingPanel, .landingPanelText, .landingPanelImageContainer {
-  flex-basis: 50%;
-}
-
-.landingPanelImage {
-  max-width: 90%;
-  max-height: 90%;
-}
 
 
-.landingPanelText{
-  align-items: right;
-  text-align: center;
-}
-
-#headerContainer{
+/* #headerContainer{
   padding-top: 3rem!important;
-}
+} */
 
 .headerInfo, #sicInfo{
   font-size: small;

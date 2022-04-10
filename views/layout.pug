@@ -6,7 +6,10 @@
 //-   a(class=["navbarItem", "navbar_color"] id=id href=href) #{text}
 
 mixin navbarItem(id, href, text)
-  li.navbarItem: a(class=["navbarItem",  "navbar_color"] id=id href=href) #{text}
+  a(class=["navbarItem",  "navbar_color"] id=id href=href) #{text}
+
+mixin dropdownItem(id, href, text)
+  a(class=["dropdownItem",  "navbar_color"] id=id href=href) #{text}
 
 doctype html
 html
@@ -44,23 +47,23 @@ html
           div#dropdownNav.navbarSection
             
             
-            div
-              //- div.dropdownNavToggle(onclick="toggleMenu()") Menu
-              svg.dropdownNavToggle(onclick="toggleMenu()" width="36px", height="30px", version="1.1", xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink")
-                rect.hamburgerMenu(y="7" x="3" width="30" height="7")
-                rect.hamburgerMenu(y="15" x="3" width="30" height="7")
-                rect.hamburgerMenu(y="23" x="3" width="30" height="7")
+            
+            button.dropdownNavToggle.inputGroup(onclick="toggleMenu()")
+              svg#hamburger_all(width="1.2rem", height="1rem", version="1.1", xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink")
+                rect.hamburgerMenu.hamburger_top(x="10%" y="20%" width="80%" height="5%")
+                rect.hamburgerMenu.hamburger_mid(x="10%" y="50%" width="80%" height="5%")
+                rect.hamburgerMenu.hamburger_bot(x="10%" y="80%" width="80%" height="5%")
             
             
-              ul#dropdownMedium.dropdownItems.d-flex-c.navbar_color.hidden
-                each val in navbarItemsFix ? navbarItemsFix : []
-                  +navbarItem(val.id, val.href, val.text)
-                if (!isAuthenticated)
-                  each val in navbarItemsNotAuthenticated ? navbarItemsNotAuthenticated : []
-                    +navbarItem(val.id, val.href, val.text)
-                else if (isAuthenticated)
-                  each val in navbarItemsAuthenticated ? navbarItemsAuthenticated : []
-                    +navbarItem(val.id, val.href, val.text)
+            ul#dropdownMedium.dropdownItems.d-flex-c.navbar_color.hidden
+              each val in navbarItemsFix ? navbarItemsFix : []
+                +dropdownItem(val.id, val.href, val.text)
+              if (!isAuthenticated)
+                each val in navbarItemsNotAuthenticated ? navbarItemsNotAuthenticated : []
+                  +dropdownItem(val.id, val.href, val.text)
+              else if (isAuthenticated)
+                each val in navbarItemsAuthenticated ? navbarItemsAuthenticated : []
+                  +dropdownItem(val.id, val.href, val.text)
 
     block content
 

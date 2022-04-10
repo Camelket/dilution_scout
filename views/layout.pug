@@ -42,7 +42,16 @@ html
                 +navbarItem(val.id, val.href, val.text)
           
           div#dropdownNav.navbarSection
-            div.dropdownNavToggle(onclick="toggleMenu()") Menu
+            
+            
+            div
+              //- div.dropdownNavToggle(onclick="toggleMenu()") Menu
+              svg.dropdownNavToggle(onclick="toggleMenu()" width="36px", height="30px", version="1.1", xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink")
+                rect.hamburgerMenu(y="7" x="3" width="30" height="7")
+                rect.hamburgerMenu(y="15" x="3" width="30" height="7")
+                rect.hamburgerMenu(y="23" x="3" width="30" height="7")
+            
+            
               ul#dropdownMedium.dropdownItems.d-flex-c.navbar_color.hidden
                 each val in navbarItemsFix ? navbarItemsFix : []
                   +navbarItem(val.id, val.href, val.text)

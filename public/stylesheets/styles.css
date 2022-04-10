@@ -52,15 +52,21 @@ html {
   margin-bottom: 0.5rem;
 }
 
-.contentContainerLanding{
+.contentContainerLanding {
   margin-left: calc(0.2rem + 5vw);
   margin-right: calc(0.2rem + 5vw);
 }
 
-#featuresText{
+#featuresText , .featureTitle{
   text-align:left;
-
+  margin-left: calc(0.5rem + 5vw)
 }
+
+.featureTitle {
+  margin-bottom: 0.5rem;
+  margin-top: 2rem!important;
+}
+
 
 .descriptionPanel, #featuresText{
   font-size: small;
@@ -80,6 +86,12 @@ html {
   text-align: center;
 }
 
+.hamburgerMenu{
+  fill: var(--navbar-text-color, white);
+  height: 0.1rem;
+  align-items: center;
+  justify-items: center;
+}
 
 /* end landing */
 
@@ -240,9 +252,9 @@ h2{
 
 
 
-/* #headerContainer{
-  padding-top: 3rem!important;
-} */
+#headerContainer{
+  margin-top: 2rem!important;
+}
 
 .headerInfo, #sicInfo{
   font-size: small;
@@ -451,6 +463,17 @@ h2{
     position: relative;
     display: inline-block;
     text-align: right;
+    border-bottom: var(--navbar-main-color, navy) solid 2px;
+    border-top: var(--navbar-main-color, navy) solid 2px;
+    transform: border-bottom 0.3s linear;
+    padding: 0.15em 0.15em;
+  }
+
+  .dropdownNavToggle:hover {
+    border-bottom: var(--navbar-accent-dark-color, grey) solid 2px;
+    border-top: var(--navbar-accent-dark-color, grey) solid 2px;
+    
+    border-radius: 4px;
   }
 
   .dropdownNavToggle:hover{
@@ -465,8 +488,9 @@ h2{
     margin: 0;
     position: absolute;
     right: -0.5rem;
-    top: 2rem;
+    top: 3.5rem;
     z-index: 1;
+    border-radius: 4px;
   }
 
   #filingTablesWrapper{

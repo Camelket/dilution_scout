@@ -10,9 +10,16 @@ mixin content_panel_text_image(id_text, title, text, id_image, image_src)
         div(class="landingPanelImageContainer")
             image(id=id_image, src=image_src, class="landingPanelImage")
 
+mixin feature_panel(feature, description)
+    div
+        h5.featureTitle.mt-1 #{feature}
+    div#featuresText.mt-1
+        span.featureDescription #{description}
+
     
 block content
     -let lp = landing_panel
+    -let cp = content_panel
     div.belowNavbarWrapper
         div#content_wrapper.d-flex-c.navbar_color
             div.backgroundLanding.d-flex-c
@@ -22,10 +29,8 @@ block content
                 div(id=id_text, class="landingPanelText")
                     .contentContainerLanding 
                         .d-flex-c
-                            div.titlePanel.ml-1
-                                h5.panelTitle.mt-1.mb-1 Features so far:
-                            div#featuresText.mr-1
-                                span describing pysec downloader in a medium long text here or maybe it is longer than this
+                            each val, key in cp["features"]
+                                +feature_panel(key, val)
                     h4.title Projects contained in this site:
                     .contentContainerLanding.mb-3
                         .gridContainerLanding.ml-1.mr-1.mt-1

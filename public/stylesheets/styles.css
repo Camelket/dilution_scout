@@ -18,6 +18,15 @@ html {
 }
 /* start landing */
 
+.featuresGrid {
+  display: grid;
+  grid-template-columns: 0.3fr 0.7fr;
+  margin-left: calc(0.5rem + 5vw);
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.25rem;
+  border-bottom: solid 1px var(--navbar-text-color)
+}
+
 .gridContainerLanding {
   display: grid;
   grid-template-columns: 0.5fr 1.5fr;
@@ -57,18 +66,22 @@ html {
   margin-right: calc(0.2rem + 5vw);
 }
 
-#featuresText , .featureTitle{
+#featureText , .featureTitle{
   text-align:left;
-  margin-left: calc(0.5rem + 5vw)
 }
 
+#featureText {
+  max-width: 80ch;
+  word-break: break-all;
+}
 .featureTitle {
-  margin-bottom: 0.5rem;
-  margin-top: 2rem!important;
+  /* margin-top: 1rem; */
+  margin-right: 0.5rem;
+  font-size: 0.83rem;
 }
 
 
-.descriptionPanel, #featuresText{
+.descriptionPanel, #featureText{
   font-size: small;
 }
 
@@ -470,6 +483,10 @@ h2{
     border: none;
     position: relative;
     display: inline-block;    
+    display: inline-block;
+    text-align: right;
+    border: var(--navbar-main-color, navy) solid 2px;
+    transform: 0.3s linear;
     padding: 0.15em 0.15em;
     border-radius: 4px;
     
@@ -482,10 +499,16 @@ h2{
   #hamburger-bot{
     transform: translateY(40%);
   }
+  
+  .dropdownNavToggle:hover {
+    border: var(--navbar-accent-dark-color, grey) solid 2px;
+    border-radius: 4px;
+  }
 
   .dropdownNavToggle:hover{
     cursor:pointer;
   }
+
 
   .dropdownItems{
     text-align: right;

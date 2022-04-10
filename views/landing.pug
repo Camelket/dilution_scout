@@ -11,10 +11,9 @@ mixin content_panel_text_image(id_text, title, text, id_image, image_src)
             image(id=id_image, src=image_src, class="landingPanelImage")
 
 mixin feature_panel(feature, description)
-    div
-        h5.featureTitle.mt-1 #{feature}
-    div#featuresText.mt-1
-        span.featureDescription #{description}
+    div.featuresGrid
+        .featureTitle #{feature}
+        div#featureText #{description}
 
     
 block content
@@ -35,17 +34,20 @@ block content
                     .contentContainerLanding.mb-3
                         .gridContainerLanding.ml-1.mr-1.mt-1
                             div.titlePanel.ml-1
-                                h5.panelTitle.mt-1.mb-1 pysec-downloader
+                                h5.panelTitle.mt-1.mb-1 dilution-scout
                             div.descriptionPanel.mr-1
-                                span.descriptionPanel describing pysec downloader in a medium long text here or maybe it is longer than this
+                                span.descriptionPanel The Frontend of the website with PUG, JavaScript and CSS and the express server as backend.
+                                a(href="https://github.com/Camelket/dilution_scout") Github for more info.
                         .gridContainerLanding.ml-1.mr-1.mt-1
                             iv.titlePanel.ml-1
                                 h5.panelTitle.mt-1.mb-1 pysec-downloader
                             div.descriptionPanel.mr-1
-                                span.descriptionPanel describing pysec downloader in a medium long text here or maybe it is longer than this 
+                                span.descriptionPanel Started out wanting to parse the XBRL myself and didnt find a sec edgar downloader which had the features I wanted, written in Python. Most filing types supported, most of the xbrl api wrapped, creates an index of the downloaded files for each company. pretty bare bones so far, no tests. First pypi package.
+                                a(href="https://github.com/Camelket/pysec_downloader") Github for more info.
                         .gridContainerLanding.ml-1.mr-1.mt-1
                             iv.titlePanel.ml-1
-                                h5.panelTitle.mt-1.mb-1 pysec-downloader
+                                h5.panelTitle.mt-1.mb-1 sec-scraping
                             div.descriptionPanel.mr-1
-                                span.descriptionPanel describing pysec downloader in a medium long text here or maybe it is longer than this 
+                                span.descriptionPanel Does the data accumulation and processing which feeds the database of dilution-scout, written in Python. The Database is PostgreSQL. Can be used on its own as a starting point for your own stock database. Most information is directly from the SEC website/archives.
+                                a(href="https://github.com/Camelket/sec_scraping") Github for more info.
                         

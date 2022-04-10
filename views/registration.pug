@@ -1,16 +1,21 @@
 extends layout
 
 block content
-	h1 Registration
-	div(id="registrationDiv")
-		form(id="registrationForm", action="/register", method="post")
-			label(for="userEmail") Email:
-			input(id="userEmail", name="userEmail", type="email")
-			label(for="userPassword") Password:
-			input(id="userPassword", name="userPassword", type="password")
-			input(id="passwordSubmit", type="submit")
+    div#registration
+        div.belowNavbarWrapper
+            .registrationWrapper
+                .registrationBox
+                    form(id="registrationForm", action="/register", method="post")
+                        .fieldContainer
+                            label(for="userEmail")
+                            input(id="userEmail", name="userEmail", type="email", placeholder="Email Address", required)
+                        .fieldContainer
+                            label(for="userPassword")
+                            input(id="userPassword", name="userPassword", type="password", placeholder="Password", required)
+                        .fieldContainer
+                            input(id="passwordSubmit", type="submit", value="Register")
 
-	div(id="registrationRedirectDiv")
-		a(id="loginRedirect", href="/login") Already a User? Log in instead
+                        .fieldContainer
+                            a(id="loginRedirect", href="/login") Already a User? Log in instead
 
-	script(src="../public/registrationValidation.js")
+    script(src="../public/registrationValidation.js")

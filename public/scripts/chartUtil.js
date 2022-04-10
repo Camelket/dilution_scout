@@ -55,7 +55,7 @@ const createOSChartconfig = function(data1) {
           xAxisID: "x",
           yAxisID: "y",
           backgroundColor: "grey",
-          hoverBackgroundColor: "red",
+          hoverBackgroundColor: "blue",
           label: "Outstanding Shares",
           data: data1,
           fill: false

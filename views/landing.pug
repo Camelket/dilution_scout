@@ -26,28 +26,37 @@ block content
                 p#landingText.description #{lp.description}
             div#rootPanelContent.d-flex-c.mt-1
                 div(id=id_text, class="landingPanelText")
-                    .contentContainerLanding 
+                    .transitionPadding
+                    .contentContainerLanding
+                        div.titlePanel.ml-1
+                            h4.title.mt-1 Usage:
+                        div.descriptionPanel.usage Search for a company by its symbol/ticker ex: "CEI" (no double quotes). Support for search by CIK and company name is planned, but not a priority. Currently supported Tickers are limited, since parsing of sec filings is still a WIP.
+                    .transitionPadding
+                    .contentContainerLanding
+                        h4.title Features:
                         .d-flex-c
                             each val, key in cp["features"]
                                 +feature_panel(key, val)
-                    h4.title Projects contained in this site:
-                    .contentContainerLanding.mb-3
-                        .gridContainerLanding.ml-1.mr-1.mt-1
-                            div.titlePanel.ml-1
-                                h5.panelTitle.mt-1.mb-1 dilution-scout
-                            div.descriptionPanel.mr-1
-                                span.descriptionPanel The Frontend of the website with PUG, JavaScript and CSS and the express server as backend.
-                                a(href="https://github.com/Camelket/dilution_scout") Github for more info.
-                        .gridContainerLanding.ml-1.mr-1.mt-1
-                            iv.titlePanel.ml-1
-                                h5.panelTitle.mt-1.mb-1 pysec-downloader
-                            div.descriptionPanel.mr-1
-                                span.descriptionPanel Started out wanting to parse the XBRL myself and didnt find a sec edgar downloader which had the features I wanted, written in Python. Most filing types supported, most of the xbrl api wrapped, creates an index of the downloaded files for each company. pretty bare bones so far, no tests. First pypi package.
-                                a(href="https://github.com/Camelket/pysec_downloader") Github for more info.
-                        .gridContainerLanding.ml-1.mr-1.mt-1
-                            iv.titlePanel.ml-1
-                                h5.panelTitle.mt-1.mb-1 sec-scraping
-                            div.descriptionPanel.mr-1
-                                span.descriptionPanel Does the data accumulation and processing which feeds the database of dilution-scout, written in Python. The Database is PostgreSQL. Can be used on its own as a starting point for your own stock database. Most information is directly from the SEC website/archives.
-                                a(href="https://github.com/Camelket/sec_scraping") Github for more info.
-                        
+                    .transitionPadding
+                    .contentContainerLanding
+                        h4.title Projects contained in this site:
+                        .gridContainerLandingAllItemsProject
+                            .gridContainerLandingSingleItem
+                                div.titlePanel.ml-1
+                                    h5.panelTitle.mt-1.mb-1 dilution-scout
+                                div.descriptionPanel
+                                    span.descriptionPanel The code of this website. Frontend: JavasScript, PUG and CSS. Backend: node.js with express.
+                                    a(href="https://github.com/Camelket/dilution_scout") Github
+                            .gridContainerLandingSingleItem
+                                iv.titlePanel.ml-1
+                                    h5.panelTitle.mt-1.mb-1 pysec-downloader
+                                div.descriptionPanel
+                                    span.descriptionPanel Downloader for the SEC website, written in Python. Most filing types supported, most of the xbrl api wrapped, creates an index of the downloaded files for each company. First pypi package.
+                                    a(href="https://github.com/Camelket/pysec_downloader") Github
+                            .gridContainerLandingSingleItem
+                                iv.titlePanel.ml-1
+                                    h5.panelTitle.mt-1.mb-1 sec-scraping
+                                div.descriptionPanel
+                                    span.descriptionPanel Does the data accumulation and processing which feeds the database of dilution-scout, written in Python. The Database is PostgreSQL. Most data used is directly from the SEC website/archives.
+                                    a(href="https://github.com/Camelket/sec_scraping") Github
+                    .transitionPadding

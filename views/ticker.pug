@@ -2,10 +2,10 @@
 extends layout 
 
 mixin filingTableRow(form, link, desc, filedOn)
-    a.filingTableRow(href=link).cur-p
-        div.filingTableItem.filingFormType #{form}
-        div.filingTableItem.filingDescription #{desc}
-        div.filingTableItem.filingFiledOn #{filedOn}
+        a.filingTableRow(href=link).cur-p
+            div.filingTableItem.filingFormType #{form}
+            div.filingTableItem.filingDescription #{desc}
+            div.filingTableItem.filingFiledOn #{filedOn}
 
 block content 
     //- must inlcude: ticker, company_name, sector, industry, mktcap, float
@@ -108,6 +108,7 @@ block content
                                         - numRows = numRows + 1
 
     script(src="/public/scripts/filingDescriptionTooltip.js")
+    script(src="/public/scripts/rowHover.js")
             //- create dict with {category: [{individual_filing},...]}
             //- mixin panel with max items
     

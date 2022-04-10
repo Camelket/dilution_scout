@@ -2,19 +2,23 @@ extends layout
 
 
 block content
-  h1= title
-  form(id="userPasswordLogin", action="/login/authenticatePasswordUser", method="post")
-    label(for="userEmail") Email:
-    input(id="userEmail", name="userEmail", type="email")
-    label(for="userPassword") Password:
-    input(id="userPassword", name="userPassword", type="password")
-    input(id="passwordSubmit", type="submit")
+  div#login
+    div.belowNavbarWrapper
+      .loginWrapper
+        .loginBox
+          form(id="userPasswordLogin", action="/login/authenticatePasswordUser", method="post")
+            .fieldContainer
+              label(for="userEmail")
+              input(id="userEmail", name="userEmail", type="email", placeholder="Email Address", required)
+              span
+            .fieldContainer
+              label(for="userPassword")
+              input(id="userPassword", name="userPassword", type="password", placeholder="Password", required)
+            .fieldContainer
+              input(id="passwordSubmit", type="submit", value="Login")
 
-
-  div(id=socialLogins)
-    ul(id="socialLoginList")
-      li: a(id="googleLogin", href="login/federated/google") Log in with Google
-
+            .fieldContainer
+              a.socialLogin(id="googleLogin", href="login/federated/google") Log in with Google instead
 
 
 

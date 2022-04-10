@@ -3,13 +3,12 @@ function toggleMenu() {
     //- https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_js_dropdown
     menu = document.getElementById("dropdownMedium").classList
     menu.toggle("hidden")
+    let burger = document.getElementById("hamburger_all")
+    burger.classList.toggle("is-open");
 
-    let burger = document.getElementById("hamburger_all").classList
-    if (!burger.contains("is_open")) {
-        burger.add("is_open") 
-    } else {
-        burger.toggle("is_open")
-    }
+    // let burger = document.getElementById("hamburger_all").classList
+    // burger.toggle("is_open")
+    // }
     // menu.toggle("show")
 }
 

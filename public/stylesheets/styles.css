@@ -5,6 +5,7 @@ html {
 :root {
   --main-background-color: white;
   --navbar-main-color: rgb(3, 3, 65);
+  --navbar-bright-accent: rgb(255, 119, 0);
   --navbar-emphasize-color: rgb(61, 80, 175);
   --navbar-text-color: white;
   --navbar-accent-dark-color: rgb(3, 6, 37);
@@ -21,25 +22,6 @@ html {
   padding-top: 2.19rem!important;
 }
 
-#footerWrapper{
-  width: 100%;
-  color: var(--navbar-text-color);
-  background-color: var(--navbar-main-color);
-  font-size: 0.65rem;
-}
-
-.footerGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 1rem;
-  padding: 0.5rem 0.75rem;
-  text-align: center;
-}
-
-.discordLink {
-  text-decoration: None;
-  color: inherit;
-}
 
 /* START landing */
 .featuresGrid {
@@ -266,14 +248,58 @@ h2{
   display: none;
 }
 
+/* START footer */
+#footerWrapper{
+  width: 100%;
+  color: var(--navbar-text-color);
+  background-color: var(--navbar-main-color);
+  font-size: 0.65rem;
+}
 
+.footerTop {
+  height: 8px;
+  width: 100%;
+  background-color: var(--navbar-bright-accent);
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+}
+
+.discordLink {
+  text-decoration: None;
+  color: inherit;
+}
+/* END footer */
+
+/* START navbar */
 .navbar_color {
   background: var(--navbar-main-color, navy);
   color:var(--navbar-text-color, white);
 }
 
+.companyLabel {
+  min-width: 45px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  /* content: url("/public/images/companyLogo_placeholder.svg"); */
+}
+
+.companyLogoPath {
+  fill: rgb(208, 216, 253);
+}
+
+.companyLogoText {
+  fill: rgb(206, 200, 255);
+}
 .navbarSection {
-  margin: 0rem 0.5rem;
+  margin: 0.5rem 0.5rem;
 }
 
 #navbarWrapper {
@@ -284,11 +310,14 @@ h2{
   top: 0;
   right: 0;
   height: 2.2rem;
-  /* justify-items: stretch; */
 }
 
+#tickerSearchInput {
+  margin-left: auto;
+}
 #tickerSearchBar, #tickerSearchInput {
   flex-grow: 1;
+  max-width: 500px; 
 }
 
 .navbarSection {
@@ -319,9 +348,7 @@ h2{
 .navbarItem {
   font-size: calc(0.35em + 1vw);
 }
-
-
-
+/* END navbar */
 
 
 #headerContainer{
@@ -606,9 +633,9 @@ input[type=email]:focus {
     padding-left: 0.5rem;
   }
 
-  .belowNavbarWrapper{
+  /* .belowNavbarWrapper{
     padding-top: 2.99rem!important;
-  }
+  } */
 
   #navbarWrapper{
     height: 3rem;

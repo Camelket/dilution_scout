@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-if (process.env.NODE_ENV == "production") {
+if (process.env.NODE_ENV == "prod") {
 	const host = "165.22.25.96"
 	const user = "app_user"
 	const password = process.env.USERS_DB_PASSWORD
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV == "production") {
 	module.exports = config;
 }
 
-if (process.env.NODE_ENV !== "dev"){
+if (process.env.NODE_ENV !== "prod"){
 	const host = "localhost"
 	const user = "postgres"
 	const password = "admin"

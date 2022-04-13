@@ -17,7 +17,7 @@ if (process.env.NODE_ENV == "production") {
 	module.exports = config;
 }
 
-if (process.env.NODE_ENV !== "production"){
+if (process.env.NODE_ENV !== "dev"){
 	const host = "localhost"
 	const user = "postgres"
 	const password = "admin"

@@ -1,6 +1,10 @@
 require("dotenv").config();
 
+
 if (process.env.NODE_ENV == "prod") {
+	if (process.env.DILUTION_DB_PASSWORD == "undefined"){
+		console.log("you have to set a password to access the dilution_db!!!")
+		};
 	const host = "165.22.25.96"
 	const user = "app_user"
 	const password = process.env.DILUTION_DB_PASSWORD

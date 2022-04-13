@@ -1,5 +1,5 @@
 require("dotenv").config()
-
+console.log(process.env)
 if (process.env.NODE_ENV == "prod") {
   const app = require("./app");
   const http = require("http");

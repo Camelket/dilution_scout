@@ -46,7 +46,7 @@ const readCompany = async function (db, id) {
 const readOutstandingShares = async function(db, id) {
     let values;
     try {   
-       values = await db.any("SELECT instant, amount FROM outstanding_shares WHERE company_id = $1", [id]) 
+       values = await db.any("SELECT instant, amount FROM outstanding_shares WHERE company_id = $1 ORDER BY instant DESC", [id]) 
     } catch (e) {console.log(e); return null}
     console.log(`OutstandingShares in readOutstandingShares call: ${values}`)
     // transform values to conform to list of object if necessary
@@ -56,7 +56,7 @@ const readOutstandingShares = async function(db, id) {
 const readNetCashAndEquivalents = async function(db, id) {
     let values;
     try {
-       values = await db.any("SELECT instant, amount FROM net_cash_and_equivalents WHERE company_id = $1", [id]) 
+       values = await db.any("SELECT instant, amount FROM net_cash_and_equivalents WHERE company_id = $1 ORDER BY instant DESC", [id]) 
     } catch (e) {console.log(e); return null}
     console.log(`netCashAndEquivalents in readNetCashAndEquivalents call: ${values}`)
     // transform values to conform to list of object if necessary

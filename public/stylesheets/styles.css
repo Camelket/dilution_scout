@@ -274,7 +274,7 @@ h2{
 .footerSection {
   margin-bottom: 0.2rem;
   margin-top: 0.2rem;
-  list-style-type: "\203A \0020";
+  list-style-type: "\0020";
 }
 
 .footerHeader {
@@ -312,8 +312,8 @@ h2{
 
 .companyLabel {
   min-width: 45px;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin-left: 1em;
+  margin-right: 1em;
   margin-top: 5px;
   margin-bottom: 5px;
 }
@@ -638,6 +638,10 @@ input[type=email]:focus {
   content: url("/public/images/btn_google_signin_light_focus_web.png");
 }
 
+#gogoleLogin:active {
+  content: url("/public/images/btn_google_signin_light_pressed_web.png")
+}
+
 /* END login */
 .canvasChart {
   max-height: 40vh;
@@ -786,12 +790,12 @@ input[type=email]:focus {
 
   .footerSection {
     margin-block-start: 0.5rem;
-    padding-inline-start: 30px;
+    padding-inline-start: 10px;
   }
   
 }
 
-@media (max-width:450px){
+@media (max-width:359px){
   .footerGrid {
     display: flex;
     flex-direction: column;

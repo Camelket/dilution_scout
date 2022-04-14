@@ -627,6 +627,11 @@ input[type=email]:focus {
   align-self: left;
   content: url("/public/images/btn_google_signin_light_normal_web.png");
   transition: content 0.1s linear;
+  width:70%;
+  height:70%;
+  margin-top: 0.5em;
+  border-top:var(--navbar-main-color, navy) 1px solid;
+  border-bottom:var(--navbar-main-color,navy) 1px solid;
 }
 
 #googleLogin:hover {

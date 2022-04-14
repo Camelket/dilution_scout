@@ -1,13 +1,14 @@
 html { 
   font: calc(1em + 1vw) "Lucida Grande", Helvetica, Arial, sans-serif;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 :root {
   --main-background-color: white;
   --navbar-main-color: rgb(3, 3, 65);
   --navbar-bright-accent: rgb(255, 119, 0);
+  --navbar-bright-desaturated-accent: rgb(206, 112, 29);
   --navbar-emphasize-color: rgb(61, 80, 175);
-  --navbar-text-color: white;
+  --navbar-text-color: rgb(240, 240, 240);
   --navbar-accent-dark-color: rgb(3, 6, 37);
   --navbar-accent-light-color: rgb(218, 222, 255);
   --navbar-accent-light-background-color: rgb(238, 246, 253); 
@@ -265,14 +266,41 @@ h2{
 .footerGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 1rem;
+  gap: 0.5rem 1rem;
   padding: 0.5rem 0.75rem;
   text-align: center;
 }
 
+.footerSection {
+  margin-bottom: 0.2rem;
+  margin-top: 0.2rem;
+  list-style-type: "\203A \0020";
+}
+
+.footerHeader {
+  display: block;
+  padding-bottom: 0.1em;
+  margin-bottom: 0.3em;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  text-align: left;
+  min-width: max-content;
+  max-width: 4rem;
+  border-bottom: var(--navbar-bright-desaturated-accent, white) 2px groove;
+}
+
+
+
+.footerEntry { 
+  text-decoration-line: none;
+  display: list-item;
+  text-align: left;
+  margin: 0.1em 0 0.1em 0;
+  color: var(--tab-accent-color)
+}
+
 .discordLink {
   text-decoration: None;
-  color: inherit;
 }
 /* END footer */
 
@@ -284,11 +312,10 @@ h2{
 
 .companyLabel {
   min-width: 45px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 1rem;
+  margin-right: 1rem;
   margin-top: 5px;
   margin-bottom: 5px;
-  /* content: url("/public/images/companyLogo_placeholder.svg"); */
 }
 
 .companyLogoPath {
@@ -597,6 +624,10 @@ input[type=email]:focus {
 }
 
 /* END login */
+.canvasChart {
+  max-height: 40vh;
+  max-width: 90vh;
+}
 
 @media (min-width: 1000px){
   html{
@@ -622,6 +653,8 @@ input[type=email]:focus {
     display:none;
   }
 }
+
+
 
 
 @media (max-width:800px) {
@@ -728,7 +761,34 @@ input[type=email]:focus {
     min-width: 100vw;
   }
 
+  .footerEntry, .dropdownItem {
+    line-height: 1.5;
+  }
+
+  .footerGrid {
+    padding: 0.3rem 0.5rem;
+  }
+
+  .footerSection {
+    margin-block-start: 0.5rem;
+    padding-inline-start: 30px;
+  }
   
+}
+
+@media (max-width:450px){
+  .footerGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .footerSection {
+    flex-basis: 100%;
+    margin-block-start: 0.5rem;
+    padding-inline-start: 30px;
+  }
 
   
 }

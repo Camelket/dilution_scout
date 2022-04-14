@@ -23,22 +23,22 @@ function formatStringToOnlyDate(value){
  
 const resizeChart = function (chart, newSize) {
   if (newSize["width"] < 600) {
-    chart.config.options["aspectRatio"] = 0.9
+    chart.config.options["aspectRatio"] = 0.8
     chart.update()
     return
   }
   if (700 < newSize["width"] < 850 ) {
-    chart.config.options["aspectRatio"] = 1.2
+    chart.config.options["aspectRatio"] = 1.4
     chart.update()
     return
   }
   if (850 < newSize["width"] < 1000) {
-    chart.config.options["aspectRatio"] = 1.7
+    chart.config.options["aspectRatio"] = 1.8
     chart.update()
     return
   }
   if (1000 < newSize["width"] < 1600) {
-    chart.config.options["aspectRatio"] = 2
+    chart.config.options["aspectRatio"] = 2.1
     chart.update()
     return
   }

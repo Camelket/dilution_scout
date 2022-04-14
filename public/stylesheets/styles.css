@@ -618,11 +618,20 @@ input[type=email]:focus {
   display: block;
   width: 100%;
 }
-.socialLogin , #loginRedirect{
+#loginRedirect{
   margin-top: 0.5rem;
   font-size: medium;
 }
 
+#googleLogin {
+  align-self: left;
+  content: url("/public/images/btn_google_signin_light_normal_web.png");
+  transition: content 0.1s linear;
+}
+
+#googleLogin:hover {
+  content: url("/public/images/btn_google_signin_light_focus_web.png");
+}
 
 /* END login */
 .canvasChart {

@@ -10,6 +10,7 @@ const loginRouter = require("./routes/login");
 const registrationRouter = require("./routes/register");
 const landingRouter = require("./routes/landing");
 const tickerRouter = require("./routes/ticker");
+const legaleseRouter = require("./routes/legalese");
 
 // test db's; replace with database_connections and create/populate databases beforehand through a separat script
 const usersDb = require("./database/users_db/database_connection")
@@ -58,6 +59,7 @@ app.use("/", loginRouter);
 app.use("/", registrationRouter);
 app.use("/", landingRouter);
 app.use("/", tickerRouter);
+app.use("/", legaleseRouter);
 
 //debug
 app.use("/", require("./routes/sessionInfo"))

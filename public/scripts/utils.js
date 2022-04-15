@@ -11,8 +11,8 @@ function formatNumber(num) {
     }
 
 function formatStringToOnlyDate(strDate){
-    d = new Date(strDate)
-    return d.getFullYear() +"-"+ ("0" + d.getMonth()).slice(-2) +"-"+ ("0" + d.getDate()).slice(-2)
+    d = new Date(new Date(strDate).toUTCString())
+    return d.getFullYear() +"-"+ ("0" + (d.getMonth() + 1)).slice(-2) +"-"+ ("0" + d.getDate()).slice(-2)
 }
 
 

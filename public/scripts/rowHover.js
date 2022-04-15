@@ -25,9 +25,41 @@
                 }
             }
             })
+        } 
+    })();
+
+
+(function () {
+    let items = document.getElementsByClassName("indexedTickersTableRow")
+    for (let i=0; i < items.length; i++){
+        let item = items[i]
+        item.addEventListener("mouseenter", function(){
+            let rowItems = item.childNodes
+            for (let i=0; i < rowItems.length; i++){
+                let rowItem = rowItems[i]
+                if (rowItem.classList.contains("indexedTickersTableItem")){
+                    // toggle the class that holds the transition declaration then
+                    // toggle the class that holds the new property value to be transitioned into
+                    rowItem.classList.toggle("hoverRowSetup")
+                    rowItem.classList.toggle("hoverRowActivator")
+                }
+            }
+            })
+        
+        item.addEventListener("mouseleave", function() {
+            let rowItems = item.childNodes
+            for (let i=0; i < rowItems.length; i++){
+                let rowItem = rowItems[i]
+                if (rowItem.classList.contains("indexedTickersTableItem")){
+                    rowItem.classList.toggle("hoverRowSetup")
+                    rowItem.classList.toggle("hoverRowActivator")
+                }
+            }
+            })
         }
     
-    })()
+    })();
+
 
 
 // css

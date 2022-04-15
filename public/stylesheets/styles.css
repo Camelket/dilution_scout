@@ -13,7 +13,7 @@ html {
   --navbar-accent-light-color: rgb(218, 222, 255);
   --navbar-accent-light-background-color: rgb(238, 246, 253); 
   --tab-accent-color: rgb(189, 192, 236);
-  --landing-panel-background: rgb(236, 237, 240);
+  --landing-panel-background: rgb(255, 255, 255);
   --landing-panel-text: rgb(20, 20, 20);
   --landing-panel-accent: rgba(222, 222, 228, 0.849);
   --landing-panel-transition: var(--landing-panel-accent);
@@ -21,6 +21,7 @@ html {
 
 .belowNavbarWrapper{
   padding-top: 2.19rem!important;
+  background-color: var(--landing-panel-background, white);
 }
 
 
@@ -136,7 +137,6 @@ html {
 }
 
 .landingPanelText{
-  align-items: right;
   text-align: center;
   background-color: var(--landing-panel-background, white);
   color: var(--landing-panel-text, black);
@@ -167,6 +167,13 @@ body {
   display:inline-block;
   flex-wrap: wrap;
   /* flex-basis: 50%; */
+}
+
+.flexCenterWrapperColumn {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 h4{
@@ -458,8 +465,8 @@ h2{
 }
 /* END charts */
 
-/* START filing Tab */
-.filingTableItem, .filingHeaderItem{
+/* START filing Tab, indexedTickers Page */
+.filingTableItem, .filingHeaderItem, .indexedTickersTableItem{
   padding: 0.4rem 0.4rem;
   font-size: 0.7rem;
   border: 0.5px solid black;
@@ -477,7 +484,7 @@ h2{
 }
 
 
-.filingTableBodyWrapper{
+.filingTableBodyWrapper, .indexedTickersTableBodyWraper{
   border: 0.5px solid black;
   background-color: var(--main-background-color, white);
 }
@@ -495,13 +502,13 @@ h2{
 } */
 
 
-.filingTableRow{
+.filingTableRow, .indexedTickersTableRow{
   text-decoration: none;
   color: black;
   transition: color 0.3s linear;
 }
 
-.filingTableRow:visited{
+.filingTableRow:visited, .indexedTickersTableRow:visited{
   color: rgba(135, 135, 138, 0.432);
 }
 
@@ -527,7 +534,7 @@ h2{
   white-space: nowrap;
 }
 
-.filingTableTitle{
+.filingTableTitle, .indexedTickersTableTitle{
   font-weight: 600;
   /* text-transform: uppercase; */
   text-align: center;
@@ -535,12 +542,12 @@ h2{
   /* flex: 0 0 49%; */
 }
 
-.filingTableRow, .filingTableHeaderRow{
+.filingTableRow, .filingTableHeaderRow, .indexedTickersTableRow, .indexedTickersTableHeaderRow{
   min-width: 0; 
   display: grid;
 }
 
-#filingTablesWrapper{
+#filingTablesWrapper, .indexedTickersWrapper{
   display: grid;
   grid-gap: 1rem;
   padding-top: 1rem;
@@ -548,7 +555,7 @@ h2{
   grid-template-columns: 1fr;
 }
 
-.filingTableWrapper{
+.filingTableWrapper, .indexedTickersTableWrapper{
   margin-left: 0.5em;
   margin-right: 0.5em;
   max-width: content;
@@ -558,6 +565,20 @@ h2{
   grid-template-columns: minmax(0, 0.45fr) minmax(0, 0.95fr) minmax(0, 0.6fr);
 }
 
+.indexedTickersTableRow, .indexedTickersTableHeaderRow {
+  grid-template-columns: 1fr 1fr;
+}
+
+.indexedTickersTableRow, .indexedTickersTableHeaderRow, .indexedTickersTableBodyWraper{
+  max-width: 600px;
+}
+
+.indexedTickersTableWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .filingFiledOn{
   text-align: center;
 }
@@ -565,7 +586,26 @@ h2{
 .filingFormType{
   white-space: nowrap;
 }
-/* END filing Tab */
+/* END filing Tab, indexedTickers Page */
+
+/* START tickerNotFound */
+.tickerNotFoundBox {
+  display: inline-block;
+  border: solid 5px var(--navbar-main-color, grey);
+  background-color: var(--landing-panel-accent);
+  border-radius: 10px;
+  padding: 5vw 5vw 5vw 5vw;
+  margin: 5vw 5vw;
+  font-size: medium;
+}
+
+.tickerNotFoundBox .emphasized, .tickerNotFoundBox .redirect {
+  display: block;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+}
+/* END tickerNotFound */
 
 /* START login */
 

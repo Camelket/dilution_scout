@@ -33,13 +33,32 @@ router.get("/search/ticker", async function (req, res, next) {
     res.redirect("/");
   }
   if (tickerSearchInput.toUpperCase() in testCache) {
-    url = "/ticker/" + testCache[tickerSearchInput.toUpperCase()];
+    url = "/ticker/" + testCache[tickerSearchInput.toUpperCase()]["id"];
     res.redirect(url);
   } else {
+    let url = "/tickerNotFound/" + tickerSearchInput;
+    res.redirect(url)
     // add ticker not found styling and text box to bar or redirect to not tracked page
     return;
   }
 });
+
+router.get("/tickerNotFound/:input", async function(req, res, next) {
+  if (testCache == null){
+    testCache = await readAllCompaniesIdSymbol(dilution_db)
+  }
+  let input = req.params.input
+  res.render("tickerNotFound", {cache: testCache, user_input: input})
+});
+
+
+router.get("/indexedTickers", async function(req, res, next) {
+  if (testCache == null){
+    testCache = await readAllCompaniesIdSymbol(dilution_db)
+  }
+  res.render("indexedTickers", {cache: testCache})
+})
+
 router.get("/ticker/:id", async function (req, res, next) {
   let id;
   let company;

@@ -1,8 +1,8 @@
 module.exports = {
     proxy: "localhost:8000",
-    files: ["**/*.css", "**/*.pug", "**/*.js"],
+    files: ["public/stylesheets/*.css", "views/*.pug", "**/*.js"],
     ignore: ["node_modules"],
-    reloadDelay: 10,
+    reloadDelay: 6,
     ui: false,
     notify: false,
     port: 3000,

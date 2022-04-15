@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const landingPanel = {
-  src: "/backgrounds/cardboard-tetris.jpg",
+  src: "",
   title_text: "Welcome to DilutionScout!",
   description: "(WIP) Attempting Free and transparant dilution tracking.",
 };
@@ -13,9 +13,12 @@ const contentPanel = {
                            10-K and 10-Q filings.`,
     "Cash Position": `net cash and equivalents based on 10-K and 10-Q filings,
                       excluding noncurrent equivalents.`,
-    "Filing Links": `Chronological and categorised Filings with direct links to the main document`,
-    "Cash Burn": `Cash burn and days to no cash base on 10-K and 10-Q filings and the Cash Position`,
-    "User Accounts": `Working password and email or Google login. No user features yet`
+    "Filing Links": `Chronological and categorised recent Filings with direct links to the main document`,
+    "Cash Burn": `Cash burn (operating) and days to no cash based on 10-K and 10-Q filings 
+                  and the Cash Position`,
+    "User Accounts": `Working password and email or Google login (only test users).
+                      No user features yet, so I hid the login.
+                      Can still be accessed under: www.dilutionscout.com/login and www.dilutionscout.com/register`
   }}
 
 

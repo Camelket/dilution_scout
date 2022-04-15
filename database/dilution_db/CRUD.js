@@ -20,7 +20,7 @@ const readCompanyIdBySymbol = async function(db, symbol) {
 const readAllCompaniesIdSymbol = async function (db) {
     let result;
     try {
-       result = await db.any("SELECT id, symbol FROM companies")
+       result = await db.any("SELECT id, symbol, name_ as name FROM companies")
     } catch(e) {console.log(`func: getAllCompaniesIdSymbol with e: ${e}`)}
     
     finally{
@@ -28,7 +28,7 @@ const readAllCompaniesIdSymbol = async function (db) {
         let obj = {}
         console.log(typeof(array))
         for (let company in result){
-            obj[result[company]["symbol"]] = result[company]["id"]
+            obj[result[company]["symbol"]] = {"id" : result[company]["id"], "name": result[company]["name"]}
         }
         return obj}
 }

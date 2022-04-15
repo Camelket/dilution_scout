@@ -1,0 +1,21 @@
+extends layout 
+
+block content
+    -let tickerCache = cache 
+
+    div.belowNavbarWrapper
+        div.transitionPadding
+        div.indexedTickersWrapper
+            div.indexedTickersTableWrapper
+                div.indexedTickersTableTitle Currently tracked tickers
+                div.indexedTickersTableBodyWraper
+                    .indexedTickersTableHeaderRow
+                        .indexedTickersTableItem.indexedTickersHeaderItem Symbol
+                        .indexedTickersTableItem.indexedTickersHeaderItem Company name
+                    each entry, key in tickerCache
+                        -let url = "/ticker/" + entry["id"]
+                        a.indexedTickersTableRow(href=url).cur-p
+                            div.indexedTickersTableItem.tickerSymbol #{key}
+                            div.indexedTickersTableItem.tickerName #{entry["name"]}
+
+        script(src="/public/scripts/rowHover.js")

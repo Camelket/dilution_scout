@@ -1,0 +1,15 @@
+extends layout 
+
+block content
+    -let userInput = user_input
+    -let tickerCache = cache 
+
+    div.belowNavbarWrapper
+        div.transitionPadding
+        .flexCenterWrapperColumn
+            .tickerNotFoundBox
+                div
+                    span Couldnt find an indexed Ticker matching the search input: 
+                    span.emphasized #{userInput}
+                    p: a.redirect(href="/indexedTickers") See a list of all Indexed Tickers
+

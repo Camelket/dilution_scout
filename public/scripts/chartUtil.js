@@ -7,7 +7,7 @@
 
 function formatNumberY(num) {
     if (num == "0"){return num}
-    if (num.length == 13){return num.slice(0, 4) + " M"}
+    if (num.length == 13){return num.slice(0, 4) + " B"}
     if (num.length == 11){return num.slice(0, 3) + " M"}
     if (num.length == 10){return num.slice(0, 2) + " M"}
     if (num.length == 9) {return num.slice(0, 1) + " M"}

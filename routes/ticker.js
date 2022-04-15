@@ -11,6 +11,8 @@ const {
   readAllCompaniesIdSymbol,
   readBurnRateSummary
 } = require("../database/dilution_db/CRUD.js");
+const MemoryCache = require("../utility/memoryCache.js")
+
 // make calls to db to get the info
 // and feed info into render call
 // OR
@@ -18,13 +20,17 @@ const {
 // in the template fetch data which takes to long to fetch
 // OR
 // a combination of the above
-let testCache = null
 
+
+
+let getAllCompaniesIdSymbolForCache = async function() {
+  return await readAllCompaniesIdSymbol(dilution_db)
+}
+
+let testCache = new MemoryCache(getAllCompaniesIdSymbolForCache, 2)
 
 router.get("/search/ticker", async function (req, res, next) {
-  if (testCache == null){
-    testCache = await readAllCompaniesIdSymbol(dilution_db)
-  }
+  cachedTickers = await testCache.getData()
   const { tickerSearchInput } = req.query;
   // console.log(`testCache: ${testCache}`)
 
@@ -32,8 +38,8 @@ router.get("/search/ticker", async function (req, res, next) {
     // add redirect to previous page
     res.redirect("/");
   }
-  if (tickerSearchInput.toUpperCase() in testCache) {
-    url = "/ticker/" + testCache[tickerSearchInput.toUpperCase()]["id"];
+  if (tickerSearchInput.toUpperCase() in cachedTickers) {
+    url = "/ticker/" + cachedTickers[tickerSearchInput.toUpperCase()]["id"];
     res.redirect(url);
   } else {
     let url = "/tickerNotFound/" + tickerSearchInput;
@@ -44,19 +50,15 @@ router.get("/search/ticker", async function (req, res, next) {
 });
 
 router.get("/tickerNotFound/:input", async function(req, res, next) {
-  if (testCache == null){
-    testCache = await readAllCompaniesIdSymbol(dilution_db)
-  }
+  cachedTickers = await testCache.getData()
   let input = req.params.input
-  res.render("tickerNotFound", {cache: testCache, user_input: input})
+  res.render("tickerNotFound", {cache: cachedTickers, user_input: input})
 });
 
 
 router.get("/indexedTickers", async function(req, res, next) {
-  if (testCache == null){
-    testCache = await readAllCompaniesIdSymbol(dilution_db)
-  }
-  res.render("indexedTickers", {cache: testCache})
+  cachedTickers = await testCache.getData()
+  res.render("indexedTickers", {cache: cachedTickers})
 })
 
 router.get("/ticker/:id", async function (req, res, next) {

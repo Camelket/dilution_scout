@@ -62,8 +62,11 @@ block content
             if (burnInfo)
                 if (burnInfo["days_of_cash"] < 0)
                     span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should have run out of cash <strong>#{burnInfo["days_of_cash"]}</strong> Days ago. Based on a cash burn of: <strong>#{burnInfo["burn_rate"]}$</strong>/Day and last recorded net cash of: <strong>#{burnInfo["net_cash"]}$</strong>, based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly. Estimated Tracking error in net cash of at least: #{burnInfo["cash_missing"]}.
-                else 
-                    span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should not run out of cash. Based on a cash gain of: <strong>#{burnInfo["burn_rate"]}$</strong>/Day and last recorded net cash of: <strong>#{burnInfo["net_cash"]}$</strong>, based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly.
+                else
+                    if burnInfo["days_of_cash"] == "infinity" 
+                        span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should not run out of cash. Based on a cash gain of: <strong>#{burnInfo["burn_rate"]}$</strong>/Day and last recorded net cash of: <strong>#{burnInfo["net_cash"]}$</strong>, based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly.
+                    else 
+                        span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should run out of cash in <strong>#{burnInfo["days_of_cash"]}</strong> Days. Based on a cash burn of: <strong>#{burnInfo["burn_rate"]}$</strong>/Day and last recorded net cash of: <strong>#{burnInfo["net_cash"]}$</strong>, based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly.
             else
                 span.chartDescription.mr-2.ml-1.mt-1.mb-1.cur-d information on cash burn is missing for this company.
             div.chartContainer.mb-1.ml-1.mr-1.mt-1.mb-1

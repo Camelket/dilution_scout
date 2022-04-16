@@ -96,7 +96,6 @@ router.post("/login/authenticatePasswordUser", async function(req, res, next) {
 		console.log(err)}
 /*	console.log(allowed, timeframe, tries)
 */	if (allowed == true) {
-		// ????? why is the strategy not running at all ?????
 		passport.authenticate("local", {failureRedirect: "/login", failureMessage: true})(req, res, next)
 		}
 	if (allowed == false) {

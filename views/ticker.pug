@@ -54,22 +54,18 @@ block content
     #dilution.tabContent.activeTab
         script(src="https://cdn.jsdelivr.net/npm/chart.js")
         .d-flex-c.ml-1.mr-1
-            span.chartTitle.mr-2.ml-1.mt-2.cur-d Outstanding Common Shares (+ add potential dilution)
+            span.chartTitle.mr-2.ml-1.mt-2.cur-d Outstanding Common Shares
             div.chartContainer.mb-1.ml-1.mr-1.mt-1
                 canvas#outstandingSharesChart.canvasChart
         .d-flex-c.mt-1.ml-1.mr-1
-            if (cashInfo)
-                span.chartTitle.mr-2.ml-1.mt-1.cur-d Net cash and equivalents
-                span.chartDescription.mr-2.ml-1.mt-1.mb-1.cur-d Company has #{cashInfo["brokeIn"]} Months of cash left. Estimated cash left: #{cashInfo["cashEstimate"]} 
+            span.chartTitle.mr-2.ml-1.mt-1.cur-d Net cash and equivalents
+            if (burnInfo)
+                if (burnInfo["days_of_cash"] < 0)
+                    span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should have run out of cash <strong>#{burnInfo["days_of_cash"]}</strong> Days ago. Based on a cash burn of: <strong>#{burnInfo["burn_rate"]}$</strong>/Day and last recorded net cash of: <strong>#{burnInfo["net_cash"]}$</strong>, based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly. Estimated Tracking error in net cash of at least: #{burnInfo["cash_missing"]}.
+                else 
+                    span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should run out of cash in #{burnInfo["days_of_cash"]} Days. Based on a cash burn of: <strong>#{burnInfo["burn_rate"]}$</strong>/Day and last recorded net cash of: #{burnInfo["net_cash"]}$, based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly.
             else
-                span.chartTitle.mr-2.ml-1.mt-1.cur-d Net cash and equivalents
-                if (burnInfo)
-                    if (burnInfo["days_of_cash"] < 0)
-                        span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should have run out of cash <strong>#{burnInfo["days_of_cash"]}</strong> Days ago. Based on a cash burn of: <strong>#{burnInfo["burn_rate"]}$</strong> and last recorded net cash of: <strong>#{burnInfo["net_cash"]}$</strong> based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly. Estimated Tracking error in net cash of at least: #{burnInfo["cash_missing"]}
-                    else 
-                        span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should run out of cash in #{burnInfo["days_of_cash"]} Days. Based on a cash burn of: #{burnInfo["burn_rate"]}$ and last recorded net cash of: #{burnInfo["net_cash"]}$ based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly
-                else
-                    span.chartDescription.mr-2.ml-1.mt-1.mb-1.cur-d information on how many months of cash left is missing for this company
+                span.chartDescription.mr-2.ml-1.mt-1.mb-1.cur-d information on cash burn is missing for this company.
             div.chartContainer.mb-1.ml-1.mr-1.mt-1.mb-1
                 canvas#cashPositionChart.canvasChart
 

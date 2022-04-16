@@ -115,7 +115,7 @@ router.get("/ticker/:id", async function (req, res, next) {
   try{
     cashBurnInfo = await readBurnRateSummary(dilution_db, id)
     cashBurnInfo["cash_missing"] = utils.formatNumber((cashBurnInfo["days_of_cash"])*cashBurnInfo["burn_rate"])
-    cashBurnInfo["burn_rate"] = cashBurnInfo["burn_rate"].toFixed(0)
+    cashBurnInfo["burn_rate"] = utils.formatNumber(cashBurnInfo["burn_rate"].toFixed(0))
     cashBurnInfo["burn_rate_date"] = utils.formatStringToOnlyDate(cashBurnInfo["burn_rate_date"])
     cashBurnInfo["net_cash_date"] = utils.formatStringToOnlyDate(cashBurnInfo["net_cash_date"])
     cashBurnInfo["net_cash"] = utils.formatNumber(cashBurnInfo["net_cash"])

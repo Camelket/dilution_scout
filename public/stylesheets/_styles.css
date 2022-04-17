@@ -324,7 +324,7 @@ h2{
   margin-right: auto;
   margin-top: 5px;
   margin-bottom: 5px;
-  padding-inline-end: 30px;
+  padding-inline-end: 1rem;
   max-height: 90%;
 }
 
@@ -351,14 +351,20 @@ h2{
   flex-wrap: nowrap;
 }
 
+#tickerSearchBar, #tickerSearchInput {
+  flex-grow: 1;
+  background-color: inherit;
+  /* max-width: ;  */
+}
+
 #tickerSearchInput {
   margin-left: auto;
   margin-right: auto;
+  background-color: var(--navbar-text-color, white);
+  color: var(--navbar-main-color, black)
 }
-#tickerSearchBar, #tickerSearchInput {
-  flex-grow: 1;
-  /* max-width: ;  */
-}
+
+
 
 /* #tickerSearchBar {
   margin-left: auto;
@@ -728,7 +734,7 @@ input[type=email]:focus {
 @media (max-width: 1000px) {
   .companyLabel {
     margin-inline-start: 20px;
-    margin-inline-end: 10px;
+    /* margin-inline-end: 10px; */
   }
   #navbarWrapper{
     height: 3rem;
@@ -740,7 +746,7 @@ input[type=email]:focus {
 
   #dropdownNav{
     display: block;
-    margin-inline-end: 30px;
+    margin-inline-end: 20px;
   }
   
   .dropdownNavToggle{
@@ -852,30 +858,32 @@ input[type=email]:focus {
   }
 
   .companyLabel {
-    margin-inline-start: 10px;
-    padding-inline-end: 10px;
+    margin-inline-start: 20px;
+    /* padding-inline-end: 1px; */
   }
   
 }
 
-@media (max-width: 400px) {
+@media (max-width: 380px) {
   .companyLabel {
-    padding-inline-end: 5px;
-    margin-inline-start: 10px;
+    margin-inline-start: 15px;
+    padding-inline-start: 0.5rem;
+    padding-inline-end: 0.5rem;
+  }
+
+  #dropdownNav {
+    margin-inline-end: 15px;
+  }
+  #navbarWrapper{
+    flex-wrap: wrap;
   }
   
-  .navbarSection {
-    padding: 0 0;
-    margin: 0.1rem 0.1rem;
-    margin-left: 0.15em;
-  }
-
-  .inputGroupAppend{
-    order: 0;
-  }
-
-  #tickerSearchInput{
+  #tickerSearchBar{
     order:1;
+  }
+
+  .belowNavbarWrapper{
+    padding-top: 4rem;
   }
 }
 

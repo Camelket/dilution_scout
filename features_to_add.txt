@@ -1,0 +1,2 @@
+- page that shows companies running out of cash in the next x-days (100 would be a good number)
+- in the filings tab: 8-k description reflecting containing items

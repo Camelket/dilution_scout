@@ -869,6 +869,14 @@ input[type=email]:focus {
     margin: 0.1rem 0.1rem;
     margin-left: 0.15em;
   }
+
+  .inputGroupAppend{
+    order: 0;
+  }
+
+  #tickerSearchInput{
+    order:1;
+  }
 }
 
 @media (max-width:359px){

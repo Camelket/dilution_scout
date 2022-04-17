@@ -865,6 +865,12 @@ input[type=email]:focus {
 }
 
 @media (max-width: 380px) {
+
+  .belowNavbarWrapper{
+    padding-top: 4.8rem!important;
+  }
+
+
   .companyLabel {
     margin-inline-start: 15px;
     padding-inline-start: 0.5rem;
@@ -882,9 +888,7 @@ input[type=email]:focus {
     order:1;
   }
 
-  .belowNavbarWrapper{
-    padding-top: 4rem;
-  }
+  
 }
 
 @media (max-width:359px){

@@ -347,6 +347,8 @@ h2{
   top: 0;
   right: 0;
   height: 2.2rem;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 #tickerSearchInput {
@@ -854,6 +856,18 @@ input[type=email]:focus {
     padding-inline-end: 10px;
   }
   
+}
+
+@media (max-width: 400px) {
+  .companyLabel {
+    padding-inline-end: 5px;
+    margin-inline-start: 10px;
+  }
+  
+  .navbarSection {
+    padding: 0 0;
+    margin: 0.1rem 0.1rem;
+  }
 }
 
 @media (max-width:359px){

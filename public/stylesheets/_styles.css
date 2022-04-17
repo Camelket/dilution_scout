@@ -327,6 +327,10 @@ h2{
   padding-inline-end: 30px;
 }
 
+.companyLogo {
+  width: 100%;
+  height: 100%;
+}
 .companyLogoPath {
   fill: rgb(208, 216, 253);
 }

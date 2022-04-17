@@ -809,6 +809,7 @@ input[type=email]:focus {
   
   .navbarSection, #navbarSearchForm, .inputGroup {
     min-height: 1.5rem;
+    border: solid 1px orange;
   }
 }
 

@@ -336,7 +336,8 @@ h2{
   fill: rgb(206, 200, 255);
 }
 .navbarSection {
-  padding: 0.5rem 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 #navbarWrapper {

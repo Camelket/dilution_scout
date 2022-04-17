@@ -340,13 +340,6 @@ h2{
 .companyLogo {
   width: 100%;
   height: 100%;
-  border: dashed 1px greenyellow;
-}
-
-.companyLabel {
-  width: 100%;
-  height: 100%;
-  border: solid 1px green;
 }
 .companyLogoPath {
   fill: rgb(208, 216, 253);
@@ -356,7 +349,7 @@ h2{
   fill: rgb(206, 200, 255);
 }
 .navbarSection {
-  padding: 0.5rem 0.5rem;
+  margin: 0.5rem 0.5rem;
 }
 
 #navbarWrapper {

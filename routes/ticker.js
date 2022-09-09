@@ -61,10 +61,6 @@ router.get("/indexedTickers", async function(req, res, next) {
   res.render("indexedTickers", {cache: cachedTickers})
 })
 
-router.get("/getAllTickers", async function(req, res, next) {
-  result = await getAllCompaniesIdSymbolForCache()
-  res.send(result)
-})
 
 router.get("/ticker/:id", async function (req, res, next) {
   let id;
@@ -75,7 +71,7 @@ router.get("/ticker/:id", async function (req, res, next) {
     company = await readCompany(dilution_db, id)
     // console.log(company)
   } catch (e) {
-    console.log("fucked up with getting id from req.params");
+    console.log("messed up with getting id from req.params");
     console.log(e);
   }
   // fetch basic company data for "theader" here
@@ -90,7 +86,7 @@ router.get("/ticker/:id", async function (req, res, next) {
     cash = await readNetCashAndEquivalents(dilution_db, id);
     // format the date to a more human readable form
   } catch (e) {
-    console.log("fucked up getting the cash position from db");
+    console.log("messed up getting the cash position from db");
     console.log(e);
   }
   try {
@@ -100,7 +96,7 @@ router.get("/ticker/:id", async function (req, res, next) {
       outstanding[idx]["instant"] = utils.formatStringToOnlyDate(outstanding[idx]["instant"])
     }
   } catch (e) {
-    console.log("fucked up getting OShares:");
+    console.log("messed up getting OShares:");
     console.log(e);
   }
   try{
@@ -113,7 +109,7 @@ router.get("/ticker/:id", async function (req, res, next) {
       }}
     
   } catch(e) {
-    console.log("fucked up getting filingLinks:")
+    console.log("messed up getting filingLinks:")
     console.log(e)
   }
   
@@ -127,7 +123,7 @@ router.get("/ticker/:id", async function (req, res, next) {
     
     console.log(cashBurnInfo)
   } catch (e) {
-    console.log("fucked up getting cashBurnSummary:");
+    console.log("messed up getting cashBurnSummary:");
     console.log(e);
   }
  

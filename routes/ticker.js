@@ -61,6 +61,11 @@ router.get("/indexedTickers", async function(req, res, next) {
   res.render("indexedTickers", {cache: cachedTickers})
 })
 
+router.get("/getAllTickers", async function(req, res, next) {
+  result = await getAllCompaniesIdSymbolForCache()
+  res.send(result)
+})
+
 router.get("/ticker/:id", async function (req, res, next) {
   let id;
   let company;

@@ -26,7 +26,7 @@ if (process.env.NODE_ENV !== "prod"){
 	const user = "postgres"
 	const password = "admin"
 	const port = 5432
-	const database = "dilution_db"
+	const database = "dilution_db_test"
 	const config = {
 		host: host,
 		user: user,

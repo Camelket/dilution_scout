@@ -84,6 +84,11 @@ router.get("/ticker/:id", async function (req, res, next) {
   let outstanding, cash, filingLinks, cashBurnInfo;
   try {
     cash = await readNetCashAndEquivalents(dilution_db, id);
+    for (let key in cash){
+      for (let entry in cash[key]){
+        formattedDate = utils.formatStringToOnlyDate(cash[key][entry][0])
+        cash[key][entry][0] = formattedDate
+      }}
     // format the date to a more human readable form
   } catch (e) {
     console.log("messed up getting the cash position from db");

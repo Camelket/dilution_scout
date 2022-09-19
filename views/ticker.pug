@@ -14,6 +14,8 @@ block content
     -let filingsObject = filings // obj of {category: [filings]} for secFilingTables
     -let cashInfo = cash_info
     -let burnInfo = cashBurnInfo
+    -let shelfsObject = shelfs 
+    -let outstanding = securitiesOutstanding
 
     script(src="/public/scripts/switchTabs.js")
     
@@ -44,6 +46,8 @@ block content
             .tabContainer.d-flex-r.mt-3.max-w-95vw.hide-scrollbar
                 .selectionTab.cur-p.activeSelectionTab(onClick="openTab(event, 'dilution')") Dilution
                 .selectionTab.cur-p(onClick="openTab(event, 'filings')") Filings 
+                .selectionTab.cur-p(onClick="openTab(event, 'securities_outstanding')") Securities Outstanding 
+                .selectionTab.cur-p(onClick="openTab(event, 'shelfs')") Shelfs
             
             //- maybe include the tabs as separat pug files
             //- on certain conditions so i can first load a dummy site
@@ -84,8 +88,6 @@ block content
         .d-flex-c
 
 
-        
-        
     #filings.tabContent.inactiveTab
         #filingTablesWrapper
             each key in Object.keys(filingsObject)
@@ -105,6 +107,19 @@ block content
                                     else
                                         +filingTableRow(filing[0], filing[1], filing[2], filing[3])
                                         - numRows = numRows + 1
+    
+    #shelfs.tabContent.inactiveTab  
+        each shelf_key in Object.keys(shelfsObject)
+            -let shelf = shelfsObject[shelf_key]["shelf"]
+            -let offerings = shelfsObject[shelf_key]["offerings"]
+            div #{shelf}
+            each offering_key in Object.keys(offerings)
+                p #{offerings[offering_key]["registered"]}
+                p #{offerings[offering_key]["completed"]}
+            p BREAK BETWEEN SHELFS
+                
+                //- add row for each item 
+                //- do same for securitiesOutstanding
 
     script(src="/public/scripts/filingDescriptionTooltip.js")
     script(src="/public/scripts/rowHover.js")

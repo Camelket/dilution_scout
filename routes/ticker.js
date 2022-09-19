@@ -9,7 +9,10 @@ const {
   readFilingLinks,
   readCompanyIdBySymbol,
   readAllCompaniesIdSymbol,
-  readBurnRateSummary
+  readBurnRateSummary,
+
+  readSecuritiesOutstanding,
+  readShelfs
 } = require("../database/dilution_db/CRUD.js");
 const MemoryCache = require("../utility/memoryCache.js")
 
@@ -82,6 +85,7 @@ router.get("/ticker/:id", async function (req, res, next) {
 
   // package basic company data into an object
   let outstanding, cash, filingLinks, cashBurnInfo;
+  let shelfs, securitiesOutstanding
   try {
     cash = await readNetCashAndEquivalents(dilution_db, id);
     for (let key in cash){
@@ -130,14 +134,23 @@ router.get("/ticker/:id", async function (req, res, next) {
     console.log("messed up getting cashBurnSummary:");
     console.log(e);
   }
- 
+
+  try{
+    shelfs = await readShelfs(dilution_db, id)
+  } catch(e) {console.log("messed up getting shelfs:"); console.log(e)}
+  
+  try{
+    securitiesOutstanding = await readSecuritiesOutstanding(dilution_db, id)
+  } catch(e) {console.log("messed up getting securitiesOutstanding:"); console.log(e)}
 
   doc = res.render("ticker", {
     company_info: company,
     outstandingShares: outstanding,
     cashPosition: cash,
     cashBurnInfo: cashBurnInfo,
-    filings: filingLinks
+    filings: filingLinks,
+    securitesOutstanding: securitiesOutstanding,
+    shelfs: shelfs
   });
   //   let p = document.createElement("p")
   //   p.append("THIS IS ADDED TO THE DOC")

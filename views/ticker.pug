@@ -112,11 +112,16 @@ block content
         each shelf_key in Object.keys(shelfsObject)
             -let shelf = shelfsObject[shelf_key]["shelf"]
             -let offerings = shelfsObject[shelf_key]["offerings"]
-            div #{shelf}
+            div !{JSON.stringify(shelf)}
+            p #{shelf["shelf"]["filingLink"]["filingHtml"]}
             each offering_key in Object.keys(offerings)
                 p #{offerings[offering_key]["registered"]}
                 p #{offerings[offering_key]["completed"]}
             p BREAK BETWEEN SHELFS
+
+    #securities_outstanding.tabContent.inactiveTab 
+    //-     each security_key in Object.keys(outstanding)
+    //-         -let  secu = outstanding[security_key]
                 
                 //- add row for each item 
                 //- do same for securitiesOutstanding

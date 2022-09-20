@@ -12,7 +12,8 @@ const {
   readBurnRateSummary,
 
   readSecuritiesOutstanding,
-  readShelfs
+  readShelfs,
+  readFilingLinkByAccessionNumber
 } = require("../database/dilution_db/CRUD.js");
 const MemoryCache = require("../utility/memoryCache.js")
 
@@ -24,7 +25,19 @@ const MemoryCache = require("../utility/memoryCache.js")
 // OR
 // a combination of the above
 
-
+let getShelfTabContent = async function(db, id) {
+  let shelfs = await readShelfs(db, id)
+  for (let shelf_key in shelfs){
+    let shelf = shelfs[shelf_key]["shelf"]
+    let accn = shelf["accn"]
+    let filingLink;
+    filingLink = await readFilingLinkByAccessionNumber(db, accn)
+    console.log("filingLink: ", filingLink)
+    shelf["filingLink"] = filingLink
+    shelfs[shelf_key] = shelf
+  }
+  return shelfs
+}
 
 let getAllCompaniesIdSymbolForCache = async function() {
   return await readAllCompaniesIdSymbol(dilution_db)
@@ -136,7 +149,8 @@ router.get("/ticker/:id", async function (req, res, next) {
   }
 
   try{
-    shelfs = await readShelfs(dilution_db, id)
+    // how would i put this into a defered script and be able to render items of the object in pug?
+    shelfs = await getShelfTabContent(dilution_db, id)
   } catch(e) {console.log("messed up getting shelfs:"); console.log(e)}
   
   try{

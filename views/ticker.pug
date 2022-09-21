@@ -7,6 +7,38 @@ mixin filingTableRow(form, link, desc, filedOn)
             div.filingTableItem.filingDescription #{desc}
             div.filingTableItem.filingFiledOn #{filedOn}
 
+mixin shelfTabContentShelfSummary(shelf)
+        //- .filingTableBodyWrapper
+        div.shelfTableBodyWrapper
+            .shelfTableRow
+                div
+                    a(href=shelf["filingLink"]["filing_link"]) #{shelf["form_type"]}  filed on:
+                div #{shelf["filing_date"]}
+            .shelfTableRow 
+                div File Number: 
+                div #{shelf["file_number"]}
+            .shelfTableRow 
+                div Capacity of Shelf: 
+                div #{shelf["capacity"]} $
+
+mixin secuOutstanding(secusOutstanding)
+    each key in Object.keys(secusOutstanding)
+        -let secu = secusOutstanding[key]
+        .shelfTableBodyWrapper
+            .shelfTableRow
+                div Name: 
+                div #{secu["security_name"]}
+            .shelfTableRow
+                div Type: 
+                div #{secu["security_type"]}
+            .shelfTableRow
+                div Amount: 
+                div #{secu["amount"]}
+            .shelfTableRow
+                div Data From: 
+                div #{secu["instant"]}
+
+
 block content 
     //- must inlcude: ticker, company_name, sector, industry, mktcap, float
     //- could include: company_description
@@ -14,7 +46,7 @@ block content
     -let filingsObject = filings // obj of {category: [filings]} for secFilingTables
     -let cashInfo = cash_info
     -let burnInfo = cashBurnInfo
-    -let shelfsObject = shelfs 
+    -let shelfsObject = shelfsTabContent
     -let outstanding = securitiesOutstanding
 
     script(src="/public/scripts/switchTabs.js")
@@ -108,23 +140,25 @@ block content
                                         +filingTableRow(filing[0], filing[1], filing[2], filing[3])
                                         - numRows = numRows + 1
     
-    #shelfs.tabContent.inactiveTab  
-        each shelf_key in Object.keys(shelfsObject)
-            -let shelf = shelfsObject[shelf_key]["shelf"]
-            -let offerings = shelfsObject[shelf_key]["offerings"]
-            div !{JSON.stringify(shelf)}
-            p #{shelf["shelf"]["filingLink"]["filingHtml"]}
-            each offering_key in Object.keys(offerings)
-                p #{offerings[offering_key]["registered"]}
-                p #{offerings[offering_key]["completed"]}
-            p BREAK BETWEEN SHELFS
+    #shelfs.tabContent.inactiveTab 
+        #shelfTabContentWrapper 
+            div.shelfTabContentShelfSummaryWrapper
+                each shelf_key in Object.keys(shelfsObject)
+                    - let shelf = shelfsObject[shelf_key]["shelf"]
+                    - let offerings = shelfsObject[shelf_key]["offerings"]
+                    //- p !{JSON.stringify(shelf)}
+                    //- p #{shelf["filingLink"]["filing_link"]}
+                    +shelfTabContentShelfSummary(shelf)
+                    if offerings
+                        each offering_key in Object.keys(offerings)
+                            p #{offerings[offering_key]["registered"]}
+                            p #{offerings[offering_key]["completed"]}
+                    p _____BREAK BETWEEN SHELFS_______
 
     #securities_outstanding.tabContent.inactiveTab 
-    //-     each security_key in Object.keys(outstanding)
-    //-         -let  secu = outstanding[security_key]
-                
-                //- add row for each item 
-                //- do same for securitiesOutstanding
+        if outstanding
+            +secusOutstanding(outstanding)
+
 
     script(src="/public/scripts/filingDescriptionTooltip.js")
     script(src="/public/scripts/rowHover.js")

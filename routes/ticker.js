@@ -25,19 +25,23 @@ const MemoryCache = require("../utility/memoryCache.js")
 // OR
 // a combination of the above
 
+
 let getShelfTabContent = async function(db, id) {
   let shelfs = await readShelfs(db, id)
   for (let shelf_key in shelfs){
     let shelf = shelfs[shelf_key]["shelf"]
     let accn = shelf["accn"]
+    shelf["filing_date"] = utils.formatStringToOnlyDate(shelf["filing_date"])
     let filingLink;
     filingLink = await readFilingLinkByAccessionNumber(db, accn)
     console.log("filingLink: ", filingLink)
     shelf["filingLink"] = filingLink
-    shelfs[shelf_key] = shelf
+    shelfs[shelf_key]["shelf"] = shelf
   }
+  // console.log("returning shelfs: ", shelfs)
   return shelfs
 }
+
 
 let getAllCompaniesIdSymbolForCache = async function() {
   return await readAllCompaniesIdSymbol(dilution_db)
@@ -164,7 +168,7 @@ router.get("/ticker/:id", async function (req, res, next) {
     cashBurnInfo: cashBurnInfo,
     filings: filingLinks,
     securitesOutstanding: securitiesOutstanding,
-    shelfs: shelfs
+    shelfsTabContent: shelfs
   });
   //   let p = document.createElement("p")
   //   p.append("THIS IS ADDED TO THE DOC")

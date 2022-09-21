@@ -42,7 +42,6 @@ const readCompany = async function (db, id) {
 }
 
 
-
 const readOutstandingShares = async function(db, id) {
     let values;
     try {   
@@ -146,11 +145,12 @@ const readSecuritiesOutstanding = async function(db, id){
              WHERE company_id = $1
              `,
         [id])
-    } catch(e) {console.log(e); return null}
+    } catch(e) {console.log (e); return null}
     console.log("finalOutstanding: ", finalOutstanding)
     return finalOutstanding
 
 }
+
 
 const readShelfs = async function(db, id){
     //- returns {"shelfs": [{"shelf": obj, "offerings: [{"offering": obj, "registered": obj, "completed": obj}]"}]}
@@ -165,11 +165,12 @@ const readShelfs = async function(db, id){
         let shelf = values[key]
         let shelf_id = shelf["shelf_id"]
         let offerings = [];
+        console.log("shelf: ", shelf)
         try {
             let result = db.any(
-                `SELECT id as offering_id, accn, filing_date, offering_type, final_offering_amount, os.name_, commencment_date, end_date
+                `SELECT accn, filing_date, offering_type, offering_status_id, final_offering_amount, os.name_, commencment_date, end_date
                  FROM shelf_offerings
-                 JOIN offering_status AS os ON offering_status.id == os.id
+                 JOIN offering_status AS os ON offering_status_id = os.id 
                  WHERE shelf_registrations_id = $1`,
             [shelf_id])
             for (let offering_key in result) {
@@ -209,7 +210,8 @@ const readShelfs = async function(db, id){
                     offering_joined
                 )
             }
-        } catch(e) {console.log(e);}
+
+        } catch(e) {console.log("failed to get offerings related to the shelf: e:", e);}
         shelfs.push(
             {
                 "shelf": shelf,
@@ -218,8 +220,9 @@ const readShelfs = async function(db, id){
             )
     }
     console.log("° of shelfs: ", shelfs.length)
-    console.log("shelfs: ", shelfs)
+    // console.log("shelfs: ", shelfs)
     return shelfs
+
     }
 
 

@@ -99,7 +99,7 @@ const readFilingLinks = async function(db, id){
 const readFilingLinkByAccessionNumber = async function(db, accn){
     let values;
     let obj;
-    console.log("trying to get filingLink for accn: ", accn)
+    // console.log("trying to get filingLink for accn: ", accn)
     try{
         values = await db.any(`
             SELECT 
@@ -119,6 +119,29 @@ const readFilingLinkByAccessionNumber = async function(db, accn){
     obj = values[0]
     // console.log(obj)
     return obj
+}
+
+const readAssociatedEffectFiling = async function(db, fileNumber, formType){
+    let values;
+    let result;
+    try{
+        values = await db.any(`
+            SELECT 
+                er.accn,
+                fl.filing_html
+            FROM effect_registrations AS er
+            JOIN filing_links AS fl
+                ON fl.accn = er.accn
+            WHERE
+                er.file_number = $1
+                AND
+                er.form_type = $2
+            `,
+        [fileNumber, formType])
+    } catch(e) {console.log("failed to get effect_registration for fileNumber: ", fileNumber, e); return null}
+    result = values[0]
+    // console.log(result)
+    return result    
 }
 
 const readBurnRateSummary = async function(db, id){
@@ -218,9 +241,14 @@ const readShelfs = async function(db, id){
                 "offerings": offerings
             }
             )
+        shelfs.sort(function(a, b) {
+            let value1 = a["shelf"]["filing_date"]
+            let value2 = b["shelf"]["filing_date"]
+            return (value1 > value2) ? -1 : (value1 < value2) ? 1 : 0
+        })
     }
     console.log("° of shelfs: ", shelfs.length)
-    // console.log("shelfs: ", shelfs)
+    console.log("shelfs: ", shelfs)
     return shelfs
 
     }
@@ -240,5 +268,6 @@ module.exports = {
     readBurnRateSummary,
 
     readShelfs,
-    readSecuritiesOutstanding
+    readSecuritiesOutstanding,
+    readAssociatedEffectFiling
 }

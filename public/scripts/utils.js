@@ -6,7 +6,7 @@ function formatNumber(number) {
         return (number/1000).toFixed(1) + 'K'; // convert to K 
     } else if (num > 1000000) {
         return (number/1000000).toFixed(1) + 'M'; // convert to M 
-    } else if (num < 900) {
+    } else if (num < 1000) {
         return number;}
     
     }

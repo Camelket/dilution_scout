@@ -516,6 +516,7 @@ h2{
 
 .filingTableBodyWrapper, .indexedTickersTableBodyWraper, .registrationContainerBodyWrapper{
   border: 0.5px solid black;
+  /* border-radius: 10px; */
   background-color: var(--main-background-color, white);
 }
 
@@ -531,14 +532,18 @@ h2{
   display: contents;
 } */
 .registrationContainerBodyWrapper{
-  border: solid 5px var(--navbar-main-color, grey);
+  border: solid 3px var(--navbar-main-color, grey);
   background-color: var(--main-background-color);
-  border-radius: 10px;
   padding: 1vw 1vw 1vw 1vw;
-  margin: 1vw 1vw;
+  margin:  1vw 1vw;
   max-width: 600px;
   font-size: medium;
   min-width: content;
+}
+
+.shelfRegistrationContainer{
+  border-bottom: solid 1px var(--navbar-bright-desaturated-accent);
+
 }
 
 .filingTableRow, .indexedTickersTableRow, .registrationTableRow{
@@ -590,7 +595,7 @@ h2{
   display: Slex
 } */
 
-#filingTablesWrapper, .indexedTickersWrapper, .shelfTabContentShelfSummaryWrapper{
+#filingTablesWrapper, .indexedTickersWrapper, .tabBackgroundWrapper{
   display: grid;
   grid-gap: 1rem;
   padding-top: 1rem;
@@ -598,7 +603,7 @@ h2{
   grid-template-columns: 1fr;
 }
 
-.filingTableWrapper, .indexedTickersTableWrapper, .shelfTabContentShelfSummaryWrapper, .registrationContainerBodyWrapper{
+.filingTableWrapper, .indexedTickersTableWrapper, .tabBackgroundWrapper, .registrationContainerBodyWrapper{
   margin-left: 0.5em;
   margin-right: 0.5em;
   max-width: content;
@@ -883,7 +888,7 @@ input[type=email]:focus {
     padding-top: 2.99rem!important;
   } */
 
-  #filingTablesWrapper, .shelfTabContentShelfSummaryWrapper{
+  #filingTablesWrapper, .tabBackgroundWrapper{
     grid-template-columns: 1fr;
   }
 

@@ -13,7 +13,8 @@ const {
 
   readSecuritiesOutstanding,
   readShelfs,
-  readFilingLinkByAccessionNumber
+  readFilingLinkByAccessionNumber,
+  readAssociatedEffectFiling
 } = require("../database/dilution_db/CRUD.js");
 const MemoryCache = require("../utility/memoryCache.js")
 
@@ -25,21 +26,68 @@ const MemoryCache = require("../utility/memoryCache.js")
 // OR
 // a combination of the above
 
+let getSecurityOutstandingTabContent = async function(db, id) {
+  let securitiesOutstanding = await readSecuritiesOutstanding(db, id)
+  console.log("securities outstanding: ", securitiesOutstanding)
+  return securitiesOutstanding
+}
 
 let getShelfTabContent = async function(db, id) {
   let shelfs = await readShelfs(db, id)
   for (let shelf_key in shelfs){
     let shelf = shelfs[shelf_key]["shelf"]
     let accn = shelf["accn"]
-    shelf["filing_date"] = utils.formatStringToOnlyDate(shelf["filing_date"])
-    let filingLink;
-    filingLink = await readFilingLinkByAccessionNumber(db, accn)
-    console.log("filingLink: ", filingLink)
-    shelf["filingLink"] = filingLink
+    await getFilingLink(accn, shelf);
+    await getEffectFiling(shelf);
+    // move the formatting to the client side ?
+    formatFilingDate(shelf);
+    formatEffectDate(shelf);
+    formatIsActive(shelf);
+    formatCapacity(shelf);
+    // prep offerings here
     shelfs[shelf_key]["shelf"] = shelf
   }
-  // console.log("returning shelfs: ", shelfs)
   return shelfs
+  
+  function formatIsActive(shelf) {
+    if (shelf["is_active"] == undefined) {
+      shelf["is_active"] = "Unknown if this Filing is active."
+    }
+  }
+
+  function formatFilingDate(shelf) {
+    shelf["filing_date"] = utils.formatStringToOnlyDate(shelf["filing_date"]);
+  }
+  
+  function formatEffectDate(shelf) {
+    if (shelf["effect_date"] != undefined) {
+      shelf["effect_date"] = utils.formatStringToOnlyDate(shelf["effect_date"]);
+    } else {
+      shelf["effect_date"] = "No Effect Date Yet"
+    }
+  }
+
+  function formatCapacity(shelf) {
+    shelf["capacity"] = utils.formatNumber(shelf["capacity"]);
+  }
+  
+  async function getFilingLink(accn, shelf) {
+    let filingLink;
+    filingLink = await readFilingLinkByAccessionNumber(db, accn);
+    shelf["filingLink"] = filingLink;
+  }
+
+  async function getEffectFiling(shelf) {
+    if (shelf["effect_date"] != undefined) {
+      let effectFiling;
+      effectFiling = await readAssociatedEffectFiling(db, shelf["file_number"], shelf["form_type"]);
+      if (effectFiling) {
+        shelf["effectFiling"] = effectFiling;
+      }
+    } else {
+      shelf["effectFiling"] = undefined;
+    }
+  }
 }
 
 
@@ -146,7 +194,7 @@ router.get("/ticker/:id", async function (req, res, next) {
     cashBurnInfo["net_cash_date"] = utils.formatStringToOnlyDate(cashBurnInfo["net_cash_date"])
     cashBurnInfo["net_cash"] = utils.formatNumber(cashBurnInfo["net_cash"])
     
-    console.log(cashBurnInfo)
+    // console.log(cashBurnInfo)
   } catch (e) {
     console.log("messed up getting cashBurnSummary:");
     console.log(e);
@@ -158,7 +206,7 @@ router.get("/ticker/:id", async function (req, res, next) {
   } catch(e) {console.log("messed up getting shelfs:"); console.log(e)}
   
   try{
-    securitiesOutstanding = await readSecuritiesOutstanding(dilution_db, id)
+    securitiesOutstanding = await getSecurityOutstandingTabContent(dilution_db, id)
   } catch(e) {console.log("messed up getting securitiesOutstanding:"); console.log(e)}
 
   doc = res.render("ticker", {

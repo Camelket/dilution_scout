@@ -7,35 +7,59 @@ mixin filingTableRow(form, link, desc, filedOn)
             div.filingTableItem.filingDescription #{desc}
             div.filingTableItem.filingFiledOn #{filedOn}
 
-mixin registrationContainer(registration, title, titleHref, keys)
-    div.registrationContainerBodyWrapper
-        //- .registrationTableContainerBox
-        .registrationTableHeader 
-            a(href=titleHref) #{title}
-        each key in keys
-            if (key in registration)
-                -let currentField = registration[key]
-                .registrationTableRow
-                    div #{key}:
-                    div #{currentField}
-                    //- .registrationTableRowKey #{key}:
-                    //- .registrationTableRowValue #{currentField}
+mixin offeringsContainer(offerings)
+    div Offerings 
+    if (offerings = []) 
+        div - No Offerings Associated with this Shelf
+    else 
+        .registrationTableRow
+            div Remaining Shelf Capacity:
+            div 
+        .registrationTableRow 
+            div Registered and Active: 
+            div
+        .registrationTableRow 
+            div Completed:
+            div
+
+mixin shelfRegistrationContainer(shelf)
+    .shelfRegistrationContainer
+        .registrationTableRow
+            div Filing Date:
+            a(href=shelf["filingLink"]["filing_link"]) #{shelf["filing_date"]}
+        .registrationTableRow 
+            div Filing Number: 
+            div #{shelf["file_number"]}
+        .registrationTableRow 
+            div Total Capacity:  
+            div #{shelf["capacity"]} $
+        if (shelf["effectFiling"]!=undefined)
+            .registrationTableRow 
+                div Effect Date:  
+                a(href=shelf["effectFiling"]["filing_html"]) #{shelf["effect_date"]}
+        else 
+            .registrationTableRow 
+                div Effect Date:  
+                div No Effect Filing Found for this Shelf
+        .registrationTableRow 
+            div Is this active: 
+            div #{shelf["is_active"]}
 
 
 mixin secuOutstanding(secusOutstanding)
     each key in Object.keys(secusOutstanding)
         -let secu = secusOutstanding[key]
-        .shelfTableBodyWrapper
-            .shelfTableRow
+        .shelfRegistrationContainer
+            .registrationTableRow
                 div Name: 
                 div #{secu["security_name"]}
-            .shelfTableRow
+            .registrationTableRow
                 div Type: 
                 div #{secu["security_type"]}
-            .shelfTableRow
+            .registrationTableRow
                 div Amount: 
                 div #{secu["amount"]}
-            .shelfTableRow
+            .registrationTableRow
                 div Data From: 
                 div #{secu["instant"]}
 
@@ -142,22 +166,18 @@ block content
                                         - numRows = numRows + 1
     
     #shelfs.tabContent.inactiveTab
-                each shelf_key in Object.keys(shelfsObject)
-                    - let shelf = shelfsObject[shelf_key]["shelf"]
-                    - let offerings = shelfsObject[shelf_key]["offerings"]
-                    +registrationContainer(shelf, shelf["form_type"], shelf["filingLink"]["filing_link"], ["filing_date", "file_number", "capacity", "is_active"])
-                    //- p !{JSON.stringify(shelf)}
-                    //- p #{shelf["filingLink"]["filing_link"]}
-                    //- +shelfTabContentShelfSummary(shelf)
-                    if offerings
-                        each offering_key in Object.keys(offerings)
-                            p #{offerings[offering_key]["registered"]}
-                            p #{offerings[offering_key]["completed"]}
-                    p _____BREAK BETWEEN SHELFS_______
+        .tabBackgroundWrapper
+            each shelf_key in Object.keys(shelfsObject)
+                - let shelf = shelfsObject[shelf_key]["shelf"]
+                - let offerings = shelfsObject[shelf_key]["offerings"]
+                .registrationContainerBodyWrapper
+                    +shelfRegistrationContainer(shelf, offerings)
+                    +offeringsContainer(offerings)
 
-    #securities_outstanding.tabContent.inactiveTab 
-        if outstanding
-            +secusOutstanding(outstanding)
+    #securities_outstanding.tabContent.inactiveTab
+        .tabBackgroundWrapper
+            if (outstanding)
+                +secusOutstanding(outstanding)
 
 
     script(src="/public/scripts/filingDescriptionTooltip.js")

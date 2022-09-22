@@ -7,19 +7,20 @@ mixin filingTableRow(form, link, desc, filedOn)
             div.filingTableItem.filingDescription #{desc}
             div.filingTableItem.filingFiledOn #{filedOn}
 
-mixin shelfTabContentShelfSummary(shelf)
-        //- .filingTableBodyWrapper
-        div.shelfTableBodyWrapper
-            .shelfTableRow
-                div
-                    a(href=shelf["filingLink"]["filing_link"]) #{shelf["form_type"]}  filed on:
-                div #{shelf["filing_date"]}
-            .shelfTableRow 
-                div File Number: 
-                div #{shelf["file_number"]}
-            .shelfTableRow 
-                div Capacity of Shelf: 
-                div #{shelf["capacity"]} $
+mixin registrationContainer(registration, title, titleHref, keys)
+    div.registrationContainerBodyWrapper
+        //- .registrationTableContainerBox
+        .registrationTableHeader 
+            a(href=titleHref) #{title}
+        each key in keys
+            if (key in registration)
+                -let currentField = registration[key]
+                .registrationTableRow
+                    div #{key}:
+                    div #{currentField}
+                    //- .registrationTableRowKey #{key}:
+                    //- .registrationTableRowValue #{currentField}
+
 
 mixin secuOutstanding(secusOutstanding)
     each key in Object.keys(secusOutstanding)
@@ -140,15 +141,14 @@ block content
                                         +filingTableRow(filing[0], filing[1], filing[2], filing[3])
                                         - numRows = numRows + 1
     
-    #shelfs.tabContent.inactiveTab 
-        #shelfTabContentWrapper 
-            div.shelfTabContentShelfSummaryWrapper
+    #shelfs.tabContent.inactiveTab
                 each shelf_key in Object.keys(shelfsObject)
                     - let shelf = shelfsObject[shelf_key]["shelf"]
                     - let offerings = shelfsObject[shelf_key]["offerings"]
+                    +registrationContainer(shelf, shelf["form_type"], shelf["filingLink"]["filing_link"], ["filing_date", "file_number", "capacity", "is_active"])
                     //- p !{JSON.stringify(shelf)}
                     //- p #{shelf["filingLink"]["filing_link"]}
-                    +shelfTabContentShelfSummary(shelf)
+                    //- +shelfTabContentShelfSummary(shelf)
                     if offerings
                         each offering_key in Object.keys(offerings)
                             p #{offerings[offering_key]["registered"]}

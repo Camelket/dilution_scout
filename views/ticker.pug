@@ -45,6 +45,28 @@ mixin shelfRegistrationContainer(shelf)
             div Is this active: 
             div #{shelf["is_active"]}
 
+mixin filingParseStatusContainer(filingStates)
+    .filingParseStatusTableWrapper 
+        .filingParseStatusTable
+            .filingParseStatusTableRow 
+                .filingParseStatusTableEntry Form
+                .filingParseStatusTableEntry Parsed
+                .filingParseStatusTableEntry Filed
+            each entry in filingStates
+                -let filing = entry["filing"]
+                -let parseStatus = entry["parse_status"]
+                if (filing != undefined)
+                    .filingParseStatusTableRow
+                        .filingParseStatusTableEntry 
+                            a(href=filing["filing_html"]) #{filing["form_type"]}
+                        if (parseStatus != undefined)
+                            .filingParseStatusTableEntry #{parseStatus["date_parsed"]}
+                        else 
+                            .filingParseStatusTableEntry X
+                        .filingParseStatusTableEntry #{filing["filing_date"]}
+                        
+
+
 
 mixin secuOutstanding(secusOutstanding)
     each key in Object.keys(secusOutstanding)
@@ -103,7 +125,7 @@ block content
             .tabContainer.d-flex-r.mt-3.max-w-95vw.hide-scrollbar
                 .selectionTab.cur-p.activeSelectionTab(onClick="openTab(event, 'dilution')") Dilution
                 .selectionTab.cur-p(onClick="openTab(event, 'filings')") Filings 
-                .selectionTab.cur-p(onClick="openTab(event, 'securities_outstanding')") Securities Outstanding 
+                //- .selectionTab.cur-p(onClick="openTab(event, 'securities_outstanding')") Securities Outstanding 
                 .selectionTab.cur-p(onClick="openTab(event, 'shelfs')") Shelfs
             
             //- maybe include the tabs as separat pug files
@@ -172,12 +194,17 @@ block content
                 - let offerings = shelfsObject[shelf_key]["offerings"]
                 .registrationContainerBodyWrapper
                     +shelfRegistrationContainer(shelf, offerings)
-                    +offeringsContainer(offerings)
+                    if (shelf["related_filings"] != undefined)
+                        .containerPartingLine
+                        +filingParseStatusContainer(shelf["related_filings"])
+                    if (offerings != [] && offerings != undefined)
+                        .containerPartingLine
+                        +offeringsContainer(offerings)
 
-    #securities_outstanding.tabContent.inactiveTab
-        .tabBackgroundWrapper
-            if (outstanding)
-                +secusOutstanding(outstanding)
+    //- #securities_outstanding.tabContent.inactiveTab
+    //-     .tabBackgroundWrapper
+    //-         if (outstanding)
+    //-             +secusOutstanding(outstanding)
 
 
     script(src="/public/scripts/filingDescriptionTooltip.js")

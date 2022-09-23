@@ -121,6 +121,39 @@ const readFilingLinkByAccessionNumber = async function(db, accn){
     return obj
 }
 
+const readRelatedFilingLinks = async function(db, fileNumber) {
+    let result;
+    try {
+        result = await db.any(`
+        SELECT 
+            filing_html,
+            form_type,
+            filing_date,
+            accn
+        FROM filing_links
+        WHERE file_number = $1`,
+        [fileNumber])
+    } catch(e) {console.log("failed to get relatedFilingLinks: ", e)}
+    return result
+}
+
+const readFilingParseStatus = async function(db, accn) {
+    let result = [];
+    try {
+        result = await db.any(`
+        SELECT 
+            date_parsed,
+            accession_number as accn
+        FROM filing_parse_history
+        WHERE accession_number = $1
+        ORDER BY date_parsed DESC LIMIT 1`,
+        [accn])
+    } catch(e) {console.log("failed to get relatedFilingLinks: ", e)}
+    return result[0]
+    // return result != [] ? result[0] : result
+}
+
+
 const readAssociatedEffectFiling = async function(db, fileNumber, formType){
     let values;
     let result;
@@ -248,7 +281,7 @@ const readShelfs = async function(db, id){
         })
     }
     console.log("° of shelfs: ", shelfs.length)
-    console.log("shelfs: ", shelfs)
+    // console.log("shelfs: ", shelfs)
     return shelfs
 
     }
@@ -262,6 +295,7 @@ module.exports = {
     readNetCashAndEquivalentsExcludingRestrictedNoncurrent,
     readFilingLinks,
     readFilingLinkByAccessionNumber,
+    readRelatedFilingLinks,
     readCompany,
     readCompanyIdBySymbol,
     readAllCompaniesIdSymbol,
@@ -269,5 +303,6 @@ module.exports = {
 
     readShelfs,
     readSecuritiesOutstanding,
-    readAssociatedEffectFiling
+    readAssociatedEffectFiling,
+    readFilingParseStatus
 }

@@ -541,8 +541,10 @@ h2{
   min-width: content;
 }
 
-.shelfRegistrationContainer{
-  border-bottom: solid 1px var(--navbar-bright-desaturated-accent);
+.containerPartingLine{
+  border-bottom: solid 1.5px var(--navbar-bright-desaturated-accent);
+  margin: 5px -1vw;
+  width: auto;
 
 }
 
@@ -586,7 +588,7 @@ h2{
   /* flex: 0 0 49%; */
 }
 
-.filingTableRow, .filingTableHeaderRow, .indexedTickersTableRow, .indexedTickersTableHeaderRow, .registrationTableRow, .registrationTableHeader{
+.filingTableRow, .filingTableHeaderRow, .indexedTickersTableRow, .indexedTickersTableHeaderRow, .registrationTableRow, .registrationTableHeader, .filingParseStatusTableRow{
   min-width: 0; 
   display: grid;
 }
@@ -620,8 +622,9 @@ h2{
 .registrationTableRow {
   grid-template-columns: minmax(0, 0.5fr) minmax(0, 0.5fr);
 }
-.registrationTableRowKey {
-  color:rgb(206, 112, 29)
+
+.filingParseStatusTableRow{
+  grid-template-columns: minmax(0, 0.3fr) minmax(0, 0.3fr) minmax(0, 0.3fr);
 }
 
 .indexedTickersTableRow, .indexedTickersTableHeaderRow {

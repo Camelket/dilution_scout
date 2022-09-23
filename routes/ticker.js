@@ -14,6 +14,8 @@ const {
   readSecuritiesOutstanding,
   readShelfs,
   readFilingLinkByAccessionNumber,
+  readRelatedFilingLinks,
+  readFilingParseStatus,
   readAssociatedEffectFiling
 } = require("../database/dilution_db/CRUD.js");
 const MemoryCache = require("../utility/memoryCache.js")
@@ -39,12 +41,14 @@ let getShelfTabContent = async function(db, id) {
     let accn = shelf["accn"]
     await getFilingLink(accn, shelf);
     await getEffectFiling(shelf);
+    shelf["related_filings"] = await getRelatedFilings(shelf["file_number"])
     // move the formatting to the client side ?
     formatFilingDate(shelf);
     formatEffectDate(shelf);
     formatIsActive(shelf);
     formatCapacity(shelf);
     // prep offerings here
+    console.log(shelf)
     shelfs[shelf_key]["shelf"] = shelf
   }
   return shelfs
@@ -88,6 +92,36 @@ let getShelfTabContent = async function(db, id) {
       shelf["effectFiling"] = undefined;
     }
   }
+
+  async function getRelatedFilings(fileNumber) {
+    let result = [];
+    if (fileNumber) {
+      related = await readRelatedFilingLinks(db, fileNumber)
+      for (let key in related){
+        let entry = related[key]
+        let parseStatus = await readFilingParseStatus(db, entry["accn"])
+        formatRelatedFilingsDates(parseStatus, entry);
+        result.push({
+          "filing": entry,
+          "parse_status": parseStatus})
+        }
+      }
+      result.sort((a,b) => {
+        let valueA = a["filing"]["filing_date"]
+        let valueB = b["filing"]["filing_date"]
+        return (valueA > valueB) ? -1 : (valueA < valueB) ? 1 : 0
+      })
+    return result
+
+    function formatRelatedFilingsDates(parseStatus, entry) {
+      entry["filing_date"] = utils.formatStringToOnlyDate(entry["filing_date"]);
+      if (parseStatus != [] && parseStatus != undefined) {
+        parseStatus["date_parsed"] = utils.formatStringToOnlyDate(parseStatus["date_parsed"]);
+      }
+    }
+  }
+
+
 }
 
 

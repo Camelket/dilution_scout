@@ -85,6 +85,17 @@ mixin secuOutstanding(secusOutstanding)
                 div Data From: 
                 div #{secu["instant"]}
 
+mixin securityOutstandingChart(chartId, chartData, chartName)
+    -let parentContainerId = chartName+"parentContainer"
+    -let chartDataVar = chartData
+    div.d-flex-c.ml-1.mr-1
+        span(id=chartName).chartTitle.mr-2.ml-1.mt-2.cur-d #{chartName}
+        div(id=parentContainerId).chartContainer.mb-1.ml-1.mr-1.mt-1 
+            canvas(id=chartId).canvasChart
+    script.
+        let ctx = document.getElementById(!{JSON.stringify(chartId)})
+        let chart = new Chart(ctx, createOSChartconfig(!{JSON.stringify(chartDataVar)}))
+        makeContainerToggleable(!{JSON.stringify(chartName)}, !{JSON.stringify(parentContainerId)})
 
 block content 
     //- must inlcude: ticker, company_name, sector, industry, mktcap, float
@@ -97,6 +108,7 @@ block content
     -let outstanding = securitiesOutstanding
 
     script(src="/public/scripts/switchTabs.js")
+    script(src="/public/scripts/dropdownContainer.js")
     
     div.belowNavbarWrapper
         div#headerContainer.ml-1.mr-1.w-100
@@ -136,6 +148,8 @@ block content
 
     #dilution.tabContent.activeTab
         script(src="https://cdn.jsdelivr.net/npm/chart.js")
+        script(src="/public/scripts/chartUtil.js")
+        +securityOutstandingChart("outstandingCommonStockChart", outstandingShares, "Common Stock Outstanding TEST")
         .d-flex-c.ml-1.mr-1
             span.chartTitle.mr-2.ml-1.mt-2.cur-d Outstanding Common Shares
             div.chartContainer.mb-1.ml-1.mr-1.mt-1
@@ -155,7 +169,7 @@ block content
             div.chartContainer.mb-1.ml-1.mr-1.mt-1.mb-1
                 canvas#cashPositionChart.canvasChart
 
-        script(src="/public/scripts/chartUtil.js")
+        //- script(src="/public/scripts/chartUtil.js")
         - let outstanding_shares_data = outstandingShares
         - let cash_position_data = cashPosition
         script.
@@ -188,18 +202,25 @@ block content
                                         - numRows = numRows + 1
     
     #shelfs.tabContent.inactiveTab
-        .tabBackgroundWrapper
-            each shelf_key in Object.keys(shelfsObject)
-                - let shelf = shelfsObject[shelf_key]["shelf"]
-                - let offerings = shelfsObject[shelf_key]["offerings"]
-                .registrationContainerBodyWrapper
-                    +shelfRegistrationContainer(shelf, offerings)
-                    if (shelf["related_filings"] != undefined)
-                        .containerPartingLine
-                        +filingParseStatusContainer(shelf["related_filings"])
-                    if (offerings != [] && offerings != undefined)
-                        .containerPartingLine
-                        +offeringsContainer(offerings)
+        if (shelfObject != undefined)
+            .tabBackgroundWrapper
+                each shelf_key in Object.keys(shelfsObject)
+                    - let shelf = shelfsObject[shelf_key]["shelf"]
+                    - let offerings = shelfsObject[shelf_key]["offerings"]
+                    .registrationContainerBodyWrapper
+                        +shelfRegistrationContainer(shelf, offerings)
+                        if (shelf["related_filings"] != undefined)
+                            .containerPartingLine
+                            +filingParseStatusContainer(shelf["related_filings"])
+                        if (offerings != [] && offerings != undefined)
+                            .containerPartingLine
+                            +offeringsContainer(offerings)
+        else
+            div.transitionPadding
+            .flexCenterWrapperColumn
+                .tickerNotFoundBox
+                    div
+                        span No parsed or filed Shelf Registrations (S-3) are present for this Ticker.
 
     //- #securities_outstanding.tabContent.inactiveTab
     //-     .tabBackgroundWrapper

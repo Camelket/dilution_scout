@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+console.log("running with process.env: ", process.env)
 
 if (process.env.NODE_ENV == "prod") {
 	if (process.env.DILUTION_DB_PASSWORD == "undefined"){

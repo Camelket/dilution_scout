@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./index",
-    "devstart": "nodemon ./index",
+    "devstart": "SET NODE_ENV=test& nodemon ./index",
     "serverstart": "SET DEBUG=express-locallibrary-tutorial:* & npm run devstart",
     "ui": "browser-sync start --config bs-config.js"
   },

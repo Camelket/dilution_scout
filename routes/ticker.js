@@ -4,6 +4,7 @@ const utils = require("../public/scripts/utils.js");
 const dilution_db = require("../database/dilution_db/dilution_db_connection");
 const {
   readCompany,
+  readOutstandingSecurities,
   readOutstandingShares,
   readNetCashAndEquivalents,
   readFilingLinks,
@@ -28,10 +29,34 @@ const MemoryCache = require("../utility/memoryCache.js")
 // OR
 // a combination of the above
 
+// create util file later
+function groupBy(data, property) {
+  return data.reduce((acc, obj) => {
+    const key = obj[property];
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(obj);
+    return acc;
+  }, {});
+}
+
 let getSecurityOutstandingTabContent = async function(db, id) {
-  let securitiesOutstanding = await readSecuritiesOutstanding(db, id)
-  console.log("securities outstanding: ", securitiesOutstanding)
-  return securitiesOutstanding
+  let securitiesOutstanding = await readOutstandingSecurities(db, id)
+  return formatSecurityOutstandingForSecurityOutstandingChart(securitiesOutstanding)
+}
+
+const formatSecurityOutstandingForSecurityOutstandingChart = function(data) {
+  let newArray = [];
+  let groupedData = groupBy(data, "security_id");
+  for (const kv of Object.entries(groupedData)){
+    securityData = kv[1]
+    key = kv[0]
+    if (securityData) {
+      newArray.push(securityData)
+    }
+  }
+  return newArray
 }
 
 let getShelfTabContent = async function(db, id) {
@@ -197,7 +222,7 @@ router.get("/ticker/:id", async function (req, res, next) {
     console.log(e);
   }
   try {
-    outstanding = await readOutstandingShares(dilution_db, id);
+    outstanding = await readOutstandingSecurities(dilution_db, id);
     // format the date to a more human readable form
     for (let idx in outstanding){
       outstanding[idx]["instant"] = utils.formatStringToOnlyDate(outstanding[idx]["instant"])
@@ -242,14 +267,13 @@ router.get("/ticker/:id", async function (req, res, next) {
   try{
     securitiesOutstanding = await getSecurityOutstandingTabContent(dilution_db, id)
   } catch(e) {console.log("messed up getting securitiesOutstanding:"); console.log(e)}
-
   doc = res.render("ticker", {
     company_info: company,
     outstandingShares: outstanding,
     cashPosition: cash,
     cashBurnInfo: cashBurnInfo,
     filings: filingLinks,
-    securitesOutstanding: securitiesOutstanding,
+    securitiesOutstanding: securitiesOutstanding,
     shelfsTabContent: shelfs
   });
   //   let p = document.createElement("p")

@@ -41,11 +41,11 @@ const readCompany = async function (db, id) {
     return result
 }
 
-const readOutstandingSecurities = async function(db, symbol){
+const readOutstandingSecurities = async function(db, id){
     // replaces readOutstandingShares after rework is done
     let values;
     try {
-        values = await db.any("SELECT * FROM securities_outstanding AS os JOIN securities AS s ON s.id = os.security_id WHERE s.company_id = (SELECT id FROM companies WHERE companies.symbol = $1 ORDER BY securities_outstanding.security_id ASC ORDER BY securities_outstanding.instant DESC)", [symbol])
+        values = await db.any("SELECT * FROM securities_outstanding AS os JOIN securities AS s ON s.id = os.security_id WHERE s.company_id = $1 ORDER BY os.security_id ASC", [id])
     } catch (e) {console.log(e); return null}
     console.log(`OutstandingSecurities in readOutstandingSecurities call: ${values}`)
     return values

@@ -62,6 +62,7 @@ const createOSChartconfig = function(data1) {
       }]
     },
     options: {
+      maintainAspectRatio: false,
       onResize:  resizeChart,
       tooltips: {
         mode: "label"
@@ -121,6 +122,7 @@ const createCPChartconfig = function(data1) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       onResize: resizeChart,
       tooltips: {
         mode: "label"

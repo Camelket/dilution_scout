@@ -89,13 +89,13 @@ mixin securityOutstandingChart(chartId, chartData, chartName)
     -let parentContainerId = chartName+"parentContainer"
     -let chartDataVar = chartData
     div.d-flex-c.ml-1.mr-1
-        span(id=chartName).chartTitle.mr-2.ml-1.mt-2.cur-d #{chartName}
+        span(id=chartName).chartTitle.mr-2.ml-1.mt-2.cur-p #{chartName}
         div(id=parentContainerId).chartContainer.mb-1.ml-1.mr-1.mt-1 
             canvas(id=chartId).canvasChart
     script.
         let ctx = document.getElementById(!{JSON.stringify(chartId)})
         let chart = new Chart(ctx, createOSChartconfig(!{JSON.stringify(chartDataVar)}))
-        makeContainerToggleable(!{JSON.stringify(chartName)}, !{JSON.stringify(parentContainerId)})
+        makeContainerFoldableByControlItem(!{JSON.stringify(chartName)}, !{JSON.stringify(parentContainerId)})
 
 block content 
     //- must inlcude: ticker, company_name, sector, industry, mktcap, float
@@ -105,7 +105,6 @@ block content
     -let cashInfo = cash_info
     -let burnInfo = cashBurnInfo
     -let shelfsObject = shelfsTabContent
-    -let outstanding = securitiesOutstanding
 
     script(src="/public/scripts/switchTabs.js")
     script(src="/public/scripts/dropdownContainer.js")
@@ -149,13 +148,26 @@ block content
     #dilution.tabContent.activeTab
         script(src="https://cdn.jsdelivr.net/npm/chart.js")
         script(src="/public/scripts/chartUtil.js")
-        +securityOutstandingChart("outstandingCommonStockChart", outstandingShares, "Common Stock Outstanding TEST")
-        .d-flex-c.ml-1.mr-1
-            span.chartTitle.mr-2.ml-1.mt-2.cur-d Outstanding Common Shares
-            div.chartContainer.mb-1.ml-1.mr-1.mt-1
-                canvas#outstandingSharesChart.canvasChart
+        .d-flex-c
+            span#outstandingSecuritiesSectionHeader.tabSubSectionHeader.mr-2.ml-1.mt-2.cur-p.d-flex-c Outstanding Securities
+            span#arrowPlaceholder Arrow here
+        div#outstandingSecuritiesContainer
+            script.
+                // registerTogglableControlItem(controlItemId, onToggleFunc)
+                makeContainerFoldableByControlItem("outstandingSecuritiesSectionHeader", "outstandingSecuritiesContainer")
+                makeContainerToggleableByControlItem("outstandingSecuritiesSectionHeader", "arrowPlaceholder", containerToggleOnFunc=toggleArrowOn(), containerToggleOffFunc=toggleArrowOff())
+            //- create all the outstanding securities charts
+            if (securitiesOutstanding != undefined)
+                each chartData in securitiesOutstanding
+                    -let securityName = chartData[0]["security_name"]
+                    -let securityType = chartData[0]["security_type"]
+                    -let chartName = "Outstanding " + securityName + " (" + securityType + ")" 
+                    -let chartId = securityName + "_chartId"
+                    +securityOutstandingChart(chartId, chartData, chartName)
+    
         .d-flex-c.mt-1.ml-1.mr-1
-            span.chartTitle.mr-2.ml-1.mt-1.cur-d Net cash and equivalents
+            //- create chart for cash and equivalents
+            span.chartTitle.mr-1.ml-2.mt-2.cur-p Net cash and equivalents
             if (burnInfo)
                 if (burnInfo["days_of_cash"] < 0)
                     span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should have run out of cash <strong>#{burnInfo["days_of_cash"]}</strong> Days ago. Based on a cash burn of: <strong>#{burnInfo["burn_rate"]}$</strong>/Day and last recorded net cash of: <strong>#{burnInfo["net_cash"]}$</strong>, based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly. Estimated Tracking error in net cash of at least: #{burnInfo["cash_missing"]}.
@@ -169,14 +181,11 @@ block content
             div.chartContainer.mb-1.ml-1.mr-1.mt-1.mb-1
                 canvas#cashPositionChart.canvasChart
 
-        //- script(src="/public/scripts/chartUtil.js")
-        - let outstanding_shares_data = outstandingShares
-        - let cash_position_data = cashPosition
-        script.
-            let ctxOS = document.getElementById('outstandingSharesChart')
-            let chartOS = new Chart(ctxOS, createOSChartconfig(!{JSON.stringify(outstanding_shares_data)}))
-            let ctxCP = document.getElementById("cashPositionChart")
-            let chartCP = new Chart(ctxCP, createCPChartconfig(!{JSON.stringify(cash_position_data)}))
+            //- initialize chart for cash and equivalents
+            - let cash_position_data = cashPosition
+            script.
+                let ctxCP = document.getElementById("cashPositionChart")
+                let chartCP = new Chart(ctxCP, createCPChartconfig(!{JSON.stringify(cash_position_data)}))
 
         .d-flex-c
 

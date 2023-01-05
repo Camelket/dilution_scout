@@ -133,7 +133,7 @@ block content
                     //-         span #{company.float}
                     #companyDescription.mt-1.mr-2
                         div.opacity-8.ch80 #{company.description}
-            .tabContainer.d-flex-r.mt-3.max-w-95vw.hide-scrollbar
+            .tabContainer.d-flex-r.mt-3.hide-scrollbar
                 .selectionTab.cur-p.activeSelectionTab(onClick="openTab(event, 'dilution')") Dilution
                 .selectionTab.cur-p(onClick="openTab(event, 'filings')") Filings 
                 //- .selectionTab.cur-p(onClick="openTab(event, 'securities_outstanding')") Securities Outstanding 
@@ -145,29 +145,38 @@ block content
             //- user experience
 
 
-    #dilution.tabContent.activeTab
+    #dilution.tabContent.activeTab.pdl-2
         script(src="https://cdn.jsdelivr.net/npm/chart.js")
         script(src="/public/scripts/chartUtil.js")
-        .d-flex-c
-            span#outstandingSecuritiesSectionHeader.tabSubSectionHeader.mr-2.ml-1.mt-2.cur-p.d-flex-c Outstanding Securities
-            span#arrowPlaceholder Arrow here
-        div#outstandingSecuritiesContainer
-            script.
-                // registerTogglableControlItem(controlItemId, onToggleFunc)
-                makeContainerFoldableByControlItem("outstandingSecuritiesSectionHeader", "outstandingSecuritiesContainer")
-                makeContainerToggleableByControlItem("outstandingSecuritiesSectionHeader", "arrowPlaceholder", containerToggleOnFunc=toggleArrowOn(), containerToggleOffFunc=toggleArrowOff())
-            //- create all the outstanding securities charts
-            if (securitiesOutstanding != undefined)
-                each chartData in securitiesOutstanding
-                    -let securityName = chartData[0]["security_name"]
-                    -let securityType = chartData[0]["security_type"]
-                    -let chartName = "Outstanding " + securityName + " (" + securityType + ")" 
-                    -let chartId = securityName + "_chartId"
-                    +securityOutstandingChart(chartId, chartData, chartName)
+        .accordionContainer.pdl-1.mr-2
+            div#outstandingSecuritiesSectionHeader.tabSubSectionHeader.d-flex-r.mb-1.cur-p
+                span Outstanding Securities
+                span#accordionSymbolPlaceholder Arrow here
+            div#outstandingSecuritiesContainer
+                script.
+                    //- registerTogglableControlItem("outstandingSecuritiesSectionHeader", onToggleFunc)
+                    makeContainerFoldableByControlItem("outstandingSecuritiesSectionHeader", "outstandingSecuritiesContainer")
+                    makeContainerToggleableByControlItem(
+                        controlItemId="outstandingSecuritiesSectionHeader",
+                        containerId="accordionSymbolPlaceholder",
+                        containerToggleOnFunc=toggleAccordionSymbolExtended(null, "accordionSymbolPlaceholder", null, null),
+                        containerToggleOffFunc=toggleAccordionSymbolCollapsed(null, "accordionSymbolPlaceholder", null, null),
+                        startOn=true,
+                    )
+                //- create all the outstanding securities charts
+                if (securitiesOutstanding.length > 0)
+                    each chartData in securitiesOutstanding
+                        -let securityName = chartData[0]["security_name"]
+                        -let securityType = chartData[0]["security_type"]
+                        -let chartName = "Outstanding " + securityName + " (" + securityType + ")" 
+                        -let chartId = securityName + "_chartId"
+                        +securityOutstandingChart(chartId, chartData, chartName)
+                if (securitiesOutstanding.length == 0)
+                    span No Data for Outstanding Securities present
     
-        .d-flex-c.mt-1.ml-1.mr-1
+        .d-flex-c.mt-1.mr-1
             //- create chart for cash and equivalents
-            span.chartTitle.mr-1.ml-2.mt-2.cur-p Net cash and equivalents
+            span.chartTitle.mr-1.ml-1.mt-2.cur-p Net cash and equivalents
             if (burnInfo)
                 if (burnInfo["days_of_cash"] < 0)
                     span.chartDescription.mr-2.ml-1.mt-1.mb-1.ch80.cur-d Should have run out of cash <strong>#{burnInfo["days_of_cash"]}</strong> Days ago. Based on a cash burn of: <strong>#{burnInfo["burn_rate"]}$</strong>/Day and last recorded net cash of: <strong>#{burnInfo["net_cash"]}$</strong>, based on data from #{burnInfo["burn_rate_date"]} and #{burnInfo["net_cash_date"]} respectivly. Estimated Tracking error in net cash of at least: #{burnInfo["cash_missing"]}.

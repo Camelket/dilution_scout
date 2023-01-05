@@ -4,67 +4,72 @@ let containerItemIdControlItemIdMap = {}
 
 let controlItemContainerFunctionsMap = {}
 let controlItemIdRegistry = new Set()
-let controlItemIdToggleStateMap = {}
+let controlItemIdToggleStateMap = new Map()
 
 
 let controlItemOnToggle = {}
-function registerTogglableControlItem(controlItemId, onToggleFunc) {
+function registerToggleFuncOnControlItem(controlItemId, onToggleFunc) {
     controlItemOnToggle[controlItemId] = onToggleFunc
     // register an anon function in a map to access in toggleByControlItem
 }
 
-//change default foldup, folddown classes to something without any effect
-function toggleArrowOn(ControlItemId, containerId, toggleOnClass, toggleOffClass) {
-    return (...args) => {
-        let container = document.getElementById(containerId);
-        container.innerHTML = "&#9660;";
-        console.log("toggleArrowOn called")
-    }
-}
-function toggleArrowOff(ControlItemId, containerId, toggleOnClass, toggleOffClass) {
-    return (...args) => {
-        let container = document.getElementById(containerId);
-        container.innerHTML = "&#9650;";
-        console.log("toggleArrowOff called")
-    }
-}
-function makeContainerToggleableByControlItem(controlItemId, containerId, startOn=true, containerToggleOnFunc=null, containerToggleOffFunc=null, toggleOnClass=null, toggleOffClass=null, callToggleFuncInitally=true) {
+// let accordionSymbols = []
+
+function toggleAccordionSymbolCollapsed(controlItemId, containerId, toggleOnClass, toggleOffClass) {
+    return () => {
+        const container = document.getElementById(containerId);
+        // container.innerHTML = "&#8853;";
+        container.innerHTML = " &#9660;";  
+    };
+};
+function toggleAccordionSymbolExtended(controlItemId, containerId, toggleOnClass, toggleOffClass) {
+    return () => {
+        const container = document.getElementById(containerId);
+        // container.innerHTML = "&#8861;";
+        container.innerHTML = " &#9650;";
+    };
+};
+
+
+function makeContainerToggleableByControlItem(controlItemId, containerId, containerToggleOnFunc="none", containerToggleOffFunc="none", startOn=true, toggleOnClass=null, toggleOffClass=null, callToggleFuncInitally=true) {
     // toggleFunc: func(controlItemId, containerItemId, toggleOnClass, toggleOffClass) {}
     let container = document.getElementById(containerId)
     let controlItem = document.getElementById(controlItemId)
     // give the start state of the containerItem
     // startOn = true -> we call the toggleOffFunc when we toggle the first time
     // startOn = false -> we call the toggleOnFunc when we toggle the first time
-    if (!controlItemIdToggleStateMap[controlItemId]) {controlItemIdToggleStateMap[controlItem] = startOn}
-    nullFunc = (controlItemId, containerId, toggleOnClass, toggleOffClass) => {};
-    if (containerToggleOnFunc == null) {
+    if (!controlItemIdToggleStateMap.has(controlItemId)) {
+        controlItemIdToggleStateMap.set(controlItemId, startOn)
+    }
+    const nullFunc = () => {console.log("nullFunc called")};
+    if (containerToggleOnFunc == "none") {
         containerToggleOnFunc = nullFunc;
     }
-    if (containerToggleOffFunc == null) {
+    if (containerToggleOffFunc == "none") {
         containerToggleOffFunc = nullFunc;
     }
     if (callToggleFuncInitally == true) {
         if (startOn == true) {
-            containerToggleOffFunc(controlItemId, containerId, toggleOnClass, toggleOffClass)()
+            containerToggleOffFunc()
         } else {
-            containerToggleOnFunc(controlItemId, containerId, toggleOnClass, toggleOffClass)()
+            containerToggleOnFunc()
         }
     }
     if (!controlItemContainerFunctionsMap[controlItemId]) {
         controlItemContainerFunctionsMap[controlItemId] = []
     } 
     let containerToggleFunc = () => {
-        console.log("containerToggleFunc called")
-        let currentToggleState = controlItemIdToggleStateMap[controlItemId];
+        let currentToggleState = controlItemIdToggleStateMap.get(controlItemId);
         if (currentToggleState == true) {
-            containerToggleOffFunc(controlItemId, containerId, toggleOnClass, toggleOffClass)
-        } else {
-            containerToggleOnFunc(controlItemId, containerId, toggleOnClass, toggleOffClass)
+            containerToggleOnFunc()
+        }
+        if (currentToggleState == false){
+            containerToggleOffFunc()
         }
     }
     controlItemContainerFunctionsMap[controlItemId].push(containerToggleFunc)
     if (!controlItemIdRegistry.has(controlItemId)) {
-        controlItem.addEventListener('click',  function(){toggleByControlItem(controlItemId, foldedClassName);})
+        controlItem.addEventListener('click',  function(){toggleByControlItem(controlItemId);})
         controlItemIdRegistry.add(controlItemId)
     }
 }
@@ -92,12 +97,13 @@ function makeContainerFoldableByControlItem(controlItemId, containerId, startOpe
     } 
     controlItemContainerFunctionsMap[controlItemId].push(foldContainer(containerId, foldUpClass, foldDownClass))
     if (!controlItemIdRegistry.has(controlItemId)) {
-        controlItem.addEventListener('click',  function(){toggleByControlItem(controlItemId, foldedClassName);})
+        controlItem.addEventListener('click',  function(){toggleByControlItem(controlItemId);})
         controlItemIdRegistry.add(controlItemId)
     }
 }
 
-function toggleByControlItem(controlItemId, toggledOnClassName) {
+
+function toggleByControlItem(controlItemId) {
     let controlItem = document.getElementById(controlItemId);
     let containerFunctions = controlItemContainerFunctionsMap[controlItemId];
     for (let idx in containerFunctions) {
@@ -108,10 +114,10 @@ function toggleByControlItem(controlItemId, toggledOnClassName) {
     } else {
         controlItemOnToggle[controlItemId]();
     }
-    if (controlItemIdToggleStateMap[controlItemId] == true) {
-        controlItemIdToggleStateMap[controlItemId] = false
+    if (controlItemIdToggleStateMap.get(controlItemId) == true) {
+        controlItemIdToggleStateMap.set(controlItemId, false)
     } else {
-        controlItemIdToggleStateMap[controlItemId] = true
+        controlItemIdToggleStateMap.set(controlItemId, true)
     }
 }
 

@@ -19,7 +19,7 @@ const {
   readFilingParseStatus,
   readAssociatedEffectFiling
 } = require("../database/dilution_db/CRUD.js");
-const MemoryCache = require("../utility/memoryCache.js")
+const MemoryCache = require("../utility/memoryCache.js");
 
 // make calls to db to get the info
 // and feed info into render call
@@ -274,7 +274,7 @@ router.get("/ticker/:id", async function (req, res, next) {
     cashBurnInfo: cashBurnInfo,
     filings: filingLinks,
     securitiesOutstanding: securitiesOutstanding,
-    shelfsTabContent: shelfs
+    shelfsTabContent: shelfs,
   });
   //   let p = document.createElement("p")
   //   p.append("THIS IS ADDED TO THE DOC")

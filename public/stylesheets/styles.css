@@ -199,6 +199,10 @@ h2{
   padding-left: 1rem;
 }
 
+.pdb-2 {
+  padding-bottom: 1rem;
+}
+
 .ml-1 {
   margin-left: 0.5rem!important;
 }
@@ -482,6 +486,7 @@ h2{
 
 .accordionContainer {
   border-left: 5px solid var(--container-dark-accent-color, blue);
+  border-bottom: 1px solid var(--container-dark-accent-color, blue);
   border-radius: 6px;
   background-color: var(--container-background-color, grey);
   font-weight: 400;
@@ -999,19 +1004,21 @@ input[type=email]:focus {
   opacity: 1.0;
 }
 
+
 .foldUpContainerItem {
   opacity: 0;
+  transform: translate(0, -15%);
+  transition: all 0.05s linear;  
   min-height: 0;
   height: 0;
-  transform: translate(0, -25%);
-  transition: height 0.7s linear;
-  /* transition: all .2s linear;   */
-  /* transition: opacity 0.1s linear; */
+  /* display: none; */
 }
 /* height should be set back to the value before being folded by removing foldUpContainerItem class from the ContainerItem classList */
 .foldDownContainerItem {
   opacity: 1.0;
-  transition: 0.5s linear;
+  /* height: auto; */
+  transition: 0.1s linear;
+  /* display: auto; */
 }
 
 

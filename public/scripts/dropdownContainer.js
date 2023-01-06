@@ -3,6 +3,7 @@ let classListCacheControlElement = {}
 let containerItemIdControlItemIdMap = {}
 
 let controlItemContainerFunctionsMap = {}
+let controlItemContainerMap = new Map()
 let controlItemIdRegistry = new Set()
 let controlItemIdToggleStateMap = new Map()
 
@@ -74,10 +75,21 @@ function makeContainerToggleableByControlItem(controlItemId, containerId, contai
     }
 }
 
+function registerContainerIdForControlItemId(controlItemId, containerId) {
+    if (!controlItemContainerMap.has(controlItemId)) {
+        controlItemContainerMap.set(controlItemId, [])
+    }
+    let containerIdArray = controlItemContainerMap.get(controlItemId)
+    if (!containerIdArray.includes(containerId)) {
+        containerIdArray.push(containerId)
+        controlItemContainerMap.set(controlItemId, containerIdArray)
+    }
+}
+
 function makeContainerFoldableByControlItem(controlItemId, containerId, startOpen=true, foldedClassName="isFoldedUpControlItem", foldUpClass="foldUpContainerItem", foldDownClass="foldDownContainerItem") {
     let container = document.getElementById(containerId)
-    if (!classListCacheContainerElement[containerId]) {classListCacheContainerElement[containerId] = container.classList}
     let controlItem = document.getElementById(controlItemId)
+    registerContainerIdForControlItemId(controlItemId, containerId)
     if (startOpen != true) {
         if (!controlItem.classList.contains(foldedClassName)) {
             controlItem.classList.add(foldedClassName)
@@ -90,7 +102,6 @@ function makeContainerFoldableByControlItem(controlItemId, containerId, startOpe
             container.classList.add(foldDownClass)
         }
     }
-    if (!classListCacheControlElement[controlItemId]) {classListCacheControlElement[controlItemId] = controlItem.classList}
     if (!containerItemIdControlItemIdMap[containerId]) {containerItemIdControlItemIdMap[containerId] = controlItemId}
     if (!controlItemContainerFunctionsMap[controlItemId]) {
         controlItemContainerFunctionsMap[controlItemId] = []
@@ -113,6 +124,14 @@ function toggleByControlItem(controlItemId) {
         controlItem.classList.toggle("fallbackOnToggleClass")
     } else {
         controlItemOnToggle[controlItemId]();
+    }
+    let containerIds = controlItemContainerMap.get(controlItemId)
+    // currently this disallows for any animation since the item is hidden right away
+    // but it seems like a good compromise for the lower complexity
+    for (let idx in containerIds) {
+        let containerId = containerIds[idx]
+        let container = document.getElementById(containerId)
+        container.classList.toggle("hidden")
     }
     if (controlItemIdToggleStateMap.get(controlItemId) == true) {
         controlItemIdToggleStateMap.set(controlItemId, false)

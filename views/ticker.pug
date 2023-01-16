@@ -170,49 +170,48 @@ block content
     #dilution.tabContent.activeTab.pdl-2
         script(src="https://cdn.jsdelivr.net/npm/chart.js")
         script(src="/public/scripts/chartUtil.js")
-        
-        #finanicalChartsContainer.accordionContainer.pdl-1.mr-2
-            #financialChartsSectionHeader.tabSubSectionHeader.d-flex-r.mb-1.cur-p 
-                span Financial Situation 
-                span#accordionSymbolPlaceholderFinancialSituation Symbol Here
-            #financialSituationContainer
-                +cashPositionChart("Cash Position_chartId", cashPosition, "Cash Position", burnInfo)
-                script.
-                    makeContainerFoldableByControlItem("financialChartsSectionHeader", "financialSituationContainer")
-                    makeContainerToggleableByControlItem(
-                    controlItemId="financialChartsSectionHeader",
-                    containerId="accordionSymbolPlaceholderFinancialSituation",
-                    containerToggleOnFunc=toggleAccordionSymbolExtended(null, "accordionSymbolPlaceholderFinancialSituation", null, null),
-                    containerToggleOffFunc=toggleAccordionSymbolCollapsed(null, "accordionSymbolPlaceholderFinancialSituation", null, null),
-                    startOn=true,
-                    )
-
-        #oustandingSecuritiesChartsContainer.accordionContainer.pdl-1.mr-2
-            div#outstandingSecuritiesSectionHeader.tabSubSectionHeader.d-flex-r.mb-1.cur-p
-                span Outstanding Securities
-                span#accordionSymbolPlaceholderOutstandingSecurities Symbol Here
-            div#outstandingSecuritiesContainer
-                script.
-                    //- registerTogglableControlItem("outstandingSecuritiesSectionHeader", onToggleFunc)
-                    makeContainerFoldableByControlItem("outstandingSecuritiesSectionHeader", "outstandingSecuritiesContainer")
-                    makeContainerToggleableByControlItem(
-                        controlItemId="outstandingSecuritiesSectionHeader",
-                        containerId="accordionSymbolPlaceholderOutstandingSecurities",
-                        containerToggleOnFunc=toggleAccordionSymbolExtended(null, "accordionSymbolPlaceholderOutstandingSecurities", null, null),
-                        containerToggleOffFunc=toggleAccordionSymbolCollapsed(null, "accordionSymbolPlaceholderOutstandingSecurities", null, null),
+        .accordionGroupWrapper
+            #finanicalChartsContainer.accordionContainer.pdl-1.mr-2
+                #financialChartsSectionHeader.tabSubSectionHeader.d-flex-r.mb-1.cur-p 
+                    span Financial Situation 
+                    span#accordionSymbolPlaceholderFinancialSituation Symbol Here
+                #financialSituationContainer
+                    +cashPositionChart("Cash Position_chartId", cashPosition, "Cash Position", burnInfo)
+                    script.
+                        makeContainerFoldableByControlItem("financialChartsSectionHeader", "financialSituationContainer")
+                        makeContainerToggleableByControlItem(
+                        controlItemId="financialChartsSectionHeader",
+                        containerId="accordionSymbolPlaceholderFinancialSituation",
+                        containerToggleOnFunc=toggleAccordionSymbolExtended(null, "accordionSymbolPlaceholderFinancialSituation", null, null),
+                        containerToggleOffFunc=toggleAccordionSymbolCollapsed(null, "accordionSymbolPlaceholderFinancialSituation", null, null),
                         startOn=true,
-                    )
-                //- create all the outstanding securities charts
-                if (securitiesOutstanding.length > 0)
-                    each chartData in securitiesOutstanding
-                        -let securityName = chartData[0]["security_name"]
-                        -let securityType = chartData[0]["security_type"]
-                        -let chartName = "Outstanding " + securityName + " (" + securityType + ")" 
-                        -let chartId = securityName + "_chartId"
-                        +securityOutstandingChart(chartId, chartData, chartName)
-                if (securitiesOutstanding.length == 0)
-                    span No Data for Outstanding Securities present
-    
+                        )
+            #oustandingSecuritiesChartsContainer.accordionContainer.pdl-1.mr-2
+                div#outstandingSecuritiesSectionHeader.tabSubSectionHeader.d-flex-r.mb-1.cur-p
+                    span Outstanding Securities
+                    span#accordionSymbolPlaceholderOutstandingSecurities Symbol Here
+                div#outstandingSecuritiesContainer
+                    script.
+                        //- registerTogglableControlItem("outstandingSecuritiesSectionHeader", onToggleFunc)
+                        makeContainerFoldableByControlItem("outstandingSecuritiesSectionHeader", "outstandingSecuritiesContainer")
+                        makeContainerToggleableByControlItem(
+                            controlItemId="outstandingSecuritiesSectionHeader",
+                            containerId="accordionSymbolPlaceholderOutstandingSecurities",
+                            containerToggleOnFunc=toggleAccordionSymbolExtended(null, "accordionSymbolPlaceholderOutstandingSecurities", null, null),
+                            containerToggleOffFunc=toggleAccordionSymbolCollapsed(null, "accordionSymbolPlaceholderOutstandingSecurities", null, null),
+                            startOn=true,
+                        )
+                    //- create all the outstanding securities charts
+                    if (securitiesOutstanding.length > 0)
+                        each chartData in securitiesOutstanding
+                            -let securityName = chartData[0]["security_name"]
+                            -let securityType = chartData[0]["security_type"]
+                            -let chartName = "Outstanding " + securityName + " (" + securityType + ")" 
+                            -let chartId = securityName + "_chartId"
+                            +securityOutstandingChart(chartId, chartData, chartName)
+                    if (securitiesOutstanding.length == 0)
+                        span No Data for Outstanding Securities present
+        
             //- maybe make a mixin for a parrent and children accordion container with collapse all buttons?
         
 

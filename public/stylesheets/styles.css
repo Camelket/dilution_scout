@@ -14,11 +14,14 @@ html {
   --navbar-accent-light-background-color: rgb(238, 246, 253); 
   --light-color: rgb(189, 192, 236);
   --container-background-color: rgb(220 222 243);
-  --container-dark-accent-color: rgb(169, 160, 227);
+  --container-dark-accent-color: rgb(169, 155, 240);
+  --container-light-accent-color: rgb(169, 160, 227);
   --landing-panel-background: rgb(255, 255, 255);
   --landing-panel-text: rgb(20, 20, 20);
   --landing-panel-accent: rgba(222, 222, 228, 0.849);
   --landing-panel-transition: var(--landing-panel-accent);
+
+  --accordionContainerBottomTopBorderThickness: 1px;
 }
 
 .belowNavbarWrapper{
@@ -486,11 +489,23 @@ h2{
 
 .accordionContainer {
   border-left: 5px solid var(--container-dark-accent-color, blue);
-  border-bottom: 1px solid var(--container-dark-accent-color, blue);
+  border-right: 2px solid var(--container-dark-accent-color);
   border-radius: 6px;
-  background-color: var(--container-background-color, grey);
+  /* background-color: var(--container-background-color, grey); */
+  background-color: var(--main-background-color);
   font-weight: 400;
   padding: 0.5rem 0.5rem;
+}
+
+.accordionGroupWrapper > .accordionContainer:nth-child(-n + 2) {
+  border-bottom: var(--accordionContainerBottomTopBorderThickness) solid var(--container-light-accent-color, blue);
+}
+.accordionGroupWrapper > .accordionContainer:nth-child(1) {
+  border-top: var(--accordionContainerBottomTopBorderThickness) solid var(--container-dark-accent-color)
+}
+
+.accordionGroupWrapper > .accordionContainer:nth-last-child(1) {
+  border-bottom: var(--accordionContainerBottomTopBorderThickness) solid var(--container-dark-accent-color)
 }
 
 /* START charts */
